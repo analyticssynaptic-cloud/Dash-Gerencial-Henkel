@@ -154,6 +154,14 @@
   .var-up{color:var(--status-good);font-weight:800;}
   .var-down{color:var(--status-critical);font-weight:800;}
   .var-flat{color:var(--muted);font-weight:800;}
+  .vp-split{display:grid;grid-template-columns:1fr 292px;gap:24px;align-items:center;}
+  .vp-split > div{min-width:0;}
+  .pie-wrap{display:flex;align-items:center;gap:16px;}
+  .pie-wrap svg{flex:0 0 auto;}
+  #premiosTipoLegend{display:flex;flex-direction:column;gap:8px;flex:1;min-width:0;}
+  #premiosTipoLegend .item{justify-content:space-between;gap:9px;}
+  #premiosTipoLegend .pl-t{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #premiosTipoLegend b{color:var(--ink);}
   .detalle-head{display:flex;flex-wrap:wrap;gap:22px;padding:14px 2px 2px;}
   .detalle-head .dh-item{display:flex;flex-direction:column;gap:3px;}
   .detalle-head .dh-l{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
@@ -213,6 +221,7 @@
     .kpi-grid{grid-template-columns:repeat(3,1fr);}
     .grid.cols-2{grid-template-columns:1fr;}
     .pdv-detail{grid-template-columns:1fr;}
+    .vp-split{grid-template-columns:1fr;}
   }
   @media (max-width:640px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} main.content{padding:18px 16px 40px;} .modal-kpis{grid-template-columns:1fr;} }
 </style>
@@ -299,8 +308,17 @@
 
     <div class="section-label"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div>
     <div class="card">
-      <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor en el filtro actual</p></div></div>
-      <svg id="ventasPremiosChart" width="100%" height="180" style="overflow:visible"></svg>
+      <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor, y de qué se compuso ese material en el filtro actual</p></div></div>
+      <div class="vp-split">
+        <div><svg id="ventasPremiosChart" width="100%" height="180" style="overflow:visible"></svg></div>
+        <div>
+          <div class="mu-title">Participación por tipo de premio</div>
+          <div class="pie-wrap">
+            <svg id="premiosTipoPie" width="152" height="152" viewBox="0 0 152 152"></svg>
+            <div class="legend" id="premiosTipoLegend"></div>
+          </div>
+        </div>
+      </div>
     </div>
 
     <div class="section-label"><span class="sl-num">03</span><h2>Ventas y premios por canal</h2></div>
@@ -596,6 +614,15 @@ function recalcular() {
   const ventasPorCanal = canales.map(c => ({ canal: c, unidades: ventas.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
   const premiosPorCanal = canales.map(c => ({ canal: c, entregados: premiosEnt.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
 
+  /* De que se compuso el material entregado: participacion de cada tipo de premio
+     sobre el total de premios del filtro (no sobre las unidades vendidas). */
+  const premTipoMapa = {};
+  premiosEnt.forEach(x => { const k = x.producto || 'Sin especificar'; premTipoMapa[k] = (premTipoMapa[k] || 0) + x.cantidad; });
+  const basePremios = totalPremiosEntregados || 1;
+  const premiosPorTipo = Object.keys(premTipoMapa)
+    .map(k => ({ producto: k, cantidad: premTipoMapa[k], pct: Math.round(premTipoMapa[k] / basePremios * 1000) / 10 }))
+    .sort((a, b) => b.cantidad - a.cantidad);
+
   const asesorMapa = {};
   visitas.forEach(v => {
     const k = v.asesor; if (!k) return;
@@ -674,7 +701,7 @@ function recalcular() {
     kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre, metaVisitas, coberturaPct },
     ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
     tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
-    ventasPorCanal, premiosPorCanal,
+    ventasPorCanal, premiosPorCanal, premiosPorTipo,
     porAsesor, porPDV,
     ventasCrudas: ventas, premiosCrudos: premiosEnt,
     vozConsumidor: {
@@ -712,6 +739,7 @@ function renderAll() {
   });
 
   renderVentasPremios();
+  renderPiePremios();
   renderTendenciaChart();
   renderTendenciaCallouts();
   renderDiasTable();
@@ -774,6 +802,53 @@ function renderVentasPremios() {
     const lbl = svgEl('text', { x: cx, y: h - padB + 18, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 700, fill: 'var(--muted)' });
     lbl.textContent = d.k; svg.appendChild(lbl);
   });
+}
+/* Pie (dona) de participacion por tipo de premio. Se dibuja a mano con arcos SVG para
+   no cargar ninguna libreria: cada porcion es un path con arco externo e interno. */
+const PALETA_PREMIOS = ['var(--brand)', 'var(--series-1)', 'var(--series-3)', 'var(--series-4)', 'var(--series-6)', 'var(--series-5)', 'var(--series-2)'];
+function renderPiePremios() {
+  const svg = document.getElementById('premiosTipoPie');
+  const leg = document.getElementById('premiosTipoLegend');
+  const items = DATA.premiosPorTipo || [];
+  svg.innerHTML = ''; leg.innerHTML = '';
+  if (!items.length) { leg.innerHTML = '<div class="empty-hint">Sin premios entregados en este filtro.</div>'; return; }
+  const total = items.reduce((s, x) => s + x.cantidad, 0) || 1;
+  const cx = 76, cy = 76, rExt = 68, rInt = 40;
+  let ang = -Math.PI / 2;
+  items.forEach((it, i) => {
+    const color = PALETA_PREMIOS[i % PALETA_PREMIOS.length];
+    const frac = it.cantidad / total;
+    const fin = ang + frac * Math.PI * 2;
+    let porcion;
+    if (frac >= 0.9999) {
+      /* Un solo tipo de premio: el arco de 360 grados no se puede dibujar con un path
+         (inicio y fin coinciden), asi que se usa un circulo con borde grueso. */
+      porcion = svgEl('circle', { cx, cy, r: (rExt + rInt) / 2, fill: 'none', stroke: color, 'stroke-width': rExt - rInt });
+    } else {
+      const largo = frac > 0.5 ? 1 : 0;
+      const x1 = cx + rExt * Math.cos(ang), y1 = cy + rExt * Math.sin(ang);
+      const x2 = cx + rExt * Math.cos(fin), y2 = cy + rExt * Math.sin(fin);
+      const x3 = cx + rInt * Math.cos(fin), y3 = cy + rInt * Math.sin(fin);
+      const x4 = cx + rInt * Math.cos(ang), y4 = cy + rInt * Math.sin(ang);
+      porcion = svgEl('path', {
+        d: 'M ' + x1 + ' ' + y1 + ' A ' + rExt + ' ' + rExt + ' 0 ' + largo + ' 1 ' + x2 + ' ' + y2 +
+           ' L ' + x3 + ' ' + y3 + ' A ' + rInt + ' ' + rInt + ' 0 ' + largo + ' 0 ' + x4 + ' ' + y4 + ' Z',
+        fill: color, stroke: 'var(--surface)', 'stroke-width': 1.5
+      });
+    }
+    conTooltip(porcion, () => `<b>${escHtml(it.producto)}</b><br>${fmt(it.cantidad)} premios · <b>${it.pct}%</b>`);
+    svg.appendChild(porcion);
+    ang = fin;
+  });
+  const tTotal = svgEl('text', { x: cx, y: cy - 1, 'text-anchor': 'middle', 'font-size': 18, 'font-weight': 800, fill: 'var(--ink)', 'font-family': 'var(--font-mono)' });
+  tTotal.textContent = fmt(total); svg.appendChild(tTotal);
+  const tLbl = svgEl('text', { x: cx, y: cy + 14, 'text-anchor': 'middle', 'font-size': 8.5, 'font-weight': 800, fill: 'var(--muted)', 'letter-spacing': '.08em' });
+  tLbl.textContent = 'PREMIOS'; svg.appendChild(tLbl);
+  leg.innerHTML = items.map((it, i) => `<div class="item">
+      <span class="sw" style="background:${PALETA_PREMIOS[i % PALETA_PREMIOS.length]}"></span>
+      <span class="pl-t" title="${escHtml(it.producto)}">${escHtml(it.producto)}</span>
+      <b class="num">${it.pct}%</b>
+    </div>`).join('');
 }
 function renderTendenciaChart() {
   const svg = document.getElementById('tendenciaChart');
@@ -1004,7 +1079,7 @@ function renderPDVTable() {
       <td class="tf-label" colspan="3">Total general · ${items.length} punto${items.length === 1 ? '' : 's'} de venta</td>
       <td class="num">${fmt(items.reduce((s, p) => s + p.unidades, 0))}</td>
       <td class="num">${fmt(items.reduce((s, p) => s + p.premios, 0))}</td>
-      <td class="num">${Math.round(items.reduce((s, p) => s + p.pct, 0) * 10) / 10}%</td>
+      <td class="num">${items.reduce((s, p) => s + p.unidades, 0) ? 100 : 0}%</td>
     </tr>` : '';
   renderPaginador('pdvPager', items.length, pdvPagina, (p) => { pdvPagina = p; renderPDVTable(); });
 }
@@ -1292,7 +1367,7 @@ document.getElementById('btnExportarPDV').addEventListener('click', () => {
     __total: true, pdv: 'TOTAL GENERAL', ciudad: '', canal: '',
     unidades: filas.reduce((s, p) => s + p.unidades, 0),
     premios: filas.reduce((s, p) => s + p.premios, 0),
-    pct: Math.round(filas.reduce((s, p) => s + p.pct, 0) * 10) / 10
+    pct: filas.reduce((s, p) => s + p.unidades, 0) ? 100 : 0
   });
   descargarExcel('henkel_ventas_por_pdv.xlsx', 'Por punto de venta', [
     { key: 'pdv', label: 'Punto de Venta', ancho: 34 }, { key: 'ciudad', label: 'Ciudad', ancho: 18 }, { key: 'canal', label: 'Canal', ancho: 14 },
