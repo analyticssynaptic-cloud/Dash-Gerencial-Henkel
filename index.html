@@ -88,7 +88,7 @@
   .page-kick{font-size:11px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
   .page-title{font-size:24px;font-weight:800;letter-spacing:-.01em;margin-bottom:22px;}
 
-  .kpi-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:12px;margin-bottom:22px;}
+  .kpi-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(163px,1fr));gap:12px;margin-bottom:22px;}
   .kpi{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-md);padding:15px 15px 13px;box-shadow:var(--shadow-card);}
   .kpi .kpi-label{display:block;font-size:10.5px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:9px;}
   .kpi .kpi-value{display:block;font-size:23px;font-weight:800;color:var(--brand);line-height:1;}
@@ -148,6 +148,16 @@
   table.data td{padding:10px 9px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;}
   table.data td.num{font-family:var(--font-mono);}
   table.data tr:last-child td{border-bottom:none;}
+  table.data tfoot td{padding:12px 9px;border-top:2px solid var(--border-strong);border-bottom:none;font-weight:800;background:var(--surface-2);color:var(--ink);}
+  table.data tfoot td.num{font-family:var(--font-mono);}
+  table.data tfoot .tf-label{font-size:10.5px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .var-up{color:var(--status-good);font-weight:800;}
+  .var-down{color:var(--status-critical);font-weight:800;}
+  .var-flat{color:var(--muted);font-weight:800;}
+  .detalle-head{display:flex;flex-wrap:wrap;gap:22px;padding:14px 2px 2px;}
+  .detalle-head .dh-item{display:flex;flex-direction:column;gap:3px;}
+  .detalle-head .dh-l{font-size:10px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .detalle-head .dh-v{font-size:17px;font-weight:800;color:var(--brand);font-family:var(--font-mono);}
   table.data tbody tr{cursor:default;}
   table.data tbody tr.clickable{cursor:pointer;}
   table.data tbody tr.clickable:hover td{background:var(--surface-2);}
@@ -257,13 +267,34 @@
 
     <div class="section-label"><span class="sl-num">01</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
     <div class="card">
-      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — cada punto marca el % vs. el día anterior</p></div></div>
-      <svg id="tendenciaChart" width="100%" height="240" style="overflow:visible"></svg>
+      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — cada punto trae su cifra y el % vs. el día anterior</p></div></div>
+      <svg id="tendenciaChart" width="100%" height="300" style="overflow:visible"></svg>
       <div class="legend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
         <div class="item"><span class="sw" style="background:var(--series-1)"></span>Unidades vendidas</div>
         <div class="item"><span class="sw" style="background:var(--brand)"></span>Premios entregados</div>
       </div>
       <div id="tendenciaCallouts"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="card-head">
+        <div><h3>Detalle diario — variación y relación premio / venta</h3><p>Cada día contra el día anterior, y cuántos premios se entregaron por cada unidad vendida</p></div>
+        <button class="btn-export" id="btnExportarDias" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
+      </div>
+      <div class="table-scroll">
+        <table class="data" id="diasTable">
+          <thead><tr>
+            <th>Día</th>
+            <th class="num">Unidades vendidas</th>
+            <th class="num">Var. unidades</th>
+            <th class="num">Premios entregados</th>
+            <th class="num">Var. premios</th>
+            <th class="num">Premios por unidad</th>
+          </tr></thead>
+          <tbody></tbody>
+          <tfoot></tfoot>
+        </table>
+      </div>
     </div>
 
     <div class="section-label"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div>
@@ -287,12 +318,10 @@
     <div class="section-label"><span class="sl-num">04</span><h2>Ventas por punto de venta</h2></div>
     <div class="card">
       <div class="card-head">
-        <div><h3>Unidades por punto de venta</h3><p>Clic en una fila para ver el detalle de venta y premios de ese punto — clic en una columna para ordenar</p></div>
+        <div><h3>Unidades y premios por punto de venta</h3><p>Cada fila trae ya sumadas las unidades y los premios del punto — clic en la fila para abrir el discriminado por producto, clic en una columna para ordenar</p></div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="card-tag" id="pdvTag">—</span>
-          <button class="btn-export" id="btnExportarPDV" type="button">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
-          </button>
+          <button class="btn-export" id="btnExportarPDV" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
         </div>
       </div>
       <div class="table-scroll">
@@ -300,16 +329,45 @@
           <thead><tr>
             <th data-k="pdv">Punto de venta <span class="sort-ic">▾</span></th>
             <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="unidades">Unidades <span class="sort-ic">▾</span></th>
+            <th data-k="canal">Canal <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="unidades">Unidades vendidas <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="premios">Premios entregados <span class="sort-ic">▾</span></th>
             <th data-k="pct">Participación <span class="sort-ic">▾</span></th>
           </tr></thead>
           <tbody></tbody>
+          <tfoot></tfoot>
         </table>
       </div>
       <div class="pagination" id="pdvPager"></div>
     </div>
 
-    <div class="section-label"><span class="sl-num">05</span><h2>Voz del consumidor</h2></div>
+    <div class="section-label"><span class="sl-num">05</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
+    <div class="card">
+      <div class="card-head">
+        <div class="card-head-ico">
+          <span class="card-icon" style="background:var(--brand-soft);color:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>
+          <div><h3>Cumplimiento comercial por asesor</h3><p>Cada fila muestra ya sumadas sus unidades vendidas y sus premios entregados — clic en la fila para abrir el detalle y las fotos</p></div>
+        </div>
+        <button class="btn-export" id="btnExportarAsesores" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
+      </div>
+      <div class="table-scroll">
+        <table class="data" id="asesoresTable">
+          <thead><tr>
+            <th data-k="asesor">Asesor <span class="sort-ic">▾</span></th>
+            <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
+            <th data-k="canal">Canal <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="visitas">Visitas <span class="sort-ic">▾</span></th>
+            <th data-k="unidadesVendidas">Unidades Vendidas <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="premiosEntregados">Premios Entregados <span class="sort-ic">▾</span></th>
+          </tr></thead>
+          <tbody></tbody>
+          <tfoot></tfoot>
+        </table>
+      </div>
+      <div class="pagination" id="asesoresPager"></div>
+    </div>
+
+    <div class="section-label"><span class="sl-num">06</span><h2>Voz del consumidor</h2></div>
     <div class="card">
       <div class="card-head"><div><h3>Resumen de encuestas</h3><p id="vozSub">— consumidores encuestados en el filtro actual</p></div></div>
       <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0" id="vozMiniKpis"></div>
@@ -346,32 +404,6 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">06</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
-    <div class="card">
-      <div class="card-head">
-        <div class="card-head-ico">
-          <span class="card-icon" style="background:var(--brand-soft);color:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>
-          <div><h3>Cumplimiento comercial por asesor</h3><p>Clic en una fila para ver su foto y el detalle de esa persona</p></div>
-        </div>
-        <button class="btn-export" id="btnExportarAsesores" type="button">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
-        </button>
-      </div>
-      <div class="table-scroll">
-        <table class="data" id="asesoresTable">
-          <thead><tr>
-            <th data-k="asesor">Asesor <span class="sort-ic">▾</span></th>
-            <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
-            <th data-k="canal">Canal <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="visitas">Visitas <span class="sort-ic">▾</span></th>
-            <th data-k="unidadesVendidas">Unidades Vendidas <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="premiosEntregados">Premios Entregados <span class="sort-ic">▾</span></th>
-          </tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="pagination" id="asesoresPager"></div>
-    </div>
 
     <footer class="note">Fuente: hoja normalizada (Normalizador.gs) — no lee JSON directo, ya viene aplanada. Se actualiza sola cuando corres el normalizador con datos nuevos.</footer>
   </main>
@@ -413,6 +445,11 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qV
    DATA = el resultado ya filtrado y calculado en el navegador — cambiar de
    filtro solo llama recalcular(), nunca vuelve a pedirle nada a Apps Script,
    por eso los segmentadores responden al instante. */
+/* Meta de cobertura de la ruta: visitas que habia que hacer en el periodo.
+   Si el backend la manda (campo metaVisitas) manda el backend; si no, se usa
+   este numero. Cambiarlo aqui NO exige redeploy del Apps Script. */
+const META_VISITAS_FALLBACK = 54;
+
 let RAW = null;
 let DATA = null;
 let filtrosActuales = { ciudad: '', pdv: '', canal: '', fechaDesde: '', fechaHasta: '', asesor: '' };
@@ -549,6 +586,11 @@ function recalcular() {
   const visitasConSi = visitas.filter(v => v.venta === 'Si').length;
   const visitasConDato = visitas.filter(v => v.venta === 'Si' || v.venta === 'No').length;
   const tasaCierre = visitasConDato ? Math.round(visitasConSi / visitasConDato * 1000) / 10 : 0;
+  /* Cobertura = visitas cumplidas sobre las programadas. La meta es fija (la ruta del
+     periodo), asi que al segmentar por ciudad/canal el % baja proporcionalmente: es el
+     mismo denominador, no se recorta con el filtro. */
+  const metaVisitas = (RAW && RAW.metaVisitas) || META_VISITAS_FALLBACK;
+  const coberturaPct = metaVisitas ? Math.round(totalVisitas / metaVisitas * 1000) / 10 : 0;
 
   const canales = ['Tradicional', 'Moderno'];
   const ventasPorCanal = canales.map(c => ({ canal: c, unidades: ventas.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
@@ -565,12 +607,24 @@ function recalcular() {
   premiosEnt.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].premiosEntregados += x.cantidad; });
   const porAsesor = Object.values(asesorMapa).sort((a, b) => b.unidadesVendidas - a.unidadesVendidas);
 
+  /* Un punto puede tener premios entregados sin venta registrada, por eso el mapa se
+     alimenta de las dos fuentes. El canal sale de la visita (Usuario Especial), nunca del
+     nombre de la cadena: mismo criterio que el resto del tablero. */
+  const ciudadPorPDV = {};
+  visitas.forEach(v => { if (v.pdv && !ciudadPorPDV[v.pdv]) ciudadPorPDV[v.pdv] = v.ciudad || ''; });
   const pdvMapa = {};
+  function pdvDe(k, canal) {
+    if (!pdvMapa[k]) pdvMapa[k] = { pdv: k, ciudad: ciudadPorPDV[k] || '', canal: '', unidades: 0, premios: 0 };
+    if (!pdvMapa[k].canal && canal) pdvMapa[k].canal = canal;
+    return pdvMapa[k];
+  }
   ventas.forEach(x => {
-    const k = x.pdv; if (!k) return;
-    if (!pdvMapa[k]) pdvMapa[k] = { pdv: k, ciudad: x.ciudad || '', unidades: 0 };
-    pdvMapa[k].unidades += x.cantidad;
+    if (!x.pdv) return;
+    const p = pdvDe(x.pdv, canalPorId[x.id]);
+    if (!p.ciudad && x.ciudad) p.ciudad = x.ciudad;
+    p.unidades += x.cantidad;
   });
+  premiosEnt.forEach(x => { if (x.pdv) pdvDe(x.pdv, canalPorId[x.id]).premios += x.cantidad; });
   const baseUnidadesPct = totalUnidadesVendidas || 1;
   const porPDV = Object.values(pdvMapa).map(p => Object.assign({}, p, { pct: Math.round(p.unidades / baseUnidadesPct * 1000) / 10 }))
     .sort((a, b) => b.unidades - a.unidades);
@@ -583,6 +637,15 @@ function recalcular() {
   ventas.forEach(x => { const k = fechaISOPorId[x.id]; if (k) diaDe(k).unidades += x.cantidad; });
   premiosEnt.forEach(x => { const k = fechaISOPorId[x.id]; if (k) diaDe(k).premios += x.cantidad; });
   const tendenciaDiaria = Object.values(diaMapa).sort((a, b) => a.fechaISO.localeCompare(b.fechaISO));
+  /* Cada dia carga ya su variacion contra el dia anterior y la relacion premio/venta,
+     para que la tabla de dias y el grafico usen exactamente las mismas cifras. */
+  tendenciaDiaria.forEach((d, i) => {
+    const prev = i > 0 ? tendenciaDiaria[i - 1] : null;
+    d.dia = fechaCortaISO(d.fechaISO);
+    d.varUnidades = (prev && prev.unidades) ? Math.round((d.unidades - prev.unidades) / prev.unidades * 1000) / 10 : null;
+    d.varPremios = (prev && prev.premios) ? Math.round((d.premios - prev.premios) / prev.premios * 1000) / 10 : null;
+    d.relacion = d.unidades ? Math.round(d.premios / d.unidades * 100) / 100 : 0;
+  });
   let cambioUnidadesPct = null, cambioPremiosPct = null;
   if (tendenciaDiaria.length >= 2) {
     const ultimo = tendenciaDiaria[tendenciaDiaria.length - 1];
@@ -608,7 +671,7 @@ function recalcular() {
   const opinionPromedio = opiniones.length ? Math.round(opiniones.reduce((s, n) => s + n, 0) / opiniones.length * 100) / 100 : 0;
 
   DATA = {
-    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre },
+    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre, metaVisitas, coberturaPct },
     ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
     tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
     ventasPorCanal, premiosPorCanal,
@@ -630,6 +693,7 @@ function renderAll() {
   document.getElementById('sbVisitas').textContent = fmt(k.totalVisitas);
 
   const defs = [
+    { label: 'Cobertura de visitas', value: k.coberturaPct + '%', sub: fmt(k.totalVisitas) + ' de ' + fmt(k.metaVisitas) + ' programadas' },
     { label: 'Unidades vendidas', value: fmt(k.totalUnidadesVendidas), sub: k.totalVisitas + ' visitas' },
     { label: 'Premios redimidos', value: fmt(k.totalPremiosEntregados), sub: 'entregados al consumidor' },
     { label: 'Premios por unidad vendida', value: k.premiosPorUnidadVendida, sub: 'premio por cada unidad' },
@@ -650,6 +714,7 @@ function renderAll() {
   renderVentasPremios();
   renderTendenciaChart();
   renderTendenciaCallouts();
+  renderDiasTable();
   renderHBars('ventasCanalChart', DATA.ventasPorCanal, 'canal', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderHBars('premiosCanalChart', DATA.premiosPorCanal.map(p => ({ canal: p.canal, entregados: p.entregados })), 'canal', 'entregados', { color: 'var(--series-2)', tooltipLabel: 'Entregados' });
 
@@ -713,11 +778,11 @@ function renderVentasPremios() {
 function renderTendenciaChart() {
   const svg = document.getElementById('tendenciaChart');
   const items = DATA.tendenciaDiaria || [];
-  const w = svg.clientWidth || 900, h = 240;
+  const w = svg.clientWidth || 900, h = 300;
   svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
   svg.innerHTML = '';
   if (items.length === 0) { return; }
-  const padLeft = 10, padRight = 10, padTop = 34, padBottom = 30;
+  const padLeft = 10, padRight = 10, padTop = 52, padBottom = 46;
   const maxVal = Math.max(1, ...items.map(d => Math.max(d.unidades, d.premios)));
   const innerW = w - padLeft - padRight, innerH = h - padTop - padBottom;
   const stepX = items.length > 1 ? innerW / (items.length - 1) : 0;
@@ -743,6 +808,10 @@ function renderTendenciaChart() {
   drawArea('unidades', 'var(--series-1)');
   drawArea('premios', 'var(--brand)');
 
+  /* Etiquetas de datos SIEMPRE visibles, no solo en el tooltip: la cifra del dia pegada al
+     punto y, mas afuera, el % contra el dia anterior. Con muchos dias el % se omite para
+     que las etiquetas no se encimen; la cifra se conserva siempre. */
+  const mostrarPct = items.length <= 12;
   function drawSerie(campo, color, tooltipLabel, etiquetaArriba) {
     if (items.length > 1) {
       const pts = items.map((d, i) => xOf(i) + ',' + yOf(d[campo])).join(' ');
@@ -753,13 +822,19 @@ function renderTendenciaChart() {
       const c = svgEl('circle', { cx, cy, r: 4.2, fill: color });
       conTooltip(c, () => `<b>${escHtml(fechaCortaISO(d.fechaISO))}</b><br>${tooltipLabel}: <b>${fmt(d[campo])}</b>`);
       svg.appendChild(c);
+
+      const vy = etiquetaArriba ? Math.max(18, cy - 12) : Math.min(h - padBottom - 15, cy + 19);
+      const tv = svgEl('text', { x: cx, y: vy, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 800, fill: color, 'font-family': 'var(--font-mono)' });
+      tv.textContent = fmt(d[campo]);
+      svg.appendChild(tv);
+
       const pct = pctCambio(i, campo);
-      if (pct !== null) {
+      if (pct !== null && mostrarPct) {
         const subiendo = pct >= 0;
         const lblColor = subiendo ? 'var(--status-good)' : 'var(--status-critical)';
         const flecha = subiendo ? '▲' : '▼';
-        const ly = etiquetaArriba ? Math.max(12, cy - 12) : Math.min(h - padBottom - 4, cy + 18);
-        const t = svgEl('text', { x: cx, y: ly, 'text-anchor': 'middle', 'font-size': 10, 'font-weight': 800, fill: lblColor, 'font-family': 'var(--font-mono)' });
+        const ly = etiquetaArriba ? Math.max(6, vy - 13) : Math.min(h - padBottom - 2, vy + 13);
+        const t = svgEl('text', { x: cx, y: ly, 'text-anchor': 'middle', 'font-size': 9.5, 'font-weight': 800, fill: lblColor, 'font-family': 'var(--font-mono)' });
         t.textContent = flecha + Math.abs(pct) + '%';
         svg.appendChild(t);
       }
@@ -790,6 +865,37 @@ function renderTendenciaCallouts() {
     return `<div class="callout"><span style="color:${color};font-weight:800">${flecha} ${Math.abs(pct)}%</span>&nbsp;${label} vs. el día anterior</div>`;
   }
   cont.innerHTML = pill('Unidades vendidas', DATA.cambioUnidadesPct) + pill('Premios entregados', DATA.cambioPremiosPct);
+}
+/* Tabla de dias: variacion contra el dia anterior y relacion premio / venta.
+   Va debajo del grafico de tendencia y usa las mismas cifras. */
+function varHtml(pct) {
+  if (pct === null || pct === undefined || pct === '') return '<span class="var-flat">—</span>';
+  if (pct === 0) return '<span class="var-flat">0%</span>';
+  const subiendo = pct > 0;
+  return `<span class="${subiendo ? 'var-up' : 'var-down'}">${subiendo ? '▲' : '▼'} ${Math.abs(pct)}%</span>`;
+}
+function renderDiasTable() {
+  const items = DATA.tendenciaDiaria || [];
+  const tbody = document.querySelector('#diasTable tbody');
+  const tfoot = document.querySelector('#diasTable tfoot');
+  tbody.innerHTML = ''; tfoot.innerHTML = '';
+  if (!items.length) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin días con datos en este filtro.</td></tr>'; return; }
+  tbody.innerHTML = items.map(d => `<tr>
+      <td>${escHtml(d.dia)}</td>
+      <td class="num">${fmt(d.unidades)}</td>
+      <td class="num">${varHtml(d.varUnidades)}</td>
+      <td class="num">${fmt(d.premios)}</td>
+      <td class="num">${varHtml(d.varPremios)}</td>
+      <td class="num">${d.relacion}</td>
+    </tr>`).join('');
+  const tu = items.reduce((a, d) => a + d.unidades, 0);
+  const tp = items.reduce((a, d) => a + d.premios, 0);
+  tfoot.innerHTML = `<tr>
+      <td class="tf-label">Total · ${items.length} día${items.length === 1 ? '' : 's'}</td>
+      <td class="num">${fmt(tu)}</td><td class="num"></td>
+      <td class="num">${fmt(tp)}</td><td class="num"></td>
+      <td class="num">${tu ? Math.round(tp / tu * 100) / 100 : 0}</td>
+    </tr>`;
 }
 function renderDonut(svgId, pct, color, trackColor, thickness, tooltipHtml) {
   const svg = document.getElementById(svgId);
@@ -857,6 +963,14 @@ function renderAsesoresTable() {
     tr.addEventListener('click', () => abrirModalAsesor(a.asesor));
     tbody.appendChild(tr);
   });
+  /* Total general sobre TODOS los asesores del filtro, no sobre la pagina visible. */
+  const tfoot = document.querySelector('#asesoresTable tfoot');
+  tfoot.innerHTML = items.length ? `<tr>
+      <td class="tf-label" colspan="3">Total general · ${items.length} asesor${items.length === 1 ? '' : 'es'}</td>
+      <td class="num">${fmt(items.reduce((s, a) => s + a.visitas, 0))}</td>
+      <td class="num">${fmt(items.reduce((s, a) => s + a.unidadesVendidas, 0))}</td>
+      <td class="num">${fmt(items.reduce((s, a) => s + a.premiosEntregados, 0))}</td>
+    </tr>` : '';
   renderPaginador('asesoresPager', items.length, asesoresPagina, (p) => { asesoresPagina = p; renderAsesoresTable(); });
 }
 function renderPDVTable() {
@@ -871,15 +985,27 @@ function renderPDVTable() {
   const pagina = paginar(items, pdvPagina);
   const maxUnidades = Math.max(1, ...items.map(p => p.unidades));
   const tbody = document.querySelector('#pdvTable tbody'); tbody.innerHTML = '';
-  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin ventas en este filtro.</td></tr>'; }
+  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin ventas en este filtro.</td></tr>'; }
   pagina.forEach(p => {
     const barPct = Math.max(2, (p.unidades / maxUnidades) * 100);
     const tr = document.createElement('tr'); tr.className = 'clickable pdv-row';
-    tr.innerHTML = `<td><span class="chevron">▸</span>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td>
+    tr.innerHTML = `<td><span class="chevron">▸</span>${escHtml(p.pdv)}</td>
+      <td>${escHtml(p.ciudad)}</td>
+      <td>${p.canal ? `<span class="pill-canal ${p.canal}">${p.canal}</span>` : '—'}</td>
+      <td class="num">${fmt(p.unidades)}</td>
+      <td class="num">${fmt(p.premios)}</td>
       <td><div class="cell-bar"><span class="cell-bar-track"><span class="cell-bar-fill" style="width:${barPct}%"></span></span><span class="cell-bar-val num">${p.pct}%</span></div></td>`;
     tr.addEventListener('click', () => togglePDVDetalle(tr, p.pdv));
     tbody.appendChild(tr);
   });
+  /* Total general sobre TODOS los puntos del filtro, no sobre la pagina visible. */
+  const tfoot = document.querySelector('#pdvTable tfoot');
+  tfoot.innerHTML = items.length ? `<tr>
+      <td class="tf-label" colspan="3">Total general · ${items.length} punto${items.length === 1 ? '' : 's'} de venta</td>
+      <td class="num">${fmt(items.reduce((s, p) => s + p.unidades, 0))}</td>
+      <td class="num">${fmt(items.reduce((s, p) => s + p.premios, 0))}</td>
+      <td class="num">${Math.round(items.reduce((s, p) => s + p.pct, 0) * 10) / 10}%</td>
+    </tr>` : '';
   renderPaginador('pdvPager', items.length, pdvPagina, (p) => { pdvPagina = p; renderPDVTable(); });
 }
 function togglePDVDetalle(tr, pdvNombre) {
@@ -908,8 +1034,16 @@ function togglePDVDetalle(tr, pdvNombre) {
     ? filasPremios.map(f => `<tr><td>${escHtml(f.producto)}</td><td class="num">${fmt(f.cantidad)}</td></tr>`).join('')
     : '<tr><td class="empty-hint">Sin premios entregados en este filtro.</td></tr>';
 
+  /* Arriba del discriminado por producto va otra vez la cifra concreta del punto, para
+     que se lea "cuanto en total" antes de "de que estuvo compuesto". */
+  const resumenPDV = (DATA.porPDV || []).filter(x => x.pdv === pdvNombre)[0] || { unidades: 0, premios: 0, pct: 0 };
   const detalleTr = document.createElement('tr'); detalleTr.className = 'pdv-detail-row';
-  detalleTr.innerHTML = `<td colspan="4">
+  detalleTr.innerHTML = `<td colspan="6">
+      <div class="detalle-head">
+        <div class="dh-item"><span class="dh-l">Unidades vendidas</span><span class="dh-v">${fmt(resumenPDV.unidades)}</span></div>
+        <div class="dh-item"><span class="dh-l">Premios entregados</span><span class="dh-v">${fmt(resumenPDV.premios)}</span></div>
+        <div class="dh-item"><span class="dh-l">Participación</span><span class="dh-v">${resumenPDV.pct}%</span></div>
+      </div>
       <div class="pdv-detail">
         <div><div class="mu-title">Qué se vendió</div><table class="data"><tbody>${tablaVentasHtml}</tbody></table></div>
         <div><div class="mu-title">Premios entregados</div><table class="data"><tbody>${tablaPremiosHtml}</tbody></table></div>
@@ -1017,11 +1151,103 @@ function llenarSelect(id, opciones, actual, placeholder) {
   const sel = document.getElementById(id);
   sel.innerHTML = `<option value="">${placeholder}</option>` + (opciones || []).map(o => `<option value="${escHtml(o)}"${o === actual ? ' selected' : ''}>${escHtml(o)}</option>`).join('');
 }
-function descargarCSV(nombre, filas, columnas) {
-  const header = columnas.map(c => c.label).join(',');
-  const body = filas.map(f => columnas.map(c => '"' + String(f[c.key] == null ? '' : f[c.key]).replace(/"/g, '""') + '"').join(',')).join('\n');
-  const blob = new Blob(['﻿' + header + '\n' + body], { type: 'text/csv;charset=utf-8;' });
-  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = nombre; a.click();
+/* ===== EXPORTAR A EXCEL (.xlsx nativo, sin librerias externas ni CDN) =====
+   Se arma el paquete OOXML a mano y se empaqueta en un ZIP sin compresion. Es un
+   .xlsx de verdad: Excel lo abre sin la advertencia de "el formato del archivo no
+   coincide con la extension" que sale al renombrar un CSV. */
+const CRC_TABLA = (function () {
+  const t = new Uint32Array(256);
+  for (let n = 0; n < 256; n++) { let c = n; for (let k = 0; k < 8; k++) c = (c & 1) ? (0xEDB88320 ^ (c >>> 1)) : (c >>> 1); t[n] = c >>> 0; }
+  return t;
+})();
+function crc32(buf) {
+  let crc = 0xFFFFFFFF;
+  for (let i = 0; i < buf.length; i++) crc = (crc >>> 8) ^ CRC_TABLA[(crc ^ buf[i]) & 0xFF];
+  return (crc ^ 0xFFFFFFFF) >>> 0;
+}
+function zipStore(archivos) {
+  const u16 = v => [v & 255, (v >>> 8) & 255];
+  const u32 = v => [v & 255, (v >>> 8) & 255, (v >>> 16) & 255, (v >>> 24) & 255];
+  const enc = new TextEncoder();
+  const partes = [], central = [];
+  let offset = 0, tamCentral = 0;
+  archivos.forEach(f => {
+    const nombre = enc.encode(f.name), datos = f.data, crc = crc32(datos);
+    const local = new Uint8Array([].concat([80, 75, 3, 4], u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(crc), u32(datos.length), u32(datos.length), u16(nombre.length), u16(0)));
+    partes.push(local, nombre, datos);
+    const cab = new Uint8Array([].concat([80, 75, 1, 2], u16(20), u16(20), u16(0), u16(0), u16(0), u16(0),
+      u32(crc), u32(datos.length), u32(datos.length), u16(nombre.length), u16(0), u16(0), u16(0), u16(0), u32(0), u32(offset)));
+    central.push(cab, nombre);
+    tamCentral += cab.length + nombre.length;
+    offset += local.length + nombre.length + datos.length;
+  });
+  const fin = new Uint8Array([].concat([80, 75, 5, 6], u16(0), u16(0), u16(archivos.length), u16(archivos.length),
+    u32(tamCentral), u32(offset), u16(0)));
+  return new Blob(partes.concat(central, [fin]), { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' });
+}
+function xlsxCol(i) { let s = '', n = i + 1; while (n > 0) { const r = (n - 1) % 26; s = String.fromCharCode(65 + r) + s; n = Math.floor((n - 1) / 26); } return s; }
+function xlsxEsc(v) { return String(v).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+function xlsxHojaXml(columnas, filas) {
+  let xml = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?><worksheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main"><cols>';
+  columnas.forEach((c, i) => { xml += '<col min="' + (i + 1) + '" max="' + (i + 1) + '" width="' + (c.ancho || 22) + '" customWidth="1"/>'; });
+  xml += '</cols><sheetData><row r="1">';
+  columnas.forEach((c, i) => { xml += '<c r="' + xlsxCol(i) + '1" t="inlineStr" s="1"><is><t>' + xlsxEsc(c.label) + '</t></is></c>'; });
+  xml += '</row>';
+  filas.forEach((f, ri) => {
+    const r = ri + 2, est = f.__total ? ' s="2"' : '';
+    xml += '<row r="' + r + '">';
+    columnas.forEach((c, i) => {
+      const v = f[c.key], ref = xlsxCol(i) + r;
+      if (typeof v === 'number' && isFinite(v)) xml += '<c r="' + ref + '"' + est + '><v>' + v + '</v></c>';
+      else if (v !== null && v !== undefined && v !== '') xml += '<c r="' + ref + '" t="inlineStr"' + est + '><is><t>' + xlsxEsc(v) + '</t></is></c>';
+      else if (est) xml += '<c r="' + ref + '"' + est + '/>';
+    });
+    xml += '</row>';
+  });
+  return xml + '</sheetData></worksheet>';
+}
+function descargarExcel(nombreArchivo, nombreHoja, columnas, filas) {
+  const enc = new TextEncoder();
+  const hoja = String(nombreHoja || 'Datos').replace(/[\\\/\?\*\[\]:]/g, ' ').slice(0, 31);
+  const XML = '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>';
+  const contentTypes = XML + '<Types xmlns="http://schemas.openxmlformats.org/package/2006/content-types">' +
+    '<Default Extension="rels" ContentType="application/vnd.openxmlformats-package.relationships+xml"/>' +
+    '<Default Extension="xml" ContentType="application/xml"/>' +
+    '<Override PartName="/xl/workbook.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet.main+xml"/>' +
+    '<Override PartName="/xl/styles.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.styles+xml"/>' +
+    '<Override PartName="/xl/worksheets/sheet1.xml" ContentType="application/vnd.openxmlformats-officedocument.spreadsheetml.worksheet+xml"/></Types>';
+  const rels = XML + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/officeDocument" Target="xl/workbook.xml"/></Relationships>';
+  const workbook = XML + '<workbook xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main" xmlns:r="http://schemas.openxmlformats.org/officeDocument/2006/relationships">' +
+    '<sheets><sheet name="' + xlsxEsc(hoja) + '" sheetId="1" r:id="rId1"/></sheets></workbook>';
+  const workbookRels = XML + '<Relationships xmlns="http://schemas.openxmlformats.org/package/2006/relationships">' +
+    '<Relationship Id="rId1" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/worksheet" Target="worksheets/sheet1.xml"/>' +
+    '<Relationship Id="rId2" Type="http://schemas.openxmlformats.org/officeDocument/2006/relationships/styles" Target="styles.xml"/></Relationships>';
+  const styles = XML + '<styleSheet xmlns="http://schemas.openxmlformats.org/spreadsheetml/2006/main">' +
+    '<fonts count="3"><font><sz val="11"/><name val="Calibri"/></font>' +
+    '<font><b/><sz val="11"/><color rgb="FFFFFFFF"/><name val="Calibri"/></font>' +
+    '<font><b/><sz val="11"/><color rgb="FF18110F"/><name val="Calibri"/></font></fonts>' +
+    '<fills count="4"><fill><patternFill patternType="none"/></fill><fill><patternFill patternType="gray125"/></fill>' +
+    '<fill><patternFill patternType="solid"><fgColor rgb="FFA80000"/><bgColor indexed="64"/></patternFill></fill>' +
+    '<fill><patternFill patternType="solid"><fgColor rgb="FFF5EEEC"/><bgColor indexed="64"/></patternFill></fill></fills>' +
+    '<borders count="1"><border><left/><right/><top/><bottom/><diagonal/></border></borders>' +
+    '<cellStyleXfs count="1"><xf numFmtId="0" fontId="0" fillId="0" borderId="0"/></cellStyleXfs>' +
+    '<cellXfs count="3"><xf numFmtId="0" fontId="0" fillId="0" borderId="0" xfId="0"/>' +
+    '<xf numFmtId="0" fontId="1" fillId="2" borderId="0" xfId="0" applyFont="1" applyFill="1"/>' +
+    '<xf numFmtId="0" fontId="2" fillId="3" borderId="0" xfId="0" applyFont="1" applyFill="1"/></cellXfs>' +
+    '<cellStyles count="1"><cellStyle name="Normal" xfId="0" builtinId="0"/></cellStyles></styleSheet>';
+  const blob = zipStore([
+    { name: '[Content_Types].xml', data: enc.encode(contentTypes) },
+    { name: '_rels/.rels', data: enc.encode(rels) },
+    { name: 'xl/workbook.xml', data: enc.encode(workbook) },
+    { name: 'xl/_rels/workbook.xml.rels', data: enc.encode(workbookRels) },
+    { name: 'xl/styles.xml', data: enc.encode(styles) },
+    { name: 'xl/worksheets/sheet1.xml', data: enc.encode(xlsxHojaXml(columnas, filas)) }
+  ]);
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a'); a.href = url; a.download = nombreArchivo; a.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
 }
 
 /* ===== INIT / EVENTOS ===== */
@@ -1046,16 +1272,43 @@ document.getElementById('btnLimpiar').addEventListener('click', () => {
 document.getElementById('btnRefrescar').addEventListener('click', cargarBI);
 wireOrdenTabla('asesoresTable', asesoresOrden, () => { asesoresPagina = 1; renderAsesoresTable(); });
 wireOrdenTabla('pdvTable', pdvOrden, () => { pdvPagina = 1; renderPDVTable(); });
+/* Los tres exportadores llevan su fila de TOTAL GENERAL al final, igual que la tabla. */
 document.getElementById('btnExportarAsesores').addEventListener('click', () => {
-  descargarCSV('henkel_ventas_premios_por_asesor.csv', DATA.porAsesor, [
-    { key: 'asesor', label: 'Asesor' }, { key: 'ciudad', label: 'Ciudad' }, { key: 'canal', label: 'Canal' },
-    { key: 'visitas', label: 'Visitas' }, { key: 'unidadesVendidas', label: 'Unidades Vendidas' }, { key: 'premiosEntregados', label: 'Premios Entregados' }
-  ]);
+  const filas = (DATA.porAsesor || []).slice();
+  filas.push({
+    __total: true, asesor: 'TOTAL GENERAL', ciudad: '', canal: '',
+    visitas: filas.reduce((s, a) => s + a.visitas, 0),
+    unidadesVendidas: filas.reduce((s, a) => s + a.unidadesVendidas, 0),
+    premiosEntregados: filas.reduce((s, a) => s + a.premiosEntregados, 0)
+  });
+  descargarExcel('henkel_ventas_premios_por_asesor.xlsx', 'Por asesor', [
+    { key: 'asesor', label: 'Asesor', ancho: 30 }, { key: 'ciudad', label: 'Ciudad', ancho: 18 }, { key: 'canal', label: 'Canal', ancho: 14 },
+    { key: 'visitas', label: 'Visitas', ancho: 11 }, { key: 'unidadesVendidas', label: 'Unidades Vendidas', ancho: 20 }, { key: 'premiosEntregados', label: 'Premios Entregados', ancho: 20 }
+  ], filas);
 });
 document.getElementById('btnExportarPDV').addEventListener('click', () => {
-  descargarCSV('henkel_ventas_por_pdv.csv', DATA.porPDV, [
-    { key: 'pdv', label: 'Punto de Venta' }, { key: 'ciudad', label: 'Ciudad' }, { key: 'unidades', label: 'Unidades' }, { key: 'pct', label: '% del Total' }
-  ]);
+  const filas = (DATA.porPDV || []).slice();
+  filas.push({
+    __total: true, pdv: 'TOTAL GENERAL', ciudad: '', canal: '',
+    unidades: filas.reduce((s, p) => s + p.unidades, 0),
+    premios: filas.reduce((s, p) => s + p.premios, 0),
+    pct: Math.round(filas.reduce((s, p) => s + p.pct, 0) * 10) / 10
+  });
+  descargarExcel('henkel_ventas_por_pdv.xlsx', 'Por punto de venta', [
+    { key: 'pdv', label: 'Punto de Venta', ancho: 34 }, { key: 'ciudad', label: 'Ciudad', ancho: 18 }, { key: 'canal', label: 'Canal', ancho: 14 },
+    { key: 'unidades', label: 'Unidades Vendidas', ancho: 20 }, { key: 'premios', label: 'Premios Entregados', ancho: 20 }, { key: 'pct', label: '% del Total', ancho: 13 }
+  ], filas);
+});
+document.getElementById('btnExportarDias').addEventListener('click', () => {
+  const filas = (DATA.tendenciaDiaria || []).map(d => ({
+    dia: d.dia, unidades: d.unidades, varUnidades: d.varUnidades, premios: d.premios, varPremios: d.varPremios, relacion: d.relacion
+  }));
+  const tu = filas.reduce((s, d) => s + d.unidades, 0), tp = filas.reduce((s, d) => s + d.premios, 0);
+  filas.push({ __total: true, dia: 'TOTAL', unidades: tu, premios: tp, relacion: tu ? Math.round(tp / tu * 100) / 100 : 0 });
+  descargarExcel('henkel_detalle_diario.xlsx', 'Detalle diario', [
+    { key: 'dia', label: 'Día', ancho: 14 }, { key: 'unidades', label: 'Unidades Vendidas', ancho: 20 }, { key: 'varUnidades', label: 'Var. Unidades %', ancho: 17 },
+    { key: 'premios', label: 'Premios Entregados', ancho: 20 }, { key: 'varPremios', label: 'Var. Premios %', ancho: 17 }, { key: 'relacion', label: 'Premios por Unidad', ancho: 19 }
+  ], filas);
 });
 window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(() => { renderVentasPremios(); renderTendenciaChart(); }, 150); } });
 
