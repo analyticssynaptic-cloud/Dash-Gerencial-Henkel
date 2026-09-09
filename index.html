@@ -112,6 +112,19 @@
   .cell-bar-fill{position:absolute;left:0;top:0;bottom:0;background:var(--series-1);border-radius:5px;}
   .cell-bar-val{font-size:11.5px;font-weight:700;width:42px;text-align:right;flex:0 0 auto;}
 
+  .chevron{display:inline-block;width:9px;transition:transform .15s;margin-right:6px;color:var(--muted);font-size:9px;}
+  tr.pdv-row.open .chevron{transform:rotate(90deg);}
+  tr.pdv-detail-row td{background:var(--surface-2);padding:0 9px 16px;border-bottom:1px solid var(--border);}
+  .pdv-detail{display:grid;grid-template-columns:1fr 1fr;gap:18px;padding-top:8px;}
+  .pdv-detail table.data{min-width:0;}
+  .pdv-detail .mu-title{margin-top:0;}
+
+  .card-icon{width:30px;height:30px;border-radius:9px;display:flex;align-items:center;justify-content:center;flex:0 0 auto;}
+  .card-icon svg{width:15px;height:15px;stroke-width:2.3;}
+  .card-head-ico{display:flex;align-items:center;gap:10px;}
+  .kpi.with-icon{display:flex;align-items:center;gap:12px;}
+  .kpi.with-icon .kpi-body{flex:1;min-width:0;}
+
   .callout{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-radius:var(--radius-sm);margin-top:12px;font-size:11.5px;line-height:1.5;background:var(--surface-2);color:var(--ink-2);}
   .callout svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px;color:var(--muted);}
 
@@ -158,8 +171,15 @@
   .modal-close:hover{background:var(--brand-soft);color:var(--brand);}
   .mb-fotos{display:flex;gap:8px;overflow-x:auto;padding:16px 22px 4px;}
   .mb-foto{flex:0 0 auto;width:82px;text-align:center;}
-  .mb-foto img{width:82px;height:109px;object-fit:cover;border-radius:9px;background:var(--surface-3);display:block;}
+  .mb-foto img{width:82px;height:109px;object-fit:cover;border-radius:9px;background:var(--surface-3);display:block;cursor:zoom-in;}
   .mb-foto span{display:block;font-size:9.5px;color:var(--muted);font-weight:700;margin-top:5px;line-height:1.3;}
+
+  /* LIGHTBOX — zoom de foto */
+  .lightbox-overlay{position:fixed;inset:0;background:rgba(15,10,9,.86);z-index:300;display:none;align-items:center;justify-content:center;padding:36px;cursor:zoom-out;}
+  .lightbox-overlay.show{display:flex;}
+  .lightbox-overlay img{max-width:100%;max-height:100%;border-radius:12px;box-shadow:0 30px 90px -20px rgba(0,0,0,.6);}
+  .lightbox-close{position:fixed;top:22px;right:26px;border:none;background:rgba(255,255,255,.12);color:#fff;width:36px;height:36px;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .lightbox-close:hover{background:rgba(255,255,255,.22);}
   .modal-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 22px 0;}
   .modal-body{padding:16px 22px 22px;}
   .mu-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:16px 0 8px;}
@@ -170,6 +190,7 @@
     aside.sidebar{width:100%;flex:none;position:relative;top:0;height:auto;border-right:none;border-bottom:1px solid var(--border);}
     .kpi-grid{grid-template-columns:repeat(3,1fr);}
     .grid.cols-2{grid-template-columns:1fr;}
+    .pdv-detail{grid-template-columns:1fr;}
   }
   @media (max-width:640px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} main.content{padding:18px 16px 40px;} .modal-kpis{grid-template-columns:1fr;} }
 </style>
@@ -224,18 +245,7 @@
       <svg id="ventasPremiosChart" width="100%" height="180" style="overflow:visible"></svg>
     </div>
 
-    <div class="section-label"><span class="sl-num">02</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
-    <div class="card">
-      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — comparado contra el día anterior</p></div></div>
-      <svg id="tendenciaChart" width="100%" height="220" style="overflow:visible"></svg>
-      <div class="legend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
-        <div class="item"><span class="sw" style="background:var(--series-1)"></span>Unidades vendidas</div>
-        <div class="item"><span class="sw" style="background:var(--brand)"></span>Premios entregados</div>
-      </div>
-      <div id="tendenciaCallouts"></div>
-    </div>
-
-    <div class="section-label"><span class="sl-num">03</span><h2>Ventas y premios por canal</h2></div>
+    <div class="section-label"><span class="sl-num">02</span><h2>Ventas y premios por canal</h2></div>
     <div class="grid cols-2">
       <div class="card">
         <div class="card-head"><div><h3>Unidades vendidas</h3><p>Tradicional vs. Moderno</p></div></div>
@@ -247,10 +257,10 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">04</span><h2>Ventas por punto de venta</h2></div>
+    <div class="section-label"><span class="sl-num">03</span><h2>Ventas por punto de venta</h2></div>
     <div class="card">
       <div class="card-head">
-        <div><h3>Unidades por punto de venta</h3><p>Ordenado por unidades — clic en una columna para cambiar el orden</p></div>
+        <div><h3>Unidades por punto de venta</h3><p>Clic en una fila para ver el detalle de venta y premios de ese punto — clic en una columna para ordenar</p></div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="card-tag" id="pdvTag">—</span>
           <button class="btn-export" id="btnExportarPDV" type="button">
@@ -272,6 +282,17 @@
       <div class="pagination" id="pdvPager"></div>
     </div>
 
+    <div class="section-label"><span class="sl-num">04</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
+    <div class="card">
+      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — cada punto marca el % vs. el día anterior</p></div></div>
+      <svg id="tendenciaChart" width="100%" height="240" style="overflow:visible"></svg>
+      <div class="legend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
+        <div class="item"><span class="sw" style="background:var(--series-1)"></span>Unidades vendidas</div>
+        <div class="item"><span class="sw" style="background:var(--brand)"></span>Premios entregados</div>
+      </div>
+      <div id="tendenciaCallouts"></div>
+    </div>
+
     <div class="section-label"><span class="sl-num">05</span><h2>Voz del consumidor</h2></div>
     <div class="card">
       <div class="card-head"><div><h3>Resumen de encuestas</h3><p id="vozSub">— consumidores encuestados en el filtro actual</p></div></div>
@@ -279,32 +300,32 @@
     </div>
     <div class="grid cols-2">
       <div class="card">
-        <div class="card-head"><div><h3>¿Conocía la marca?</h3></div></div>
+        <div class="card-head"><div class="card-head-ico"><span class="card-icon" style="background:var(--brand-soft);color:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/></svg></span><h3>¿Conocía la marca?</h3></div></div>
         <div class="meter-wrap" style="justify-content:center"><svg id="conoceDonut" width="104" height="104" viewBox="0 0 104 104"></svg><div class="meter-figures"><span class="mv num" id="conoceValor" style="font-size:26px;font-weight:800">—</span><span class="ml" style="font-size:11px;color:var(--muted);font-weight:700">ya la conocía</span></div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div><h3>Uso actual de la marca</h3></div></div>
+        <div class="card-head"><div class="card-head-ico"><span class="card-icon" style="background:rgba(27,175,122,.13);color:var(--series-3)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 01-8 0"/></svg></span><h3>Uso actual de la marca</h3></div></div>
         <div id="usoMarcaChart" class="hbars"></div>
       </div>
     </div>
     <div class="grid cols-2">
       <div class="card">
-        <div class="card-head"><div><h3>¿Por dónde conoció la marca?</h3></div></div>
+        <div class="card-head"><div class="card-head-ico"><span class="card-icon" style="background:rgba(232,123,164,.15);color:var(--series-5)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11v2a1 1 0 001 1h3l5 4V6L7 10H4a1 1 0 00-1 1Z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M18.5 5.5a9 9 0 010 13"/></svg></span><h3>¿Por dónde conoció la marca?</h3></div></div>
         <div id="canalesConocChart" class="hbars"></div>
       </div>
       <div class="card">
-        <div class="card-head"><div><h3>Percepción de la visita</h3></div></div>
+        <div class="card-head"><div class="card-head-ico"><span class="card-icon" style="background:rgba(42,120,214,.13);color:var(--series-1)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" y1="9" x2="9.01" y2="9"/><line x1="15" y1="9" x2="15.01" y2="9"/></svg></span><h3>Percepción de la visita</h3></div></div>
         <div class="stack-bar" id="percepcionStack" style="display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--surface-3)"></div>
         <div class="legend" id="percepcionLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"></div>
       </div>
     </div>
     <div class="grid cols-2">
       <div class="card">
-        <div class="card-head"><div><h3>Atributos más pedidos</h3></div></div>
+        <div class="card-head"><div class="card-head-ico"><span class="card-icon" style="background:rgba(74,58,167,.13);color:var(--series-6)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4L12 2Z"/></svg></span><h3>Atributos más pedidos</h3></div></div>
         <div id="atributosChart" class="hbars"></div>
       </div>
       <div class="card">
-        <div class="card-head"><div><h3>Tipo de cabello reportado</h3></div></div>
+        <div class="card-head"><div class="card-head-ico"><span class="card-icon" style="background:rgba(237,161,0,.15);color:var(--series-4)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2s6 6.5 6 11a6 6 0 01-12 0c0-4.5 6-11 6-11Z"/></svg></span><h3>Tipo de cabello reportado</h3></div></div>
         <div id="cabelloChart" class="hbars"></div>
       </div>
     </div>
@@ -338,6 +359,13 @@
 </div>
 
 <div id="tooltip"></div>
+
+<div class="lightbox-overlay" id="lightbox">
+  <button class="lightbox-close" id="lightboxCerrar" type="button" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:16px;height:16px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+  </button>
+  <img id="lightboxImg" alt="">
+</div>
 
 <div class="modal-overlay" id="modalAsesor">
   <div class="modal-box">
@@ -390,6 +418,25 @@ function fechaCortaISO(iso) { if (!iso) return ''; const [y, m, d] = iso.split('
    evita el ícono de "imagen rota" del navegador, que fue la queja original. */
 const FOTO_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#f5eeec"/><circle cx="50" cy="38" r="17" fill="#cdbdb9"/><path d="M20 90c4-24 20-34 30-34s26 10 30 34" fill="#cdbdb9"/></svg>');
 function imgFallback(el) { el.onerror = null; el.src = FOTO_PLACEHOLDER; }
+
+/* Las fotos en "Foto Ingreso" vienen en dos formatos según cuándo se capturaron:
+   - viejo: https://drive.google.com/file/d/{id}/view  → esa NO sirve directo como <img src>, es una página, no la imagen.
+   - nuevo: https://lh3.googleusercontent.com/d/{id}=w1600 → esa sí es la imagen directa (hotlink).
+   Aquí se detecta el primer formato y se convierte al segundo para que ambas se vean igual de bien. */
+function normalizarFotoUrl(url, width) {
+  if (!url) return '';
+  const m = String(url).match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+  if (m) return 'https://lh3.googleusercontent.com/d/' + m[1] + '=w' + (width || 400);
+  return url;
+}
+
+function abrirLightbox(srcGrande) {
+  document.getElementById('lightboxImg').src = srcGrande;
+  document.getElementById('lightbox').classList.add('show');
+}
+function cerrarLightbox() { document.getElementById('lightbox').classList.remove('show'); document.getElementById('lightboxImg').src = ''; }
+document.getElementById('lightboxCerrar').addEventListener('click', cerrarLightbox);
+document.getElementById('lightbox').addEventListener('click', e => { if (e.target.id === 'lightbox') cerrarLightbox(); });
 
 const tooltipEl = document.getElementById('tooltip');
 function ttShow(evt, html) { tooltipEl.innerHTML = html; tooltipEl.style.display = 'block'; ttMove(evt); }
@@ -547,6 +594,7 @@ function recalcular() {
     tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
     ventasPorCanal, premiosPorCanal,
     porAsesor, porPDV,
+    ventasCrudas: ventas, premiosCrudos: premiosEnt,
     vozConsumidor: {
       total: totalEncuestas, conoceMarcaPct, opinionPromedio,
       atributosDeseados: contarSplit('atributos').slice(0, 6),
@@ -591,14 +639,15 @@ function renderAll() {
   const voz = DATA.vozConsumidor;
   document.getElementById('vozSub').textContent = fmt(voz.total) + ' consumidores encuestados en el filtro actual';
   const vozDefs = [
-    { label: 'Encuestas', value: fmt(voz.total) },
-    { label: 'Conocía la marca', value: voz.conoceMarcaPct + '%' },
-    { label: 'Opinión promedio', value: voz.opinionPromedio + '/5' },
+    { label: 'Encuestas', value: fmt(voz.total), bg: 'rgba(42,120,214,.13)', fg: 'var(--series-1)', icon: '<path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/>' },
+    { label: 'Conocía la marca', value: voz.conoceMarcaPct + '%', bg: 'var(--brand-soft)', fg: 'var(--brand)', icon: '<path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7Z"/><circle cx="12" cy="12" r="3"/>' },
+    { label: 'Opinión promedio', value: voz.opinionPromedio + '/5', bg: 'rgba(237,161,0,.15)', fg: 'var(--series-4)', icon: '<path d="M12 2l2.6 6.6L21 11l-6.4 2.4L12 20l-2.6-6.6L3 11l6.4-2.4L12 2Z"/>' },
   ];
   const vozCont = document.getElementById('vozMiniKpis'); vozCont.innerHTML = '';
   vozDefs.forEach(d => {
-    const div = document.createElement('div'); div.className = 'kpi';
-    div.innerHTML = `<span class="kpi-label">${d.label}</span><span class="kpi-value num">${d.value}</span>`;
+    const div = document.createElement('div'); div.className = 'kpi with-icon';
+    div.innerHTML = `<span class="card-icon" style="background:${d.bg};color:${d.fg}"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">${d.icon}</svg></span>
+      <span class="kpi-body"><span class="kpi-label">${d.label}</span><span class="kpi-value num">${d.value}</span></span>`;
     vozCont.appendChild(div);
   });
 
@@ -645,11 +694,11 @@ function renderVentasPremios() {
 function renderTendenciaChart() {
   const svg = document.getElementById('tendenciaChart');
   const items = DATA.tendenciaDiaria || [];
-  const w = svg.clientWidth || 900, h = 220;
+  const w = svg.clientWidth || 900, h = 240;
   svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
   svg.innerHTML = '';
   if (items.length === 0) { return; }
-  const padLeft = 10, padRight = 10, padTop = 20, padBottom = 30;
+  const padLeft = 10, padRight = 10, padTop = 34, padBottom = 30;
   const maxVal = Math.max(1, ...items.map(d => Math.max(d.unidades, d.premios)));
   const innerW = w - padLeft - padRight, innerH = h - padTop - padBottom;
   const stepX = items.length > 1 ? innerW / (items.length - 1) : 0;
@@ -658,19 +707,47 @@ function renderTendenciaChart() {
 
   svg.appendChild(svgEl('line', { x1: padLeft, y1: h - padBottom, x2: w - padRight, y2: h - padBottom, stroke: 'var(--border-strong)', 'stroke-width': 1 }));
 
-  function drawSerie(campo, color, tooltipLabel) {
+  function pctCambio(i, campo) {
+    if (i === 0) return null;
+    const prev = items[i - 1][campo], cur = items[i][campo];
+    if (!prev) return null;
+    return Math.round((cur - prev) / prev * 1000) / 10;
+  }
+
+  // Relleno (área bajo la curva) primero, para que las líneas y puntos queden encima.
+  function drawArea(campo, color) {
+    if (items.length < 2) return;
+    const arriba = items.map((d, i) => xOf(i) + ',' + yOf(d[campo]));
+    const puntos = [xOf(0) + ',' + (h - padBottom)].concat(arriba).concat([xOf(items.length - 1) + ',' + (h - padBottom)]).join(' ');
+    svg.appendChild(svgEl('polygon', { points: puntos, fill: color, opacity: 0.13 }));
+  }
+  drawArea('unidades', 'var(--series-1)');
+  drawArea('premios', 'var(--brand)');
+
+  function drawSerie(campo, color, tooltipLabel, etiquetaArriba) {
     if (items.length > 1) {
       const pts = items.map((d, i) => xOf(i) + ',' + yOf(d[campo])).join(' ');
       svg.appendChild(svgEl('polyline', { points: pts, fill: 'none', stroke: color, 'stroke-width': 2.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
     }
     items.forEach((d, i) => {
-      const c = svgEl('circle', { cx: xOf(i), cy: yOf(d[campo]), r: 4.2, fill: color });
+      const cx = xOf(i), cy = yOf(d[campo]);
+      const c = svgEl('circle', { cx, cy, r: 4.2, fill: color });
       conTooltip(c, () => `<b>${escHtml(fechaCortaISO(d.fechaISO))}</b><br>${tooltipLabel}: <b>${fmt(d[campo])}</b>`);
       svg.appendChild(c);
+      const pct = pctCambio(i, campo);
+      if (pct !== null) {
+        const subiendo = pct >= 0;
+        const lblColor = subiendo ? 'var(--status-good)' : 'var(--status-critical)';
+        const flecha = subiendo ? '▲' : '▼';
+        const ly = etiquetaArriba ? Math.max(12, cy - 12) : Math.min(h - padBottom - 4, cy + 18);
+        const t = svgEl('text', { x: cx, y: ly, 'text-anchor': 'middle', 'font-size': 10, 'font-weight': 800, fill: lblColor, 'font-family': 'var(--font-mono)' });
+        t.textContent = flecha + Math.abs(pct) + '%';
+        svg.appendChild(t);
+      }
     });
   }
-  drawSerie('unidades', 'var(--series-1)', 'Unidades vendidas');
-  drawSerie('premios', 'var(--brand)', 'Premios entregados');
+  drawSerie('unidades', 'var(--series-1)', 'Unidades vendidas', true);
+  drawSerie('premios', 'var(--brand)', 'Premios entregados', false);
 
   items.forEach((d, i) => {
     if (items.length > 10 && i % 2 !== 0 && i !== items.length - 1) return;
@@ -749,7 +826,7 @@ function renderAsesoresTable() {
   if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin visitas en este filtro.</td></tr>'; }
   pagina.forEach(a => {
     const initials = a.asesor.split(' ').map(s => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
-    const avatar = a.foto ? `<img src="${escHtml(a.foto)}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)">` : initials;
+    const avatar = a.foto ? `<img src="${escHtml(normalizarFotoUrl(a.foto, 100))}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)">` : initials;
     const tr = document.createElement('tr'); tr.className = 'clickable';
     tr.innerHTML = `<td><div class="advisor"><span class="av">${avatar}</span>${escHtml(a.asesor)}</div></td>
       <td>${escHtml(a.ciudad)}</td><td><span class="pill-canal ${a.canal}">${a.canal}</span></td>
@@ -774,12 +851,48 @@ function renderPDVTable() {
   if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin ventas en este filtro.</td></tr>'; }
   pagina.forEach(p => {
     const barPct = Math.max(2, (p.unidades / maxUnidades) * 100);
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td>
+    const tr = document.createElement('tr'); tr.className = 'clickable pdv-row';
+    tr.innerHTML = `<td><span class="chevron">▸</span>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td>
       <td><div class="cell-bar"><span class="cell-bar-track"><span class="cell-bar-fill" style="width:${barPct}%"></span></span><span class="cell-bar-val num">${p.pct}%</span></div></td>`;
+    tr.addEventListener('click', () => togglePDVDetalle(tr, p.pdv));
     tbody.appendChild(tr);
   });
   renderPaginador('pdvPager', items.length, pdvPagina, (p) => { pdvPagina = p; renderPDVTable(); });
+}
+function togglePDVDetalle(tr, pdvNombre) {
+  const siguiente = tr.nextElementSibling;
+  if (siguiente && siguiente.classList.contains('pdv-detail-row')) {
+    siguiente.remove();
+    tr.classList.remove('open');
+    return;
+  }
+  document.querySelectorAll('#pdvTable tr.pdv-detail-row').forEach(r => r.remove());
+  document.querySelectorAll('#pdvTable tr.pdv-row.open').forEach(r => r.classList.remove('open'));
+  tr.classList.add('open');
+
+  const prodMapa = {};
+  (DATA.ventasCrudas || []).filter(x => x.pdv === pdvNombre).forEach(x => { prodMapa[x.producto] = (prodMapa[x.producto] || 0) + x.cantidad; });
+  const filasVentas = Object.keys(prodMapa).map(k => ({ producto: k, cantidad: prodMapa[k] })).sort((a, b) => b.cantidad - a.cantidad);
+
+  const premMapa = {};
+  (DATA.premiosCrudos || []).filter(x => x.pdv === pdvNombre).forEach(x => { premMapa[x.producto] = (premMapa[x.producto] || 0) + x.cantidad; });
+  const filasPremios = Object.keys(premMapa).map(k => ({ producto: k, cantidad: premMapa[k] })).sort((a, b) => b.cantidad - a.cantidad);
+
+  const tablaVentasHtml = filasVentas.length
+    ? filasVentas.map(f => `<tr><td>${escHtml(f.producto)}</td><td class="num">${fmt(f.cantidad)}</td></tr>`).join('')
+    : '<tr><td class="empty-hint">Sin ventas en este filtro.</td></tr>';
+  const tablaPremiosHtml = filasPremios.length
+    ? filasPremios.map(f => `<tr><td>${escHtml(f.producto)}</td><td class="num">${fmt(f.cantidad)}</td></tr>`).join('')
+    : '<tr><td class="empty-hint">Sin premios entregados en este filtro.</td></tr>';
+
+  const detalleTr = document.createElement('tr'); detalleTr.className = 'pdv-detail-row';
+  detalleTr.innerHTML = `<td colspan="4">
+      <div class="pdv-detail">
+        <div><div class="mu-title">Qué se vendió</div><table class="data"><tbody>${tablaVentasHtml}</tbody></table></div>
+        <div><div class="mu-title">Premios entregados</div><table class="data"><tbody>${tablaPremiosHtml}</tbody></table></div>
+      </div>
+    </td>`;
+  tr.after(detalleTr);
 }
 function wireOrdenTabla(tableId, ordenState, renderFn) {
   document.querySelectorAll('#' + tableId + ' th[data-k]').forEach(th => {
@@ -811,7 +924,9 @@ function abrirModalAsesor(nombre) {
   visitasAsesor.forEach(v => {
     if (!v.foto) return;
     const div = document.createElement('div'); div.className = 'mb-foto';
-    div.innerHTML = `<img src="${escHtml(v.foto)}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)"><span>${escHtml(v.pdv)}<br>${fechaHora(v.ts)}</span>`;
+    const srcChica = normalizarFotoUrl(v.foto, 200), srcGrande = normalizarFotoUrl(v.foto, 1600);
+    div.innerHTML = `<img src="${escHtml(srcChica)}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)"><span>${escHtml(v.pdv)}<br>${fechaHora(v.ts)}</span>`;
+    div.querySelector('img').addEventListener('click', () => abrirLightbox(srcGrande));
     fotosCont.appendChild(div);
   });
   if (!fotosCont.innerHTML) fotosCont.innerHTML = '<div class="empty-hint" style="padding:8px 0">Sin foto de ingreso registrada.</div>';
@@ -842,7 +957,11 @@ function abrirModalAsesor(nombre) {
 function cerrarModalAsesor() { document.getElementById('modalAsesor').classList.remove('show'); }
 document.getElementById('modalCerrar').addEventListener('click', cerrarModalAsesor);
 document.getElementById('modalAsesor').addEventListener('click', e => { if (e.target.id === 'modalAsesor') cerrarModalAsesor(); });
-document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModalAsesor(); });
+document.addEventListener('keydown', e => {
+  if (e.key !== 'Escape') return;
+  if (document.getElementById('lightbox').classList.contains('show')) cerrarLightbox();
+  else cerrarModalAsesor();
+});
 
 /* ===== SEGMENTADORES DEPENDIENTES ===== */
 function renderFiltrosDisponibles() {
