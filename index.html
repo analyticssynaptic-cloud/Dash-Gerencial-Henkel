@@ -63,6 +63,8 @@
   .sb-field select{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 28px 9px 11px;border-radius:var(--radius-sm);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c5250' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
   .sb-field select:focus{outline:none;border-color:var(--brand);}
   .sb-field select:disabled{opacity:.45;cursor:not-allowed;}
+  .sb-field input[type=date]{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:8px 11px;border-radius:var(--radius-sm);cursor:pointer;}
+  .sb-field input[type=date]:focus{outline:none;border-color:var(--brand);}
   .btn-limpiar{width:100%;border:1px solid var(--border-strong);background:var(--surface);color:var(--brand);font-family:inherit;font-size:11.5px;font-weight:800;padding:9px;border-radius:var(--radius-sm);cursor:pointer;margin-top:4px;}
   .btn-limpiar:hover{background:var(--brand-soft);}
   .sb-resumen{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);}
@@ -104,6 +106,11 @@
   .hbar-row .hb-track{position:relative;height:10px;background:var(--surface-3);border-radius:6px;overflow:hidden;}
   .hbar-row .hb-fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;}
   .hbar-row .hb-val{font-size:11.5px;font-weight:700;text-align:right;}
+
+  .cell-bar{display:flex;align-items:center;gap:9px;min-width:150px;}
+  .cell-bar-track{position:relative;flex:1;height:8px;background:var(--surface-3);border-radius:5px;overflow:hidden;}
+  .cell-bar-fill{position:absolute;left:0;top:0;bottom:0;background:var(--series-1);border-radius:5px;}
+  .cell-bar-val{font-size:11.5px;font-weight:700;width:42px;text-align:right;flex:0 0 auto;}
 
   .callout{display:flex;gap:9px;align-items:flex-start;padding:11px 13px;border-radius:var(--radius-sm);margin-top:12px;font-size:11.5px;line-height:1.5;background:var(--surface-2);color:var(--ink-2);}
   .callout svg{width:15px;height:15px;flex:0 0 auto;margin-top:1px;color:var(--muted);}
@@ -197,8 +204,9 @@
   <aside class="sidebar">
     <div class="sb-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Segmentadores</div>
     <div class="sb-field"><label>Ciudad</label><select id="filtroCiudad"><option value="">Todas las ciudades</option></select></div>
+    <div class="sb-field"><label>Punto de Venta</label><select id="filtroPDV"><option value="">Todos los puntos de venta</option></select></div>
     <div class="sb-field"><label>Canal</label><select id="filtroCanal"><option value="">Todos los canales</option></select></div>
-    <div class="sb-field"><label>Fecha</label><select id="filtroFecha"><option value="">Todas las fechas</option></select></div>
+    <div class="sb-field"><label>Fecha</label><input type="date" id="filtroFecha"></div>
     <div class="sb-field"><label>Asesor</label><select id="filtroAsesor"><option value="">Todos los asesores</option></select></div>
     <button class="btn-limpiar" id="btnLimpiar" type="button">Limpiar filtros</button>
     <div class="sb-resumen"><div class="sr-v num" id="sbVisitas">—</div><div class="sr-l">Visitas en el filtro actual</div></div>
@@ -216,7 +224,18 @@
       <svg id="ventasPremiosChart" width="100%" height="180" style="overflow:visible"></svg>
     </div>
 
-    <div class="section-label"><span class="sl-num">02</span><h2>Ventas y premios por canal</h2></div>
+    <div class="section-label"><span class="sl-num">02</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
+    <div class="card">
+      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — comparado contra el día anterior</p></div></div>
+      <svg id="tendenciaChart" width="100%" height="220" style="overflow:visible"></svg>
+      <div class="legend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
+        <div class="item"><span class="sw" style="background:var(--series-1)"></span>Unidades vendidas</div>
+        <div class="item"><span class="sw" style="background:var(--brand)"></span>Premios entregados</div>
+      </div>
+      <div id="tendenciaCallouts"></div>
+    </div>
+
+    <div class="section-label"><span class="sl-num">03</span><h2>Ventas y premios por canal</h2></div>
     <div class="grid cols-2">
       <div class="card">
         <div class="card-head"><div><h3>Unidades vendidas</h3><p>Tradicional vs. Moderno</p></div></div>
@@ -228,10 +247,10 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">03</span><h2>Ventas por punto de venta</h2></div>
+    <div class="section-label"><span class="sl-num">04</span><h2>Ventas por punto de venta</h2></div>
     <div class="card">
       <div class="card-head">
-        <div><h3>Unidades por punto de venta</h3><p>Top 12 en la gráfica — la tabla de abajo trae todos, con % del total</p></div>
+        <div><h3>Unidades por punto de venta</h3><p>Ordenado por unidades — clic en una columna para cambiar el orden</p></div>
         <div style="display:flex;align-items:center;gap:8px">
           <span class="card-tag" id="pdvTag">—</span>
           <button class="btn-export" id="btnExportarPDV" type="button">
@@ -239,14 +258,13 @@
           </button>
         </div>
       </div>
-      <div id="pdvChart" class="hbars"></div>
-      <div class="table-scroll" style="margin-top:20px">
+      <div class="table-scroll">
         <table class="data" id="pdvTable">
           <thead><tr>
             <th data-k="pdv">Punto de venta <span class="sort-ic">▾</span></th>
             <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
             <th class="num" data-k="unidades">Unidades <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="pct">% del total <span class="sort-ic">▾</span></th>
+            <th data-k="pct">Participación <span class="sort-ic">▾</span></th>
           </tr></thead>
           <tbody></tbody>
         </table>
@@ -254,7 +272,7 @@
       <div class="pagination" id="pdvPager"></div>
     </div>
 
-    <div class="section-label"><span class="sl-num">04</span><h2>Voz del consumidor</h2></div>
+    <div class="section-label"><span class="sl-num">05</span><h2>Voz del consumidor</h2></div>
     <div class="card">
       <div class="card-head"><div><h3>Resumen de encuestas</h3><p id="vozSub">— consumidores encuestados en el filtro actual</p></div></div>
       <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0" id="vozMiniKpis"></div>
@@ -291,7 +309,7 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">05</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
+    <div class="section-label"><span class="sl-num">06</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
     <div class="card">
       <div class="card-head">
         <div><h3>Cumplimiento comercial por asesor</h3><p>Clic en una fila para ver su foto y el detalle de esa persona</p></div>
@@ -350,7 +368,7 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qV
    por eso los segmentadores responden al instante. */
 let RAW = null;
 let DATA = null;
-let filtrosActuales = { ciudad: '', canal: '', fecha: '', asesor: '' };
+let filtrosActuales = { ciudad: '', pdv: '', canal: '', fecha: '', asesor: '' };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
 let pdvOrden = { campo: 'unidades', dir: -1 };
 let asesoresPagina = 1, pdvPagina = 1;
@@ -365,6 +383,13 @@ const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
 function pad2(n) { return n < 10 ? '0' + n : '' + n; }
 function fechaCorta(ts) { if (!ts) return ''; const d = new Date(ts); return DIAS[d.getDay()] + ' ' + pad2(d.getDate()) + '/' + pad2(d.getMonth() + 1); }
 function fechaHora(ts) { if (!ts) return ''; const d = new Date(ts); return fechaCorta(ts) + ' · ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
+function fechaISO(ts) { if (!ts) return ''; const d = new Date(ts); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
+function fechaCortaISO(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); const dt = new Date(y, m - 1, d); return DIAS[dt.getDay()] + ' ' + pad2(dt.getDate()) + '/' + pad2(dt.getMonth() + 1); }
+
+/* Placeholder cuando una foto de Drive no carga (permiso, archivo movido/borrado, hipo de red) —
+   evita el ícono de "imagen rota" del navegador, que fue la queja original. */
+const FOTO_PLACEHOLDER = 'data:image/svg+xml;utf8,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect width="100" height="100" fill="#f5eeec"/><circle cx="50" cy="38" r="17" fill="#cdbdb9"/><path d="M20 90c4-24 20-34 30-34s26 10 30 34" fill="#cdbdb9"/></svg>');
+function imgFallback(el) { el.onerror = null; el.src = FOTO_PLACEHOLDER; }
 
 const tooltipEl = document.getElementById('tooltip');
 function ttShow(evt, html) { tooltipEl.innerHTML = html; tooltipEl.style.display = 'block'; ttMove(evt); }
@@ -408,11 +433,14 @@ async function cargarBI() {
     document.getElementById('estadoCarga').classList.remove('show');
     if (!data || !data.success) { mostrarError((data && data.error) || 'Respuesta inválida del backend.'); return; }
     RAW = data;
-    RAW.visitas.forEach(v => { v.fecha = fechaCorta(v.ts); });
+    RAW.visitas.forEach(v => { v.fecha = fechaCorta(v.ts); v.fechaISO = fechaISO(v.ts); });
     document.getElementById('shell').classList.add('show');
     recalcular();
     document.getElementById('syncDot').classList.remove('bad');
-    document.getElementById('syncTexto').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    const ahora = new Date();
+    const fechaTxt = ahora.toLocaleDateString('es-CO', { day: '2-digit', month: '2-digit', year: 'numeric' });
+    const horaTxt = ahora.toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
+    document.getElementById('syncTexto').textContent = 'Actualizado ' + fechaTxt + ' · ' + horaTxt;
   } catch (err) {
     document.getElementById('estadoCarga').classList.remove('show');
     mostrarError('Error de conexión: ' + err.message);
@@ -431,8 +459,9 @@ function mostrarError(msg) {
 
 function visitaPasaFiltro(v, f, campoIgnorado) {
   return (campoIgnorado === 'ciudad' || !f.ciudad || v.ciudad === f.ciudad) &&
+    (campoIgnorado === 'pdv' || !f.pdv || v.pdv === f.pdv) &&
     (campoIgnorado === 'canal' || !f.canal || v.canal === f.canal) &&
-    (campoIgnorado === 'fecha' || !f.fecha || v.fecha === f.fecha) &&
+    (campoIgnorado === 'fecha' || !f.fecha || v.fechaISO === f.fecha) &&
     (campoIgnorado === 'asesor' || !f.asesor || v.asesor === f.asesor);
 }
 
@@ -480,6 +509,22 @@ function recalcular() {
   const porPDV = Object.values(pdvMapa).map(p => Object.assign({}, p, { pct: Math.round(p.unidades / baseUnidadesPct * 1000) / 10 }))
     .sort((a, b) => b.unidades - a.unidades);
 
+  // Tendencia diaria: unidades vendidas y premios entregados por día (dentro del filtro actual).
+  const fechaISOPorId = {}; visitas.forEach(v => { fechaISOPorId[v.id] = v.fechaISO; });
+  const diaMapa = {};
+  function diaDe(k) { if (!diaMapa[k]) diaMapa[k] = { fechaISO: k, unidades: 0, premios: 0 }; return diaMapa[k]; }
+  visitas.forEach(v => { if (v.fechaISO) diaDe(v.fechaISO); });
+  ventas.forEach(x => { const k = fechaISOPorId[x.id]; if (k) diaDe(k).unidades += x.cantidad; });
+  premiosEnt.forEach(x => { const k = fechaISOPorId[x.id]; if (k) diaDe(k).premios += x.cantidad; });
+  const tendenciaDiaria = Object.values(diaMapa).sort((a, b) => a.fechaISO.localeCompare(b.fechaISO));
+  let cambioUnidadesPct = null, cambioPremiosPct = null;
+  if (tendenciaDiaria.length >= 2) {
+    const ultimo = tendenciaDiaria[tendenciaDiaria.length - 1];
+    const anterior = tendenciaDiaria[tendenciaDiaria.length - 2];
+    cambioUnidadesPct = anterior.unidades ? Math.round((ultimo.unidades - anterior.unidades) / anterior.unidades * 1000) / 10 : null;
+    cambioPremiosPct = anterior.premios ? Math.round((ultimo.premios - anterior.premios) / anterior.premios * 1000) / 10 : null;
+  }
+
   function contarSimple(campo) {
     const mapa = {};
     voz.forEach(x => { if (x[campo]) mapa[x[campo]] = (mapa[x[campo]] || 0) + 1; });
@@ -499,6 +544,7 @@ function recalcular() {
   DATA = {
     kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre },
     ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
+    tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
     ventasPorCanal, premiosPorCanal,
     porAsesor, porPDV,
     vozConsumidor: {
@@ -535,6 +581,8 @@ function renderAll() {
   });
 
   renderVentasPremios();
+  renderTendenciaChart();
+  renderTendenciaCallouts();
   renderHBars('ventasCanalChart', DATA.ventasPorCanal, 'canal', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderHBars('premiosCanalChart', DATA.premiosPorCanal.map(p => ({ canal: p.canal, entregados: p.entregados })), 'canal', 'entregados', { color: 'var(--series-2)', tooltipLabel: 'Entregados' });
 
@@ -564,7 +612,6 @@ function renderAll() {
   renderHBars('atributosChart', voz.atributosDeseados, 'k', 'count', { color: 'var(--series-6)', tooltipLabel: 'Menciones' });
   renderHBars('cabelloChart', voz.tipoCabello, 'k', 'count', { color: 'var(--series-4)', tooltipLabel: 'Encuestas' });
 
-  renderHBars('pdvChart', DATA.porPDV.slice(0, 12), 'pdv', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderPDVTable();
   renderFiltrosDisponibles();
 }
@@ -594,6 +641,59 @@ function renderVentasPremios() {
     const lbl = svgEl('text', { x: cx, y: h - padB + 18, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 700, fill: 'var(--muted)' });
     lbl.textContent = d.k; svg.appendChild(lbl);
   });
+}
+function renderTendenciaChart() {
+  const svg = document.getElementById('tendenciaChart');
+  const items = DATA.tendenciaDiaria || [];
+  const w = svg.clientWidth || 900, h = 220;
+  svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  svg.innerHTML = '';
+  if (items.length === 0) { return; }
+  const padLeft = 10, padRight = 10, padTop = 20, padBottom = 30;
+  const maxVal = Math.max(1, ...items.map(d => Math.max(d.unidades, d.premios)));
+  const innerW = w - padLeft - padRight, innerH = h - padTop - padBottom;
+  const stepX = items.length > 1 ? innerW / (items.length - 1) : 0;
+  const xOf = i => padLeft + stepX * i;
+  const yOf = v => padTop + innerH - (v / maxVal) * innerH;
+
+  svg.appendChild(svgEl('line', { x1: padLeft, y1: h - padBottom, x2: w - padRight, y2: h - padBottom, stroke: 'var(--border-strong)', 'stroke-width': 1 }));
+
+  function drawSerie(campo, color, tooltipLabel) {
+    if (items.length > 1) {
+      const pts = items.map((d, i) => xOf(i) + ',' + yOf(d[campo])).join(' ');
+      svg.appendChild(svgEl('polyline', { points: pts, fill: 'none', stroke: color, 'stroke-width': 2.4, 'stroke-linecap': 'round', 'stroke-linejoin': 'round' }));
+    }
+    items.forEach((d, i) => {
+      const c = svgEl('circle', { cx: xOf(i), cy: yOf(d[campo]), r: 4.2, fill: color });
+      conTooltip(c, () => `<b>${escHtml(fechaCortaISO(d.fechaISO))}</b><br>${tooltipLabel}: <b>${fmt(d[campo])}</b>`);
+      svg.appendChild(c);
+    });
+  }
+  drawSerie('unidades', 'var(--series-1)', 'Unidades vendidas');
+  drawSerie('premios', 'var(--brand)', 'Premios entregados');
+
+  items.forEach((d, i) => {
+    if (items.length > 10 && i % 2 !== 0 && i !== items.length - 1) return;
+    const lbl = svgEl('text', { x: xOf(i), y: h - padBottom + 18, 'text-anchor': 'middle', 'font-size': 10.5, 'font-weight': 700, fill: 'var(--muted)' });
+    lbl.textContent = fechaCortaISO(d.fechaISO);
+    svg.appendChild(lbl);
+  });
+}
+function renderTendenciaCallouts() {
+  const cont = document.getElementById('tendenciaCallouts'); cont.innerHTML = '';
+  const items = DATA.tendenciaDiaria || [];
+  if (items.length < 2) {
+    cont.innerHTML = '<div class="callout">Se necesitan al menos 2 días con datos en el filtro actual para comparar contra el día anterior.</div>';
+    return;
+  }
+  function pill(label, pct) {
+    if (pct === null) return `<div class="callout">${label}: el día anterior no tiene datos para comparar.</div>`;
+    const subiendo = pct >= 0;
+    const color = subiendo ? 'var(--status-good)' : 'var(--status-critical)';
+    const flecha = subiendo ? '▲' : '▼';
+    return `<div class="callout"><span style="color:${color};font-weight:800">${flecha} ${Math.abs(pct)}%</span>&nbsp;${label} vs. el día anterior</div>`;
+  }
+  cont.innerHTML = pill('Unidades vendidas', DATA.cambioUnidadesPct) + pill('Premios entregados', DATA.cambioPremiosPct);
 }
 function renderDonut(svgId, pct, color, trackColor, thickness, tooltipHtml) {
   const svg = document.getElementById(svgId);
@@ -649,7 +749,7 @@ function renderAsesoresTable() {
   if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin visitas en este filtro.</td></tr>'; }
   pagina.forEach(a => {
     const initials = a.asesor.split(' ').map(s => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
-    const avatar = a.foto ? `<img src="${escHtml(a.foto)}" referrerpolicy="no-referrer" alt="">` : initials;
+    const avatar = a.foto ? `<img src="${escHtml(a.foto)}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)">` : initials;
     const tr = document.createElement('tr'); tr.className = 'clickable';
     tr.innerHTML = `<td><div class="advisor"><span class="av">${avatar}</span>${escHtml(a.asesor)}</div></td>
       <td>${escHtml(a.ciudad)}</td><td><span class="pill-canal ${a.canal}">${a.canal}</span></td>
@@ -669,11 +769,14 @@ function renderPDVTable() {
   const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
   if (pdvPagina > totalPaginas) pdvPagina = totalPaginas;
   const pagina = paginar(items, pdvPagina);
+  const maxUnidades = Math.max(1, ...items.map(p => p.unidades));
   const tbody = document.querySelector('#pdvTable tbody'); tbody.innerHTML = '';
   if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin ventas en este filtro.</td></tr>'; }
   pagina.forEach(p => {
+    const barPct = Math.max(2, (p.unidades / maxUnidades) * 100);
     const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td><td class="num">${p.pct}%</td>`;
+    tr.innerHTML = `<td>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td>
+      <td><div class="cell-bar"><span class="cell-bar-track"><span class="cell-bar-fill" style="width:${barPct}%"></span></span><span class="cell-bar-val num">${p.pct}%</span></div></td>`;
     tbody.appendChild(tr);
   });
   renderPaginador('pdvPager', items.length, pdvPagina, (p) => { pdvPagina = p; renderPDVTable(); });
@@ -708,7 +811,7 @@ function abrirModalAsesor(nombre) {
   visitasAsesor.forEach(v => {
     if (!v.foto) return;
     const div = document.createElement('div'); div.className = 'mb-foto';
-    div.innerHTML = `<img src="${escHtml(v.foto)}" referrerpolicy="no-referrer" alt=""><span>${escHtml(v.pdv)}<br>${fechaHora(v.ts)}</span>`;
+    div.innerHTML = `<img src="${escHtml(v.foto)}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)"><span>${escHtml(v.pdv)}<br>${fechaHora(v.ts)}</span>`;
     fotosCont.appendChild(div);
   });
   if (!fotosCont.innerHTML) fotosCont.innerHTML = '<div class="empty-hint" style="padding:8px 0">Sin foto de ingreso registrada.</div>';
@@ -750,9 +853,15 @@ function renderFiltrosDisponibles() {
     return Array.from(set).sort((a, b) => a.localeCompare(b, 'es'));
   }
   llenarSelect('filtroCiudad', opcionesDe('ciudad', v => v.ciudad), f.ciudad, 'Todas las ciudades');
+  llenarSelect('filtroPDV', opcionesDe('pdv', v => v.pdv), f.pdv, 'Todos los puntos de venta');
   llenarSelect('filtroCanal', opcionesDe('canal', v => v.canal), f.canal, 'Todos los canales');
-  llenarSelect('filtroFecha', opcionesDe('fecha', v => v.fecha), f.fecha, 'Todas las fechas');
   llenarSelect('filtroAsesor', opcionesDe('asesor', v => v.asesor), f.asesor, 'Todos los asesores');
+
+  const fechasDisponibles = opcionesDe('fecha', v => v.fechaISO);
+  const fechaInput = document.getElementById('filtroFecha');
+  if (fechasDisponibles.length) { fechaInput.min = fechasDisponibles[0]; fechaInput.max = fechasDisponibles[fechasDisponibles.length - 1]; }
+  else { fechaInput.removeAttribute('min'); fechaInput.removeAttribute('max'); }
+  fechaInput.value = f.fecha || '';
 }
 function llenarSelect(id, opciones, actual, placeholder) {
   const sel = document.getElementById(id);
@@ -767,16 +876,21 @@ function descargarCSV(nombre, filas, columnas) {
 
 /* ===== INIT / EVENTOS ===== */
 /* Cambiar un filtro YA NO llama al backend — recalcula todo con los datos que ya están en el navegador. */
-['filtroCiudad', 'filtroCanal', 'filtroFecha', 'filtroAsesor'].forEach(id => {
+['filtroCiudad', 'filtroPDV', 'filtroCanal', 'filtroFecha', 'filtroAsesor'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {
     filtrosActuales.ciudad = document.getElementById('filtroCiudad').value;
+    filtrosActuales.pdv = document.getElementById('filtroPDV').value;
     filtrosActuales.canal = document.getElementById('filtroCanal').value;
     filtrosActuales.fecha = document.getElementById('filtroFecha').value;
     filtrosActuales.asesor = document.getElementById('filtroAsesor').value;
     recalcular();
   });
 });
-document.getElementById('btnLimpiar').addEventListener('click', () => { filtrosActuales = { ciudad: '', canal: '', fecha: '', asesor: '' }; recalcular(); });
+document.getElementById('btnLimpiar').addEventListener('click', () => {
+  filtrosActuales = { ciudad: '', pdv: '', canal: '', fecha: '', asesor: '' };
+  document.getElementById('filtroFecha').value = '';
+  recalcular();
+});
 document.getElementById('btnRefrescar').addEventListener('click', cargarBI);
 wireOrdenTabla('asesoresTable', asesoresOrden, () => { asesoresPagina = 1; renderAsesoresTable(); });
 wireOrdenTabla('pdvTable', pdvOrden, () => { pdvPagina = 1; renderPDVTable(); });
@@ -791,7 +905,7 @@ document.getElementById('btnExportarPDV').addEventListener('click', () => {
     { key: 'pdv', label: 'Punto de Venta' }, { key: 'ciudad', label: 'Ciudad' }, { key: 'unidades', label: 'Unidades' }, { key: 'pct', label: '% del Total' }
   ]);
 });
-window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(renderVentasPremios, 150); } });
+window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(() => { renderVentasPremios(); renderTendenciaChart(); }, 150); } });
 
 cargarBI();
 </script>
