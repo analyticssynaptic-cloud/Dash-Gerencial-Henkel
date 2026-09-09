@@ -93,6 +93,11 @@
   .empty-hint{text-align:center;color:var(--muted);font-size:12px;padding:20px 0;}
 
   .hbars{display:flex;flex-direction:column;gap:11px;}
+  .meter-wrap{display:flex;align-items:center;gap:16px;}
+  .meter-figures{display:flex;flex-direction:column;gap:2px;}
+  .stack-bar>span{height:100%;}
+  .legend .item{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--ink-2);}
+  .legend .sw{width:9px;height:9px;border-radius:3px;flex:0 0 auto;}
   .hbar-row{display:grid;grid-template-columns:110px 1fr 52px;gap:9px;align-items:center;}
   .hbar-row .hb-label{font-size:11.5px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .hbar-row .hb-track{position:relative;height:10px;background:var(--surface-3);border-radius:6px;overflow:hidden;}
@@ -183,7 +188,13 @@
 
     <div class="kpi-grid" id="kpiGrid"></div>
 
-    <div class="section-label"><span class="sl-num">01</span><h2>Ventas y premios por canal</h2></div>
+    <div class="section-label"><span class="sl-num">01</span><h2>Ventas vs. premios redimidos</h2></div>
+    <div class="card">
+      <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor en el filtro actual</p></div></div>
+      <svg id="ventasPremiosChart" width="100%" height="180" style="overflow:visible"></svg>
+    </div>
+
+    <div class="section-label"><span class="sl-num">02</span><h2>Ventas y premios por canal</h2></div>
     <div class="grid cols-2">
       <div class="card">
         <div class="card-head"><div><h3>Unidades vendidas</h3><p>Tradicional vs. Moderno</p></div></div>
@@ -196,7 +207,7 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">02</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
+    <div class="section-label"><span class="sl-num">03</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
     <div class="card">
       <div class="card-head">
         <div><h3>Cumplimiento comercial por asesor</h3><p>Ordenable — clic en cualquier encabezado</p></div>
@@ -222,19 +233,74 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">03</span><h2>Voz del consumidor</h2></div>
+    <div class="section-label"><span class="sl-num">04</span><h2>Voz del consumidor</h2></div>
+    <div class="card">
+      <div class="card-head"><div><h3>Resumen de encuestas</h3><p id="vozSub">— consumidores encuestados en el filtro actual</p></div></div>
+      <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0" id="vozMiniKpis"></div>
+    </div>
     <div class="grid cols-2">
       <div class="card">
-        <div class="card-head"><div><h3>Resumen de encuestas</h3><p id="vozSub">— consumidores encuestados en el filtro actual</p></div></div>
-        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0" id="vozMiniKpis"></div>
+        <div class="card-head"><div><h3>¿Conocía la marca?</h3></div></div>
+        <div class="meter-wrap" style="justify-content:center"><svg id="conoceDonut" width="104" height="104" viewBox="0 0 104 104"></svg><div class="meter-figures"><span class="mv num" id="conoceValor" style="font-size:26px;font-weight:800">—</span><span class="ml" style="font-size:11px;color:var(--muted);font-weight:700">ya la conocía</span></div></div>
       </div>
       <div class="card">
-        <div class="card-head"><div><h3>Atributos más pedidos</h3><p>Menciones sobre las encuestas del filtro actual</p></div></div>
+        <div class="card-head"><div><h3>Uso actual de la marca</h3></div></div>
+        <div id="usoMarcaChart" class="hbars"></div>
+      </div>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="card-head"><div><h3>¿Por dónde conoció la marca?</h3></div></div>
+        <div id="canalesConocChart" class="hbars"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Percepción de la visita</h3></div></div>
+        <div class="stack-bar" id="percepcionStack" style="display:flex;height:14px;border-radius:7px;overflow:hidden;background:var(--surface-3)"></div>
+        <div class="legend" id="percepcionLegend" style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px"></div>
+      </div>
+    </div>
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="card-head"><div><h3>Atributos más pedidos</h3></div></div>
         <div id="atributosChart" class="hbars"></div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div><h3>Tipo de cabello reportado</h3></div></div>
+        <div id="cabelloChart" class="hbars"></div>
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">04</span><h2>Detalle de ventas por producto</h2></div>
+    <div class="section-label"><span class="sl-num">05</span><h2>Ventas por punto de venta</h2></div>
+    <div class="grid cols-2">
+      <div class="card">
+        <div class="card-head"><div><h3>Unidades por PDV</h3><p>Todos los puntos de venta del filtro actual</p></div></div>
+        <div id="pdvChart" class="hbars" style="max-height:520px;overflow-y:auto;padding-right:4px"></div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div><h3>Detalle por punto de venta</h3><p>Unidades y % del total vendido</p></div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span class="card-tag" id="pdvTag">—</span>
+            <button class="btn-export" id="btnExportarPDV" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
+            </button>
+          </div>
+        </div>
+        <div class="table-scroll" style="max-height:480px;overflow-y:auto">
+          <table class="data" id="pdvTable">
+            <thead><tr>
+              <th data-k="pdv">Punto de venta <span class="sort-ic">▾</span></th>
+              <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
+              <th class="num" data-k="unidades">Unidades <span class="sort-ic">▾</span></th>
+              <th class="num" data-k="pct">% del total <span class="sort-ic">▾</span></th>
+            </tr></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="section-label"><span class="sl-num">06</span><h2>Detalle de ventas por producto</h2></div>
     <div class="card">
       <div class="card-head">
         <div><h3>Producto por producto</h3><p>El nivel más detallado — buscador y tabla ordenable</p></div>
@@ -267,11 +333,17 @@
 /* ==== CONFIGURA ESTO: URL del Web App de NormalizadoBI.gs (Implementar > Nueva implementación) ==== */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qVR7Oocn5kF_zDh6Cm5erhbszzcAat7ShLkqOaxLBQDubT/exec';
 
+/* RAW = lo que manda el backend, sin filtrar (se trae UNA sola vez).
+   DATA = el resultado ya filtrado y calculado en el navegador — cambiar de
+   filtro solo llama recalcular(), nunca vuelve a pedirle nada a Apps Script,
+   por eso los segmentadores responden al instante. */
+let RAW = null;
 let DATA = null;
 let filtrosActuales = { ciudad: '', canal: '', asesor: '' };
 let productosOrden = { campo: 'unidades', dir: -1 };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
-let refrescando = false;
+let pdvOrden = { campo: 'unidades', dir: -1 };
+let cargando = false;
 
 const NS = 'http://www.w3.org/2000/svg';
 function svgEl(tag, attrs) { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; }
@@ -306,31 +378,29 @@ function renderHBars(containerId, items, keyField, valField, opts) {
   });
 }
 
-/* ===== CARGA ===== */
+/* ===== CARGA (una sola vez) ===== */
 async function cargarBI() {
-  if (refrescando) return;
-  refrescando = true;
+  if (cargando) return;
+  cargando = true;
   document.getElementById('btnRefrescar').classList.add('spin');
   document.getElementById('estadoError').classList.remove('show');
-  if (!DATA) document.getElementById('estadoCarga').classList.add('show');
+  if (!RAW) document.getElementById('estadoCarga').classList.add('show');
 
   try {
-    const qs = new URLSearchParams();
-    Object.keys(filtrosActuales).forEach(k => { if (filtrosActuales[k]) qs.set(k, filtrosActuales[k]); });
-    const res = await fetch(GAS_URL + '?action=bi&' + qs.toString(), { redirect: 'follow' });
+    const res = await fetch(GAS_URL + '?action=bi', { redirect: 'follow' });
     const data = await res.json();
     document.getElementById('estadoCarga').classList.remove('show');
     if (!data || !data.success) { mostrarError((data && data.error) || 'Respuesta inválida del backend.'); return; }
-    DATA = data;
+    RAW = data;
     document.getElementById('shell').classList.add('show');
-    renderAll();
+    recalcular();
     document.getElementById('syncDot').classList.remove('bad');
     document.getElementById('syncTexto').textContent = 'Actualizado ' + new Date().toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit' });
   } catch (err) {
     document.getElementById('estadoCarga').classList.remove('show');
     mostrarError('Error de conexión: ' + err.message);
   } finally {
-    refrescando = false;
+    cargando = false;
     document.getElementById('btnRefrescar').classList.remove('spin');
   }
 }
@@ -342,17 +412,115 @@ function mostrarError(msg) {
   document.getElementById('syncTexto').textContent = 'Sin conexión';
 }
 
+/* ===== CÁLCULO EN EL NAVEGADOR — instantáneo, no vuelve a tocar la red ===== */
+function recalcular() {
+  if (!RAW) return;
+  const f = filtrosActuales;
+  const visitas = RAW.visitas.filter(v =>
+    (!f.ciudad || v.ciudad === f.ciudad) &&
+    (!f.canal || v.canal === f.canal) &&
+    (!f.asesor || v.asesor === f.asesor));
+  const idsValidos = new Set(visitas.map(v => v.id));
+  const canalPorId = {}; visitas.forEach(v => { canalPorId[v.id] = v.canal; });
+  const ventas = RAW.ventas.filter(x => idsValidos.has(x.id));
+  const premiosEnt = RAW.premiosEntregados.filter(x => idsValidos.has(x.id));
+  const voz = RAW.voz.filter(x => idsValidos.has(x.id));
+
+  const totalVisitas = visitas.length;
+  const totalUnidadesVendidas = ventas.reduce((s, x) => s + x.cantidad, 0);
+  const totalPremiosEntregados = premiosEnt.reduce((s, x) => s + x.cantidad, 0);
+  const premiosPorUnidadVendida = totalUnidadesVendidas ? Math.round(totalPremiosEntregados / totalUnidadesVendidas * 100) / 100 : 0;
+  const visitasConSi = visitas.filter(v => v.venta === 'Si').length;
+  const visitasConDato = visitas.filter(v => v.venta === 'Si' || v.venta === 'No').length;
+  const tasaCierre = visitasConDato ? Math.round(visitasConSi / visitasConDato * 1000) / 10 : 0;
+
+  // "Asesoras activas" = personas reales (por documento), no formas de escribir el nombre.
+  const documentosSet = new Set(visitas.map(v => v.documento).filter(Boolean));
+  const asesorasActivas = documentosSet.size;
+
+  const canales = ['Tradicional', 'Moderno'];
+  const ventasPorCanal = canales.map(c => ({ canal: c, unidades: ventas.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
+  const premiosPorCanal = canales.map(c => ({ canal: c, entregados: premiosEnt.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
+  const visitasPorCanal = canales.map(c => ({ canal: c, visitas: visitas.filter(v => v.canal === c).length }));
+
+  const asesorMapa = {};
+  visitas.forEach(v => {
+    const k = v.asesor; if (!k) return;
+    if (!asesorMapa[k]) asesorMapa[k] = { asesor: k, ciudad: v.ciudad || '', canal: v.canal, visitas: 0, unidadesVendidas: 0, premiosEntregados: 0 };
+    asesorMapa[k].visitas++;
+  });
+  ventas.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].unidadesVendidas += x.cantidad; });
+  premiosEnt.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].premiosEntregados += x.cantidad; });
+  const porAsesor = Object.values(asesorMapa).sort((a, b) => b.unidadesVendidas - a.unidadesVendidas);
+
+  const pdvMapa = {};
+  ventas.forEach(x => {
+    const k = x.pdv; if (!k) return;
+    if (!pdvMapa[k]) pdvMapa[k] = { pdv: k, ciudad: x.ciudad || '', unidades: 0 };
+    pdvMapa[k].unidades += x.cantidad;
+  });
+  const baseUnidadesPct = totalUnidadesVendidas || 1;
+  const porPDV = Object.values(pdvMapa).map(p => Object.assign({}, p, { pct: Math.round(p.unidades / baseUnidadesPct * 1000) / 10 }))
+    .sort((a, b) => b.unidades - a.unidades);
+
+  function contarSimple(campo) {
+    const mapa = {};
+    voz.forEach(x => { if (x[campo]) mapa[x[campo]] = (mapa[x[campo]] || 0) + 1; });
+    return Object.keys(mapa).map(k => ({ k, count: mapa[k] })).sort((a, b) => b.count - a.count);
+  }
+  function contarSplit(campo) {
+    const mapa = {};
+    voz.forEach(x => { String(x[campo] || '').split(',').map(s => s.trim()).filter(Boolean).forEach(v => { mapa[v] = (mapa[v] || 0) + 1; }); });
+    return Object.keys(mapa).map(k => ({ k, count: mapa[k] })).sort((a, b) => b.count - a.count);
+  }
+  const totalEncuestas = voz.length;
+  const conoceSi = voz.filter(x => x.conoceMarca === 'Sí la conocía').length;
+  const conoceMarcaPct = totalEncuestas ? Math.round(conoceSi / totalEncuestas * 1000) / 10 : 0;
+  const opiniones = voz.map(x => x.opinion).filter(n => n > 0);
+  const opinionPromedio = opiniones.length ? Math.round(opiniones.reduce((s, n) => s + n, 0) / opiniones.length * 100) / 100 : 0;
+
+  const prodMapa = {};
+  ventas.forEach(x => {
+    const k = x.producto; if (!k) return;
+    if (!prodMapa[k]) prodMapa[k] = { producto: k, categoria: x.categoria || '', marca: x.marca || '', unidades: 0 };
+    prodMapa[k].unidades += x.cantidad;
+  });
+  const ventasPorProducto = Object.values(prodMapa).sort((a, b) => b.unidades - a.unidades);
+
+  const ciudadesSet = new Set(RAW.visitas.map(v => v.ciudad).filter(Boolean));
+  const asesoresSet = new Set(RAW.visitas.map(v => v.asesor).filter(Boolean));
+
+  DATA = {
+    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre, asesorasActivas },
+    ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
+    ventasPorCanal, premiosPorCanal, visitasPorCanal,
+    porAsesor, porPDV,
+    vozConsumidor: {
+      total: totalEncuestas, conoceMarcaPct, opinionPromedio,
+      atributosDeseados: contarSplit('atributos').slice(0, 6),
+      canalesConocimiento: contarSplit('canales').map(o => ({ canal: o.k, count: o.count })),
+      usoMarca: contarSimple('usoMarca'), percepcion: contarSimple('percepcion'), tipoCabello: contarSimple('cabello')
+    },
+    ventasPorProducto,
+    filtrosDisponibles: {
+      ciudades: Array.from(ciudadesSet).sort((a, b) => a.localeCompare(b, 'es')),
+      canales, asesores: Array.from(asesoresSet).sort((a, b) => a.localeCompare(b, 'es'))
+    }
+  };
+  renderAll();
+}
+
 function renderAll() {
   const k = DATA.kpis;
   document.getElementById('sbVisitas').textContent = fmt(k.totalVisitas);
 
   const defs = [
     { label: 'Unidades vendidas', value: fmt(k.totalUnidadesVendidas), sub: k.totalVisitas + ' visitas' },
-    { label: 'Premios entregados', value: fmt(k.totalPremiosEntregados), sub: fmt(k.totalPremiosRecibidos) + ' recibidos' },
-    { label: 'Rotación premios', value: k.pctRotacionPremios + '%', sub: 'sobre recibido comparable' },
+    { label: 'Premios redimidos', value: fmt(k.totalPremiosEntregados), sub: 'entregados al consumidor' },
+    { label: 'Premios por unidad vendida', value: k.premiosPorUnidadVendida, sub: 'premio por cada unidad' },
     { label: 'Tasa de cierre', value: k.tasaCierre + '%', sub: 'visitas con venta' },
     { label: 'Visitas', value: fmt(k.totalVisitas), sub: 'en el filtro actual' },
-    { label: 'Asesoras activas', value: fmt(k.asesorasActivas), sub: 'en el filtro actual' },
+    { label: 'Gestores activos', value: fmt(k.asesorasActivas), sub: 'personas reales, por documento' },
   ];
   const kpiCont = document.getElementById('kpiGrid'); kpiCont.innerHTML = '';
   defs.forEach(d => {
@@ -361,6 +529,7 @@ function renderAll() {
     kpiCont.appendChild(div);
   });
 
+  renderVentasPremios();
   renderHBars('ventasCanalChart', DATA.ventasPorCanal, 'canal', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderHBars('premiosCanalChart', DATA.premiosPorCanal.map(p => ({ canal: p.canal, entregados: p.entregados })), 'canal', 'entregados', { color: 'var(--series-2)', tooltipLabel: 'Entregados' });
 
@@ -385,10 +554,71 @@ function renderAll() {
     div.innerHTML = `<span class="kpi-label">${d.label}</span><span class="kpi-value num">${d.value}</span>`;
     vozCont.appendChild(div);
   });
-  renderHBars('atributosChart', DATA.vozConsumidor.atributosDeseados, 'k', 'count', { color: 'var(--series-6)', tooltipLabel: 'Menciones' });
 
+  document.getElementById('conoceValor').textContent = voz.conoceMarcaPct + '%';
+  renderDonut('conoceDonut', voz.conoceMarcaPct, 'var(--brand)', 'var(--brand-soft)', 11, `<b>Conocía la marca</b><br>${voz.conoceMarcaPct}%`);
+  renderHBars('usoMarcaChart', voz.usoMarca, 'k', 'count', { color: 'var(--series-3)', tooltipLabel: 'Encuestas' });
+  renderHBars('canalesConocChart', voz.canalesConocimiento, 'canal', 'count', { color: 'var(--series-5)', tooltipLabel: 'Menciones' });
+  const COLOR_PERCEPCION = { 'No le gustó': 'var(--status-critical)', 'Ni fu ni fa': 'var(--status-warning)', 'Le gustó': 'var(--series-1)', 'Le encantó': 'var(--status-good)' };
+  const percTotal = (voz.percepcion || []).reduce((s, p) => s + p.count, 0) || 1;
+  renderStackBar('percepcionStack', 'percepcionLegend', (voz.percepcion || []).map(p => ({ k: p.k, count: p.count, pct: Math.round(p.count / percTotal * 1000) / 10, color: COLOR_PERCEPCION[p.k] || 'var(--series-1)' })));
+  renderHBars('atributosChart', voz.atributosDeseados, 'k', 'count', { color: 'var(--series-6)', tooltipLabel: 'Menciones' });
+  renderHBars('cabelloChart', voz.tipoCabello, 'k', 'count', { color: 'var(--series-4)', tooltipLabel: 'Encuestas' });
+
+  renderPDVChart();
+  renderPDVTable();
   renderProductosTable();
   renderFiltrosDisponibles();
+}
+
+function renderVentasPremios() {
+  const svg = document.getElementById('ventasPremiosChart');
+  const items = DATA.ventasVsPremios || [];
+  const w = svg.clientWidth || 900, h = 180;
+  svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  svg.innerHTML = '';
+  if (!items.length) return;
+  const max = Math.max(...items.map(d => d.v)) || 1;
+  const padL = 6, padR = 6, padT = 24, padB = 30;
+  const bw = (w - padL - padR) / items.length;
+  const barW = Math.min(140, bw * 0.4);
+  const colors = ['var(--ink)', 'var(--brand)'];
+  svg.appendChild(svgEl('line', { x1: padL, y1: h - padB, x2: w - padR, y2: h - padB, stroke: 'var(--border-strong)', 'stroke-width': 1 }));
+  items.forEach((d, i) => {
+    const cx = padL + bw * i + bw / 2;
+    const bh = (d.v / max) * (h - padT - padB);
+    const y = h - padB - bh;
+    const rect = svgEl('rect', { x: cx - barW / 2, y, width: barW, height: Math.max(bh, 1), rx: 6, fill: colors[i % colors.length] });
+    conTooltip(rect, () => `<b>${escHtml(d.k)}</b><br>${fmt(d.v)}`);
+    svg.appendChild(rect);
+    const val = svgEl('text', { x: cx, y: y - 10, 'text-anchor': 'middle', 'font-size': 18, 'font-weight': 800, fill: 'var(--ink)', 'font-family': 'var(--font-mono)' });
+    val.textContent = fmt(d.v); svg.appendChild(val);
+    const lbl = svgEl('text', { x: cx, y: h - padB + 18, 'text-anchor': 'middle', 'font-size': 11.5, 'font-weight': 700, fill: 'var(--muted)' });
+    lbl.textContent = d.k; svg.appendChild(lbl);
+  });
+}
+function renderDonut(svgId, pct, color, trackColor, thickness, tooltipHtml) {
+  const svg = document.getElementById(svgId);
+  const size = parseFloat(svg.getAttribute('viewBox').split(' ')[2]);
+  const r = size / 2 - (thickness || 10), cx = size / 2, cy = size / 2, circ = 2 * Math.PI * r;
+  svg.innerHTML = '';
+  svg.appendChild(svgEl('circle', { cx, cy, r, fill: 'none', stroke: trackColor || 'var(--surface-3)', 'stroke-width': thickness || 10 }));
+  const arc = svgEl('circle', { cx, cy, r, fill: 'none', stroke: color, 'stroke-width': thickness || 10, 'stroke-dasharray': circ, 'stroke-dashoffset': circ * (1 - pct / 100), 'stroke-linecap': 'round', transform: 'rotate(-90 ' + cx + ' ' + cy + ')' });
+  svg.appendChild(arc);
+  if (tooltipHtml) conTooltip(arc, () => tooltipHtml);
+}
+function renderStackBar(containerId, legendId, items) {
+  const cont = document.getElementById(containerId); cont.innerHTML = '';
+  const leg = document.getElementById(legendId); leg.innerHTML = '';
+  if (!items || items.length === 0) { leg.innerHTML = '<div class="empty-hint">Sin datos suficientes.</div>'; return; }
+  items.forEach(it => {
+    const seg = document.createElement('span'); seg.style.width = it.pct + '%'; seg.style.background = it.color;
+    conTooltip(seg, () => `<b>${escHtml(it.k)}</b><br>${it.pct}% (${fmt(it.count)} respuestas)`);
+    cont.appendChild(seg);
+    const d = document.createElement('div'); d.className = 'item';
+    d.innerHTML = `<span class="sw" style="background:${it.color}"></span>${escHtml(it.k)} · ${it.pct}%`;
+    leg.appendChild(d);
+  });
 }
 
 function renderAsesoresTable() {
@@ -427,6 +657,24 @@ function renderProductosTable() {
     tbody.appendChild(tr);
   });
 }
+function renderPDVChart() {
+  renderHBars('pdvChart', DATA.porPDV, 'pdv', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
+}
+function renderPDVTable() {
+  let items = (DATA.porPDV || []).slice().sort((a, b) => {
+    const va = a[pdvOrden.campo], vb = b[pdvOrden.campo];
+    if (typeof va === 'number') return (va - vb) * pdvOrden.dir;
+    return String(va).localeCompare(String(vb), 'es') * pdvOrden.dir;
+  });
+  document.getElementById('pdvTag').textContent = items.length + ' punto' + (items.length === 1 ? '' : 's') + ' de venta';
+  const tbody = document.querySelector('#pdvTable tbody'); tbody.innerHTML = '';
+  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin ventas en este filtro.</td></tr>'; return; }
+  items.forEach(p => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td><td class="num">${p.pct}%</td>`;
+    tbody.appendChild(tr);
+  });
+}
 function wireOrdenTabla(tableId, ordenState, renderFn) {
   document.querySelectorAll('#' + tableId + ' th[data-k]').forEach(th => {
     th.addEventListener('click', () => {
@@ -458,26 +706,33 @@ function descargarCSV(nombre, filas, columnas) {
 }
 
 /* ===== INIT / EVENTOS ===== */
+/* Cambiar un filtro YA NO llama al backend — recalcula todo con los datos que ya están en el navegador. */
 ['filtroCiudad', 'filtroCanal', 'filtroAsesor'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {
     filtrosActuales.ciudad = document.getElementById('filtroCiudad').value;
     filtrosActuales.canal = document.getElementById('filtroCanal').value;
     filtrosActuales.asesor = document.getElementById('filtroAsesor').value;
-    cargarBI();
+    recalcular();
   });
 });
-document.getElementById('btnLimpiar').addEventListener('click', () => { filtrosActuales = { ciudad: '', canal: '', asesor: '' }; cargarBI(); });
+document.getElementById('btnLimpiar').addEventListener('click', () => { filtrosActuales = { ciudad: '', canal: '', asesor: '' }; recalcular(); });
 document.getElementById('btnRefrescar').addEventListener('click', cargarBI);
 document.getElementById('buscarProducto').addEventListener('input', renderProductosTable);
 wireOrdenTabla('productosTable', productosOrden, renderProductosTable);
 wireOrdenTabla('asesoresTable', asesoresOrden, renderAsesoresTable);
+wireOrdenTabla('pdvTable', pdvOrden, renderPDVTable);
 document.getElementById('btnExportarAsesores').addEventListener('click', () => {
   descargarCSV('henkel_ventas_premios_por_asesor.csv', DATA.porAsesor, [
     { key: 'asesor', label: 'Asesor' }, { key: 'ciudad', label: 'Ciudad' }, { key: 'canal', label: 'Canal' },
     { key: 'visitas', label: 'Visitas' }, { key: 'unidadesVendidas', label: 'Unidades Vendidas' }, { key: 'premiosEntregados', label: 'Premios Entregados' }
   ]);
 });
-window.addEventListener('resize', () => { /* las hbars son flex, no necesitan re-render en resize */ });
+document.getElementById('btnExportarPDV').addEventListener('click', () => {
+  descargarCSV('henkel_ventas_por_pdv.csv', DATA.porPDV, [
+    { key: 'pdv', label: 'Punto de Venta' }, { key: 'ciudad', label: 'Ciudad' }, { key: 'unidades', label: 'Unidades' }, { key: 'pct', label: '% del Total' }
+  ]);
+});
+window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(renderVentasPremios, 150); } });
 
 cargarBI();
 </script>
