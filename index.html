@@ -62,6 +62,7 @@
   .sb-field label{display:block;font-size:11px;font-weight:700;color:var(--ink-2);margin-bottom:6px;}
   .sb-field select{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 28px 9px 11px;border-radius:var(--radius-sm);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c5250' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
   .sb-field select:focus{outline:none;border-color:var(--brand);}
+  .sb-field select:disabled{opacity:.45;cursor:not-allowed;}
   .btn-limpiar{width:100%;border:1px solid var(--border-strong);background:var(--surface);color:var(--brand);font-family:inherit;font-size:11.5px;font-weight:800;padding:9px;border-radius:var(--radius-sm);cursor:pointer;margin-top:4px;}
   .btn-limpiar:hover{background:var(--brand-soft);}
   .sb-resumen{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);}
@@ -98,7 +99,7 @@
   .stack-bar>span{height:100%;}
   .legend .item{display:flex;align-items:center;gap:6px;font-size:11px;font-weight:700;color:var(--ink-2);}
   .legend .sw{width:9px;height:9px;border-radius:3px;flex:0 0 auto;}
-  .hbar-row{display:grid;grid-template-columns:110px 1fr 52px;gap:9px;align-items:center;}
+  .hbar-row{display:grid;grid-template-columns:150px 1fr 52px;gap:9px;align-items:center;}
   .hbar-row .hb-label{font-size:11.5px;font-weight:700;color:var(--ink);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
   .hbar-row .hb-track{position:relative;height:10px;background:var(--surface-3);border-radius:6px;overflow:hidden;}
   .hbar-row .hb-fill{position:absolute;left:0;top:0;bottom:0;border-radius:6px;}
@@ -115,19 +116,21 @@
   table.data td{padding:10px 9px;border-bottom:1px solid var(--border);vertical-align:middle;font-weight:600;}
   table.data td.num{font-family:var(--font-mono);}
   table.data tr:last-child td{border-bottom:none;}
-  table.data tr:hover td{background:var(--surface-2);}
+  table.data tbody tr{cursor:default;}
+  table.data tbody tr.clickable{cursor:pointer;}
+  table.data tbody tr.clickable:hover td{background:var(--surface-2);}
   .advisor{display:flex;align-items:center;gap:8px;font-weight:700;white-space:nowrap;}
-  .advisor .av{width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;flex:0 0 auto;}
+  .advisor .av{width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;flex:0 0 auto;overflow:hidden;}
+  .advisor .av img{width:100%;height:100%;object-fit:cover;}
   .pill-canal{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;}
   .pill-canal.Moderno{background:var(--status-good-soft);color:var(--status-good);}
   .pill-canal.Tradicional{background:#fef3de;color:#8a5a0d;}
 
-  .search-box{position:relative;margin-bottom:10px;}
-  .search-box input{width:100%;padding:9px 12px 9px 32px;border:1.5px solid var(--border-strong);border-radius:var(--radius-sm);font-family:inherit;font-size:12.5px;background:var(--surface-2);}
-  .search-box input:focus{outline:none;border-color:var(--brand);background:#fff;}
-  .search-box svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:13px;height:13px;color:var(--muted);}
-  .sort-ic{display:inline-block;width:8px;opacity:.4;}
-  th.sorted .sort-ic{opacity:1;color:var(--brand);}
+  .pagination{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;}
+  .pg-btn{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);font-family:inherit;font-size:11.5px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;}
+  .pg-btn:hover:not(:disabled){border-color:var(--brand);color:var(--brand);}
+  .pg-btn:disabled{opacity:.35;cursor:not-allowed;}
+  .pg-info{font-size:11px;font-weight:700;color:var(--muted);}
 
   .btn-export{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-2);font-family:inherit;font-size:11px;font-weight:700;padding:6px 11px;border-radius:999px;cursor:pointer;}
   .btn-export:hover{border-color:var(--brand);color:var(--brand);}
@@ -137,13 +140,31 @@
 
   #tooltip{position:fixed;z-index:999;pointer-events:none;background:var(--ink);color:#fff;padding:8px 11px;border-radius:9px;font-size:11.5px;font-weight:600;line-height:1.4;box-shadow:0 12px 28px -8px rgba(0,0,0,.35);display:none;max-width:230px;}
 
+  /* MODAL DETALLE DE ASESORA */
+  .modal-overlay{position:fixed;inset:0;background:rgba(24,17,15,.55);backdrop-filter:blur(3px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:36px 16px;overflow-y:auto;}
+  .modal-overlay.show{display:flex;}
+  .modal-box{background:var(--surface);border-radius:var(--radius-lg);max-width:640px;width:100%;box-shadow:0 30px 80px -20px rgba(0,0,0,.4);overflow:hidden;}
+  .modal-head{padding:20px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
+  .modal-head h3{font-size:17px;font-weight:800;}
+  .modal-head p{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600;}
+  .modal-close{border:none;background:var(--surface-2);color:var(--ink-2);width:30px;height:30px;border-radius:50%;cursor:pointer;flex:0 0 auto;display:flex;align-items:center;justify-content:center;}
+  .modal-close:hover{background:var(--brand-soft);color:var(--brand);}
+  .mb-fotos{display:flex;gap:8px;overflow-x:auto;padding:16px 22px 4px;}
+  .mb-foto{flex:0 0 auto;width:82px;text-align:center;}
+  .mb-foto img{width:82px;height:109px;object-fit:cover;border-radius:9px;background:var(--surface-3);display:block;}
+  .mb-foto span{display:block;font-size:9.5px;color:var(--muted);font-weight:700;margin-top:5px;line-height:1.3;}
+  .modal-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;padding:16px 22px 0;}
+  .modal-body{padding:16px 22px 22px;}
+  .mu-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:16px 0 8px;}
+  .mu-title:first-child{margin-top:0;}
+
   @media (max-width:1100px){
     #shell.show{flex-direction:column;}
     aside.sidebar{width:100%;flex:none;position:relative;top:0;height:auto;border-right:none;border-bottom:1px solid var(--border);}
     .kpi-grid{grid-template-columns:repeat(3,1fr);}
     .grid.cols-2{grid-template-columns:1fr;}
   }
-  @media (max-width:640px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} main.content{padding:18px 16px 40px;} }
+  @media (max-width:640px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} main.content{padding:18px 16px 40px;} .modal-kpis{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
@@ -176,7 +197,8 @@
   <aside class="sidebar">
     <div class="sb-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Segmentadores</div>
     <div class="sb-field"><label>Ciudad</label><select id="filtroCiudad"><option value="">Todas las ciudades</option></select></div>
-    <div class="sb-field"><label>Canal</label><select id="filtroCanal"><option value="">Todos los canales</option><option value="Tradicional">Tradicional</option><option value="Moderno">Moderno</option></select></div>
+    <div class="sb-field"><label>Canal</label><select id="filtroCanal"><option value="">Todos los canales</option></select></div>
+    <div class="sb-field"><label>Fecha</label><select id="filtroFecha"><option value="">Todas las fechas</option></select></div>
     <div class="sb-field"><label>Asesor</label><select id="filtroAsesor"><option value="">Todos los asesores</option></select></div>
     <button class="btn-limpiar" id="btnLimpiar" type="button">Limpiar filtros</button>
     <div class="sb-resumen"><div class="sr-v num" id="sbVisitas">—</div><div class="sr-l">Visitas en el filtro actual</div></div>
@@ -203,34 +225,33 @@
       <div class="card">
         <div class="card-head"><div><h3>Premios entregados</h3><p>Tradicional vs. Moderno</p></div></div>
         <div id="premiosCanalChart" class="hbars"></div>
-        <div id="canalCallout"></div>
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">03</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
+    <div class="section-label"><span class="sl-num">03</span><h2>Ventas por punto de venta</h2></div>
     <div class="card">
       <div class="card-head">
-        <div><h3>Cumplimiento comercial por asesor</h3><p>Ordenable — clic en cualquier encabezado</p></div>
+        <div><h3>Unidades por punto de venta</h3><p>Top 12 en la gráfica — la tabla de abajo trae todos, con % del total</p></div>
         <div style="display:flex;align-items:center;gap:8px">
-          <span class="card-tag" id="asesorTag">—</span>
-          <button class="btn-export" id="btnExportarAsesores" type="button">
+          <span class="card-tag" id="pdvTag">—</span>
+          <button class="btn-export" id="btnExportarPDV" type="button">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
           </button>
         </div>
       </div>
-      <div class="table-scroll">
-        <table class="data" id="asesoresTable">
+      <div id="pdvChart" class="hbars"></div>
+      <div class="table-scroll" style="margin-top:20px">
+        <table class="data" id="pdvTable">
           <thead><tr>
-            <th data-k="asesor">Asesor <span class="sort-ic">▾</span></th>
+            <th data-k="pdv">Punto de venta <span class="sort-ic">▾</span></th>
             <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
-            <th data-k="canal">Canal <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="visitas">Visitas <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="unidadesVendidas">Unidades Vendidas <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="premiosEntregados">Premios Entregados <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="unidades">Unidades <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="pct">% del total <span class="sort-ic">▾</span></th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
+      <div class="pagination" id="pdvPager"></div>
     </div>
 
     <div class="section-label"><span class="sl-num">04</span><h2>Voz del consumidor</h2></div>
@@ -270,57 +291,28 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">05</span><h2>Ventas por punto de venta</h2></div>
-    <div class="grid cols-2">
-      <div class="card">
-        <div class="card-head"><div><h3>Unidades por PDV</h3><p>Todos los puntos de venta del filtro actual</p></div></div>
-        <div id="pdvChart" class="hbars" style="max-height:520px;overflow-y:auto;padding-right:4px"></div>
-      </div>
-      <div class="card">
-        <div class="card-head">
-          <div><h3>Detalle por punto de venta</h3><p>Unidades y % del total vendido</p></div>
-          <div style="display:flex;align-items:center;gap:8px">
-            <span class="card-tag" id="pdvTag">—</span>
-            <button class="btn-export" id="btnExportarPDV" type="button">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
-            </button>
-          </div>
-        </div>
-        <div class="table-scroll" style="max-height:480px;overflow-y:auto">
-          <table class="data" id="pdvTable">
-            <thead><tr>
-              <th data-k="pdv">Punto de venta <span class="sort-ic">▾</span></th>
-              <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
-              <th class="num" data-k="unidades">Unidades <span class="sort-ic">▾</span></th>
-              <th class="num" data-k="pct">% del total <span class="sort-ic">▾</span></th>
-            </tr></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <div class="section-label"><span class="sl-num">06</span><h2>Detalle de ventas por producto</h2></div>
+    <div class="section-label"><span class="sl-num">05</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
     <div class="card">
       <div class="card-head">
-        <div><h3>Producto por producto</h3><p>El nivel más detallado — buscador y tabla ordenable</p></div>
-        <span class="card-tag" id="productosTag">—</span>
-      </div>
-      <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-        <input type="text" id="buscarProducto" placeholder="Buscar producto, marca o categoría...">
+        <div><h3>Cumplimiento comercial por asesor</h3><p>Clic en una fila para ver su foto y el detalle de esa persona</p></div>
+        <button class="btn-export" id="btnExportarAsesores" type="button">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
+        </button>
       </div>
       <div class="table-scroll">
-        <table class="data" id="productosTable">
+        <table class="data" id="asesoresTable">
           <thead><tr>
-            <th data-k="producto">Producto <span class="sort-ic">▾</span></th>
-            <th data-k="categoria">Categoría <span class="sort-ic">▾</span></th>
-            <th data-k="marca">Marca <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="unidades">Unidades <span class="sort-ic">▾</span></th>
+            <th data-k="asesor">Asesor <span class="sort-ic">▾</span></th>
+            <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
+            <th data-k="canal">Canal <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="visitas">Visitas <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="unidadesVendidas">Unidades Vendidas <span class="sort-ic">▾</span></th>
+            <th class="num" data-k="premiosEntregados">Premios Entregados <span class="sort-ic">▾</span></th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
+      <div class="pagination" id="asesoresPager"></div>
     </div>
 
     <footer class="note">Fuente: hoja normalizada (Normalizador.gs) — no lee JSON directo, ya viene aplanada. Se actualiza sola cuando corres el normalizador con datos nuevos.</footer>
@@ -328,6 +320,25 @@
 </div>
 
 <div id="tooltip"></div>
+
+<div class="modal-overlay" id="modalAsesor">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><h3 id="modalNombre">—</h3><p id="modalSub">—</p></div>
+      <button class="modal-close" id="modalCerrar" type="button" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="mb-fotos" id="modalFotos"></div>
+    <div class="modal-kpis" id="modalKpis"></div>
+    <div class="modal-body">
+      <div class="mu-title">Qué vendió</div>
+      <table class="data" id="modalVentasTable"><tbody></tbody></table>
+      <div class="mu-title">Premios que entregó</div>
+      <table class="data" id="modalPremiosTable"><tbody></tbody></table>
+    </div>
+  </div>
+</div>
 
 <script>
 /* ==== CONFIGURA ESTO: URL del Web App de NormalizadoBI.gs (Implementar > Nueva implementación) ==== */
@@ -339,16 +350,21 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qV
    por eso los segmentadores responden al instante. */
 let RAW = null;
 let DATA = null;
-let filtrosActuales = { ciudad: '', canal: '', asesor: '' };
-let productosOrden = { campo: 'unidades', dir: -1 };
+let filtrosActuales = { ciudad: '', canal: '', fecha: '', asesor: '' };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
 let pdvOrden = { campo: 'unidades', dir: -1 };
+let asesoresPagina = 1, pdvPagina = 1;
+const FILAS_POR_PAGINA = 10;
 let cargando = false;
 
 const NS = 'http://www.w3.org/2000/svg';
 function svgEl(tag, attrs) { const el = document.createElementNS(NS, tag); for (const k in attrs) el.setAttribute(k, attrs[k]); return el; }
 function fmt(n) { return (n || 0).toLocaleString('es-CO'); }
 function escHtml(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c])); }
+const DIAS = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb'];
+function pad2(n) { return n < 10 ? '0' + n : '' + n; }
+function fechaCorta(ts) { if (!ts) return ''; const d = new Date(ts); return DIAS[d.getDay()] + ' ' + pad2(d.getDate()) + '/' + pad2(d.getMonth() + 1); }
+function fechaHora(ts) { if (!ts) return ''; const d = new Date(ts); return fechaCorta(ts) + ' · ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
 
 const tooltipEl = document.getElementById('tooltip');
 function ttShow(evt, html) { tooltipEl.innerHTML = html; tooltipEl.style.display = 'block'; ttMove(evt); }
@@ -392,6 +408,7 @@ async function cargarBI() {
     document.getElementById('estadoCarga').classList.remove('show');
     if (!data || !data.success) { mostrarError((data && data.error) || 'Respuesta inválida del backend.'); return; }
     RAW = data;
+    RAW.visitas.forEach(v => { v.fecha = fechaCorta(v.ts); });
     document.getElementById('shell').classList.add('show');
     recalcular();
     document.getElementById('syncDot').classList.remove('bad');
@@ -412,14 +429,18 @@ function mostrarError(msg) {
   document.getElementById('syncTexto').textContent = 'Sin conexión';
 }
 
+function visitaPasaFiltro(v, f, campoIgnorado) {
+  return (campoIgnorado === 'ciudad' || !f.ciudad || v.ciudad === f.ciudad) &&
+    (campoIgnorado === 'canal' || !f.canal || v.canal === f.canal) &&
+    (campoIgnorado === 'fecha' || !f.fecha || v.fecha === f.fecha) &&
+    (campoIgnorado === 'asesor' || !f.asesor || v.asesor === f.asesor);
+}
+
 /* ===== CÁLCULO EN EL NAVEGADOR — instantáneo, no vuelve a tocar la red ===== */
 function recalcular() {
   if (!RAW) return;
   const f = filtrosActuales;
-  const visitas = RAW.visitas.filter(v =>
-    (!f.ciudad || v.ciudad === f.ciudad) &&
-    (!f.canal || v.canal === f.canal) &&
-    (!f.asesor || v.asesor === f.asesor));
+  const visitas = RAW.visitas.filter(v => visitaPasaFiltro(v, f, null));
   const idsValidos = new Set(visitas.map(v => v.id));
   const canalPorId = {}; visitas.forEach(v => { canalPorId[v.id] = v.canal; });
   const ventas = RAW.ventas.filter(x => idsValidos.has(x.id));
@@ -434,20 +455,16 @@ function recalcular() {
   const visitasConDato = visitas.filter(v => v.venta === 'Si' || v.venta === 'No').length;
   const tasaCierre = visitasConDato ? Math.round(visitasConSi / visitasConDato * 1000) / 10 : 0;
 
-  // "Asesoras activas" = personas reales (por documento), no formas de escribir el nombre.
-  const documentosSet = new Set(visitas.map(v => v.documento).filter(Boolean));
-  const asesorasActivas = documentosSet.size;
-
   const canales = ['Tradicional', 'Moderno'];
   const ventasPorCanal = canales.map(c => ({ canal: c, unidades: ventas.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
   const premiosPorCanal = canales.map(c => ({ canal: c, entregados: premiosEnt.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
-  const visitasPorCanal = canales.map(c => ({ canal: c, visitas: visitas.filter(v => v.canal === c).length }));
 
   const asesorMapa = {};
   visitas.forEach(v => {
     const k = v.asesor; if (!k) return;
-    if (!asesorMapa[k]) asesorMapa[k] = { asesor: k, ciudad: v.ciudad || '', canal: v.canal, visitas: 0, unidadesVendidas: 0, premiosEntregados: 0 };
+    if (!asesorMapa[k]) asesorMapa[k] = { asesor: k, ciudad: v.ciudad || '', canal: v.canal, visitas: 0, unidadesVendidas: 0, premiosEntregados: 0, foto: v.foto || '' };
     asesorMapa[k].visitas++;
+    if (!asesorMapa[k].foto && v.foto) asesorMapa[k].foto = v.foto;
   });
   ventas.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].unidadesVendidas += x.cantidad; });
   premiosEnt.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].premiosEntregados += x.cantidad; });
@@ -479,34 +496,19 @@ function recalcular() {
   const opiniones = voz.map(x => x.opinion).filter(n => n > 0);
   const opinionPromedio = opiniones.length ? Math.round(opiniones.reduce((s, n) => s + n, 0) / opiniones.length * 100) / 100 : 0;
 
-  const prodMapa = {};
-  ventas.forEach(x => {
-    const k = x.producto; if (!k) return;
-    if (!prodMapa[k]) prodMapa[k] = { producto: k, categoria: x.categoria || '', marca: x.marca || '', unidades: 0 };
-    prodMapa[k].unidades += x.cantidad;
-  });
-  const ventasPorProducto = Object.values(prodMapa).sort((a, b) => b.unidades - a.unidades);
-
-  const ciudadesSet = new Set(RAW.visitas.map(v => v.ciudad).filter(Boolean));
-  const asesoresSet = new Set(RAW.visitas.map(v => v.asesor).filter(Boolean));
-
   DATA = {
-    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre, asesorasActivas },
+    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre },
     ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
-    ventasPorCanal, premiosPorCanal, visitasPorCanal,
+    ventasPorCanal, premiosPorCanal,
     porAsesor, porPDV,
     vozConsumidor: {
       total: totalEncuestas, conoceMarcaPct, opinionPromedio,
       atributosDeseados: contarSplit('atributos').slice(0, 6),
       canalesConocimiento: contarSplit('canales').map(o => ({ canal: o.k, count: o.count })),
       usoMarca: contarSimple('usoMarca'), percepcion: contarSimple('percepcion'), tipoCabello: contarSimple('cabello')
-    },
-    ventasPorProducto,
-    filtrosDisponibles: {
-      ciudades: Array.from(ciudadesSet).sort((a, b) => a.localeCompare(b, 'es')),
-      canales, asesores: Array.from(asesoresSet).sort((a, b) => a.localeCompare(b, 'es'))
     }
   };
+  asesoresPagina = 1; pdvPagina = 1;
   renderAll();
 }
 
@@ -520,7 +522,10 @@ function renderAll() {
     { label: 'Premios por unidad vendida', value: k.premiosPorUnidadVendida, sub: 'premio por cada unidad' },
     { label: 'Tasa de cierre', value: k.tasaCierre + '%', sub: 'visitas con venta' },
     { label: 'Visitas', value: fmt(k.totalVisitas), sub: 'en el filtro actual' },
-    { label: 'Gestores activos', value: fmt(k.asesorasActivas), sub: 'personas reales, por documento' },
+    /* Fijo: el número real de personas que ejecutaron una visita cambia con cada corte de
+       datos (hoy, mañana, la próxima hoja normalizada); "18" es el tamaño configurado del
+       equipo de ruta, no algo que se pueda recalcular desde Registros — por eso va fijo. */
+    { label: 'Gestores', value: '18', sub: 'equipo de campo de la ruta' },
   ];
   const kpiCont = document.getElementById('kpiGrid'); kpiCont.innerHTML = '';
   defs.forEach(d => {
@@ -532,12 +537,6 @@ function renderAll() {
   renderVentasPremios();
   renderHBars('ventasCanalChart', DATA.ventasPorCanal, 'canal', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderHBars('premiosCanalChart', DATA.premiosPorCanal.map(p => ({ canal: p.canal, entregados: p.entregados })), 'canal', 'entregados', { color: 'var(--series-2)', tooltipLabel: 'Entregados' });
-
-  const trad = (DATA.visitasPorCanal.find(v => v.canal === 'Tradicional') || {}).visitas || 0;
-  const cont = document.getElementById('canalCallout');
-  if (trad > 0 && trad < 5) {
-    cont.innerHTML = `<div class="callout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg><span>El canal tradicional hoy es apenas ${trad} visita${trad === 1 ? '' : 's'} — referencia inicial, no una tendencia todavía.</span></div>`;
-  } else { cont.innerHTML = ''; }
 
   renderAsesoresTable();
 
@@ -565,9 +564,8 @@ function renderAll() {
   renderHBars('atributosChart', voz.atributosDeseados, 'k', 'count', { color: 'var(--series-6)', tooltipLabel: 'Menciones' });
   renderHBars('cabelloChart', voz.tipoCabello, 'k', 'count', { color: 'var(--series-4)', tooltipLabel: 'Encuestas' });
 
-  renderPDVChart();
+  renderHBars('pdvChart', DATA.porPDV.slice(0, 12), 'pdv', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderPDVTable();
-  renderProductosTable();
   renderFiltrosDisponibles();
 }
 
@@ -621,59 +619,64 @@ function renderStackBar(containerId, legendId, items) {
   });
 }
 
+/* ===== PAGINACIÓN ===== */
+function paginar(items, pagina) {
+  const inicio = (pagina - 1) * FILAS_POR_PAGINA;
+  return items.slice(inicio, inicio + FILAS_POR_PAGINA);
+}
+function renderPaginador(contId, totalItems, paginaActual, onCambiar) {
+  const totalPaginas = Math.max(1, Math.ceil(totalItems / FILAS_POR_PAGINA));
+  const cont = document.getElementById(contId); cont.innerHTML = '';
+  if (totalItems === 0) return;
+  const btnPrev = document.createElement('button'); btnPrev.className = 'pg-btn'; btnPrev.textContent = '‹ Anterior';
+  btnPrev.disabled = paginaActual <= 1; btnPrev.addEventListener('click', () => onCambiar(paginaActual - 1));
+  const info = document.createElement('span'); info.className = 'pg-info'; info.textContent = `Página ${paginaActual} de ${totalPaginas} · ${totalItems} en total`;
+  const btnNext = document.createElement('button'); btnNext.className = 'pg-btn'; btnNext.textContent = 'Siguiente ›';
+  btnNext.disabled = paginaActual >= totalPaginas; btnNext.addEventListener('click', () => onCambiar(paginaActual + 1));
+  cont.appendChild(btnPrev); cont.appendChild(info); cont.appendChild(btnNext);
+}
+
 function renderAsesoresTable() {
-  let items = (DATA.porAsesor || []).slice().sort((a, b) => {
+  const items = (DATA.porAsesor || []).slice().sort((a, b) => {
     const va = a[asesoresOrden.campo], vb = b[asesoresOrden.campo];
     if (typeof va === 'number') return (va - vb) * asesoresOrden.dir;
     return String(va).localeCompare(String(vb), 'es') * asesoresOrden.dir;
   });
-  document.getElementById('asesorTag').textContent = items.length + ' asesor' + (items.length === 1 ? '' : 'es');
+  const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
+  if (asesoresPagina > totalPaginas) asesoresPagina = totalPaginas;
+  const pagina = paginar(items, asesoresPagina);
   const tbody = document.querySelector('#asesoresTable tbody'); tbody.innerHTML = '';
-  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin visitas en este filtro.</td></tr>'; return; }
-  items.forEach(a => {
+  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin visitas en este filtro.</td></tr>'; }
+  pagina.forEach(a => {
     const initials = a.asesor.split(' ').map(s => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td><div class="advisor"><span class="av">${initials}</span>${escHtml(a.asesor)}</div></td>
+    const avatar = a.foto ? `<img src="${escHtml(a.foto)}" referrerpolicy="no-referrer" alt="">` : initials;
+    const tr = document.createElement('tr'); tr.className = 'clickable';
+    tr.innerHTML = `<td><div class="advisor"><span class="av">${avatar}</span>${escHtml(a.asesor)}</div></td>
       <td>${escHtml(a.ciudad)}</td><td><span class="pill-canal ${a.canal}">${a.canal}</span></td>
       <td class="num">${fmt(a.visitas)}</td><td class="num">${fmt(a.unidadesVendidas)}</td><td class="num">${fmt(a.premiosEntregados)}</td>`;
+    tr.addEventListener('click', () => abrirModalAsesor(a.asesor));
     tbody.appendChild(tr);
   });
-}
-function renderProductosTable() {
-  const q = (document.getElementById('buscarProducto').value || '').toLowerCase();
-  let items = (DATA.ventasPorProducto || []).filter(p =>
-    !q || p.producto.toLowerCase().includes(q) || (p.categoria || '').toLowerCase().includes(q) || (p.marca || '').toLowerCase().includes(q));
-  items = items.slice().sort((a, b) => {
-    const va = a[productosOrden.campo], vb = b[productosOrden.campo];
-    if (typeof va === 'number') return (va - vb) * productosOrden.dir;
-    return String(va).localeCompare(String(vb), 'es') * productosOrden.dir;
-  });
-  document.getElementById('productosTag').textContent = items.length + ' producto' + (items.length === 1 ? '' : 's');
-  const tbody = document.querySelector('#productosTable tbody'); tbody.innerHTML = '';
-  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin resultados.</td></tr>'; return; }
-  items.forEach(p => {
-    const tr = document.createElement('tr');
-    tr.innerHTML = `<td>${escHtml(p.producto)}</td><td>${escHtml(p.categoria)}</td><td>${escHtml(p.marca)}</td><td class="num">${fmt(p.unidades)}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-function renderPDVChart() {
-  renderHBars('pdvChart', DATA.porPDV, 'pdv', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
+  renderPaginador('asesoresPager', items.length, asesoresPagina, (p) => { asesoresPagina = p; renderAsesoresTable(); });
 }
 function renderPDVTable() {
-  let items = (DATA.porPDV || []).slice().sort((a, b) => {
+  const items = (DATA.porPDV || []).slice().sort((a, b) => {
     const va = a[pdvOrden.campo], vb = b[pdvOrden.campo];
     if (typeof va === 'number') return (va - vb) * pdvOrden.dir;
     return String(va).localeCompare(String(vb), 'es') * pdvOrden.dir;
   });
   document.getElementById('pdvTag').textContent = items.length + ' punto' + (items.length === 1 ? '' : 's') + ' de venta';
+  const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
+  if (pdvPagina > totalPaginas) pdvPagina = totalPaginas;
+  const pagina = paginar(items, pdvPagina);
   const tbody = document.querySelector('#pdvTable tbody'); tbody.innerHTML = '';
-  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin ventas en este filtro.</td></tr>'; return; }
-  items.forEach(p => {
+  if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="4" class="empty-hint">Sin ventas en este filtro.</td></tr>'; }
+  pagina.forEach(p => {
     const tr = document.createElement('tr');
     tr.innerHTML = `<td>${escHtml(p.pdv)}</td><td>${escHtml(p.ciudad)}</td><td class="num">${fmt(p.unidades)}</td><td class="num">${p.pct}%</td>`;
     tbody.appendChild(tr);
   });
+  renderPaginador('pdvPager', items.length, pdvPagina, (p) => { pdvPagina = p; renderPDVTable(); });
 }
 function wireOrdenTabla(tableId, ordenState, renderFn) {
   document.querySelectorAll('#' + tableId + ' th[data-k]').forEach(th => {
@@ -688,11 +691,68 @@ function wireOrdenTabla(tableId, ordenState, renderFn) {
   });
 }
 
+/* ===== MODAL DETALLE DE ASESORA ===== */
+function abrirModalAsesor(nombre) {
+  const f = filtrosActuales;
+  const visitasAsesor = RAW.visitas.filter(v => v.asesor === nombre && visitaPasaFiltro(v, f, 'asesor'));
+  if (visitasAsesor.length === 0) return;
+  const ids = new Set(visitasAsesor.map(v => v.id));
+  const ventasAsesor = RAW.ventas.filter(x => ids.has(x.id));
+  const premiosAsesor = RAW.premiosEntregados.filter(x => ids.has(x.id));
+
+  const v0 = visitasAsesor[0];
+  document.getElementById('modalNombre').textContent = nombre;
+  document.getElementById('modalSub').innerHTML = `${escHtml(v0.ciudad)} · <span class="pill-canal ${v0.canal}">${v0.canal}</span>`;
+
+  const fotosCont = document.getElementById('modalFotos'); fotosCont.innerHTML = '';
+  visitasAsesor.forEach(v => {
+    if (!v.foto) return;
+    const div = document.createElement('div'); div.className = 'mb-foto';
+    div.innerHTML = `<img src="${escHtml(v.foto)}" referrerpolicy="no-referrer" alt=""><span>${escHtml(v.pdv)}<br>${fechaHora(v.ts)}</span>`;
+    fotosCont.appendChild(div);
+  });
+  if (!fotosCont.innerHTML) fotosCont.innerHTML = '<div class="empty-hint" style="padding:8px 0">Sin foto de ingreso registrada.</div>';
+
+  const totalUnidades = ventasAsesor.reduce((s, x) => s + x.cantidad, 0);
+  const totalPremios = premiosAsesor.reduce((s, x) => s + x.cantidad, 0);
+  const kpisCont = document.getElementById('modalKpis');
+  kpisCont.innerHTML = [
+    ['Visitas', visitasAsesor.length], ['Unidades vendidas', totalUnidades], ['Premios entregados', totalPremios]
+  ].map(([l, v]) => `<div class="kpi"><span class="kpi-label">${l}</span><span class="kpi-value num">${fmt(v)}</span></div>`).join('');
+
+  const prodMapa = {};
+  ventasAsesor.forEach(x => { prodMapa[x.producto] = (prodMapa[x.producto] || 0) + x.cantidad; });
+  const filasVentas = Object.keys(prodMapa).map(k => ({ producto: k, cantidad: prodMapa[k] })).sort((a, b) => b.cantidad - a.cantidad);
+  document.querySelector('#modalVentasTable tbody').innerHTML = filasVentas.length
+    ? filasVentas.map(f => `<tr><td>${escHtml(f.producto)}</td><td class="num">${fmt(f.cantidad)}</td></tr>`).join('')
+    : '<tr><td class="empty-hint">Sin ventas en este filtro.</td></tr>';
+
+  const premMapa = {};
+  premiosAsesor.forEach(x => { premMapa[x.producto] = (premMapa[x.producto] || 0) + x.cantidad; });
+  const filasPremios = Object.keys(premMapa).map(k => ({ producto: k, cantidad: premMapa[k] })).sort((a, b) => b.cantidad - a.cantidad);
+  document.querySelector('#modalPremiosTable tbody').innerHTML = filasPremios.length
+    ? filasPremios.map(f => `<tr><td>${escHtml(f.producto)}</td><td class="num">${fmt(f.cantidad)}</td></tr>`).join('')
+    : '<tr><td class="empty-hint">Sin premios entregados en este filtro.</td></tr>';
+
+  document.getElementById('modalAsesor').classList.add('show');
+}
+function cerrarModalAsesor() { document.getElementById('modalAsesor').classList.remove('show'); }
+document.getElementById('modalCerrar').addEventListener('click', cerrarModalAsesor);
+document.getElementById('modalAsesor').addEventListener('click', e => { if (e.target.id === 'modalAsesor') cerrarModalAsesor(); });
+document.addEventListener('keydown', e => { if (e.key === 'Escape') cerrarModalAsesor(); });
+
+/* ===== SEGMENTADORES DEPENDIENTES ===== */
 function renderFiltrosDisponibles() {
-  const disp = DATA.filtrosDisponibles || { ciudades: [], asesores: [] };
-  llenarSelect('filtroCiudad', disp.ciudades, filtrosActuales.ciudad, 'Todas las ciudades');
-  llenarSelect('filtroAsesor', disp.asesores, filtrosActuales.asesor, 'Todos los asesores');
-  document.getElementById('filtroCanal').value = filtrosActuales.canal;
+  const f = filtrosActuales;
+  function opcionesDe(campo, valorFn) {
+    const set = new Set();
+    RAW.visitas.filter(v => visitaPasaFiltro(v, f, campo)).forEach(v => { if (valorFn(v)) set.add(valorFn(v)); });
+    return Array.from(set).sort((a, b) => a.localeCompare(b, 'es'));
+  }
+  llenarSelect('filtroCiudad', opcionesDe('ciudad', v => v.ciudad), f.ciudad, 'Todas las ciudades');
+  llenarSelect('filtroCanal', opcionesDe('canal', v => v.canal), f.canal, 'Todos los canales');
+  llenarSelect('filtroFecha', opcionesDe('fecha', v => v.fecha), f.fecha, 'Todas las fechas');
+  llenarSelect('filtroAsesor', opcionesDe('asesor', v => v.asesor), f.asesor, 'Todos los asesores');
 }
 function llenarSelect(id, opciones, actual, placeholder) {
   const sel = document.getElementById(id);
@@ -707,20 +767,19 @@ function descargarCSV(nombre, filas, columnas) {
 
 /* ===== INIT / EVENTOS ===== */
 /* Cambiar un filtro YA NO llama al backend — recalcula todo con los datos que ya están en el navegador. */
-['filtroCiudad', 'filtroCanal', 'filtroAsesor'].forEach(id => {
+['filtroCiudad', 'filtroCanal', 'filtroFecha', 'filtroAsesor'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {
     filtrosActuales.ciudad = document.getElementById('filtroCiudad').value;
     filtrosActuales.canal = document.getElementById('filtroCanal').value;
+    filtrosActuales.fecha = document.getElementById('filtroFecha').value;
     filtrosActuales.asesor = document.getElementById('filtroAsesor').value;
     recalcular();
   });
 });
-document.getElementById('btnLimpiar').addEventListener('click', () => { filtrosActuales = { ciudad: '', canal: '', asesor: '' }; recalcular(); });
+document.getElementById('btnLimpiar').addEventListener('click', () => { filtrosActuales = { ciudad: '', canal: '', fecha: '', asesor: '' }; recalcular(); });
 document.getElementById('btnRefrescar').addEventListener('click', cargarBI);
-document.getElementById('buscarProducto').addEventListener('input', renderProductosTable);
-wireOrdenTabla('productosTable', productosOrden, renderProductosTable);
-wireOrdenTabla('asesoresTable', asesoresOrden, renderAsesoresTable);
-wireOrdenTabla('pdvTable', pdvOrden, renderPDVTable);
+wireOrdenTabla('asesoresTable', asesoresOrden, () => { asesoresPagina = 1; renderAsesoresTable(); });
+wireOrdenTabla('pdvTable', pdvOrden, () => { pdvPagina = 1; renderPDVTable(); });
 document.getElementById('btnExportarAsesores').addEventListener('click', () => {
   descargarCSV('henkel_ventas_premios_por_asesor.csv', DATA.porAsesor, [
     { key: 'asesor', label: 'Asesor' }, { key: 'ciudad', label: 'Ciudad' }, { key: 'canal', label: 'Canal' },
