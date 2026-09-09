@@ -44,9 +44,18 @@
   .btn-refresh.spin svg{animation:spin .8s linear infinite;}
   @keyframes spin{to{transform:rotate(360deg)}}
 
-  #estadoCarga,#estadoError{display:none;max-width:600px;margin:100px auto;padding:0 24px;text-align:center;}
+  #estadoCarga,#estadoError{display:none;max-width:600px;margin:110px auto;padding:0 24px;text-align:center;}
   #estadoCarga.show,#estadoError.show{display:block;}
   .spinner-lg{width:34px;height:34px;border:3.5px solid var(--brand-soft);border-top-color:var(--brand);border-radius:50%;animation:spin .8s linear infinite;margin:0 auto 16px;}
+  .loading-badge{width:58px;height:58px;border-radius:17px;background:linear-gradient(140deg,#ff5c5c,var(--brand) 60%,var(--brand-600));display:flex;align-items:center;justify-content:center;margin:0 auto 20px;box-shadow:0 12px 30px -10px rgba(225,0,15,.5);animation:pulse 1.7s ease-in-out infinite;}
+  .loading-badge svg{width:27px;height:27px;stroke:#fff;fill:none;stroke-width:2.1;stroke-linecap:round;stroke-linejoin:round;}
+  @keyframes pulse{0%,100%{transform:scale(1);}50%{transform:scale(1.09);}}
+  .loading-title{font-size:18px;font-weight:800;margin-bottom:7px;}
+  .loading-sub{font-size:13px;color:var(--ink-2);font-weight:600;}
+  .loading-dots span{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--brand);margin:0 2px;animation:dotbounce 1.2s infinite ease-in-out;}
+  .loading-dots span:nth-child(2){animation-delay:.15s;}
+  .loading-dots span:nth-child(3){animation-delay:.3s;}
+  @keyframes dotbounce{0%,80%,100%{opacity:.25;transform:translateY(0);}40%{opacity:1;transform:translateY(-3px);}}
   #estadoError h2{font-size:16px;font-weight:800;margin-bottom:8px;}
   #estadoError p{font-size:13px;color:var(--ink-2);margin:0 auto 16px;}
   #estadoErrorMsg{font-family:var(--font-mono);font-size:11px;background:var(--status-critical-soft);color:var(--status-critical);padding:9px 13px;border-radius:var(--radius-sm);display:inline-block;max-width:560px;word-break:break-word;}
@@ -63,8 +72,11 @@
   .sb-field select{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 28px 9px 11px;border-radius:var(--radius-sm);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c5250' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
   .sb-field select:focus{outline:none;border-color:var(--brand);}
   .sb-field select:disabled{opacity:.45;cursor:not-allowed;}
-  .sb-field input[type=date]{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:8px 11px;border-radius:var(--radius-sm);cursor:pointer;}
+  .sb-field input[type=date]{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:11px;font-weight:700;padding:8px 6px;border-radius:var(--radius-sm);cursor:pointer;}
   .sb-field input[type=date]:focus{outline:none;border-color:var(--brand);}
+  .sb-daterange{display:flex;align-items:center;gap:6px;}
+  .sb-daterange > input{flex:1;min-width:0;}
+  .sb-daterange .sb-date-sep{color:var(--muted);font-size:10px;flex:0 0 auto;}
   .btn-limpiar{width:100%;border:1px solid var(--border-strong);background:var(--surface);color:var(--brand);font-family:inherit;font-size:11.5px;font-weight:800;padding:9px;border-radius:var(--radius-sm);cursor:pointer;margin-top:4px;}
   .btn-limpiar:hover{background:var(--brand-soft);}
   .sb-resumen{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);}
@@ -139,8 +151,8 @@
   table.data tbody tr{cursor:default;}
   table.data tbody tr.clickable{cursor:pointer;}
   table.data tbody tr.clickable:hover td{background:var(--surface-2);}
-  .advisor{display:flex;align-items:center;gap:8px;font-weight:700;white-space:nowrap;}
-  .advisor .av{width:24px;height:24px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:9.5px;font-weight:800;flex:0 0 auto;overflow:hidden;}
+  .advisor{display:flex;align-items:center;gap:10px;font-weight:700;white-space:nowrap;}
+  .advisor .av{width:34px;height:34px;border-radius:50%;background:var(--brand-soft);color:var(--brand);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex:0 0 auto;overflow:hidden;box-shadow:0 0 0 2px var(--surface),0 0 0 3px var(--border-strong);}
   .advisor .av img{width:100%;height:100%;object-fit:cover;}
   .pill-canal{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;}
   .pill-canal.Moderno{background:var(--status-good-soft);color:var(--status-good);}
@@ -163,7 +175,7 @@
   /* MODAL DETALLE DE ASESORA */
   .modal-overlay{position:fixed;inset:0;background:rgba(24,17,15,.55);backdrop-filter:blur(3px);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:36px 16px;overflow-y:auto;}
   .modal-overlay.show{display:flex;}
-  .modal-box{background:var(--surface);border-radius:var(--radius-lg);max-width:640px;width:100%;box-shadow:0 30px 80px -20px rgba(0,0,0,.4);overflow:hidden;}
+  .modal-box{background:var(--surface);border-radius:var(--radius-lg);max-width:740px;width:100%;box-shadow:0 30px 80px -20px rgba(0,0,0,.4);overflow:hidden;}
   .modal-head{padding:20px 22px 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;}
   .modal-head h3{font-size:17px;font-weight:800;}
   .modal-head p{font-size:12px;color:var(--muted);margin-top:3px;font-weight:600;}
@@ -213,7 +225,11 @@
   </div>
 </header>
 
-<div id="estadoCarga"><div class="spinner-lg"></div><p style="color:var(--ink-2);font-size:13px;font-weight:600;">Calculando desde la hoja normalizada…</p></div>
+<div id="estadoCarga">
+  <div class="loading-badge"><svg viewBox="0 0 24 24"><path d="M12 2s7 8.5 7 13a7 7 0 0 1-14 0c0-4.5 7-13 7-13Z"/></svg></div>
+  <div class="loading-title">Cargando tus resultados<span class="loading-dots"><span></span><span></span><span></span></span></div>
+  <p class="loading-sub">Estamos preparando tu experiencia con los datos más recientes de la ruta.</p>
+</div>
 <div id="estadoError">
   <h2>No se pudo cargar el tablero</h2>
   <p>Revisa que el backend (NormalizadoBI.gs) esté desplegado y que GAS_URL en este archivo sea la URL correcta.</p>
@@ -227,7 +243,7 @@
     <div class="sb-field"><label>Ciudad</label><select id="filtroCiudad"><option value="">Todas las ciudades</option></select></div>
     <div class="sb-field"><label>Punto de Venta</label><select id="filtroPDV"><option value="">Todos los puntos de venta</option></select></div>
     <div class="sb-field"><label>Canal</label><select id="filtroCanal"><option value="">Todos los canales</option></select></div>
-    <div class="sb-field"><label>Fecha</label><input type="date" id="filtroFecha"></div>
+    <div class="sb-field"><label>Fecha</label><div class="sb-daterange"><input type="date" id="filtroFechaDesde" aria-label="Desde"><span class="sb-date-sep">–</span><input type="date" id="filtroFechaHasta" aria-label="Hasta"></div></div>
     <div class="sb-field"><label>Asesor</label><select id="filtroAsesor"><option value="">Todos los asesores</option></select></div>
     <button class="btn-limpiar" id="btnLimpiar" type="button">Limpiar filtros</button>
     <div class="sb-resumen"><div class="sr-v num" id="sbVisitas">—</div><div class="sr-l">Visitas en el filtro actual</div></div>
@@ -239,13 +255,24 @@
 
     <div class="kpi-grid" id="kpiGrid"></div>
 
-    <div class="section-label"><span class="sl-num">01</span><h2>Ventas vs. premios redimidos</h2></div>
+    <div class="section-label"><span class="sl-num">01</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
+    <div class="card">
+      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — cada punto marca el % vs. el día anterior</p></div></div>
+      <svg id="tendenciaChart" width="100%" height="240" style="overflow:visible"></svg>
+      <div class="legend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
+        <div class="item"><span class="sw" style="background:var(--series-1)"></span>Unidades vendidas</div>
+        <div class="item"><span class="sw" style="background:var(--brand)"></span>Premios entregados</div>
+      </div>
+      <div id="tendenciaCallouts"></div>
+    </div>
+
+    <div class="section-label"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div>
     <div class="card">
       <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor en el filtro actual</p></div></div>
       <svg id="ventasPremiosChart" width="100%" height="180" style="overflow:visible"></svg>
     </div>
 
-    <div class="section-label"><span class="sl-num">02</span><h2>Ventas y premios por canal</h2></div>
+    <div class="section-label"><span class="sl-num">03</span><h2>Ventas y premios por canal</h2></div>
     <div class="grid cols-2">
       <div class="card">
         <div class="card-head"><div><h3>Unidades vendidas</h3><p>Tradicional vs. Moderno</p></div></div>
@@ -257,7 +284,7 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">03</span><h2>Ventas por punto de venta</h2></div>
+    <div class="section-label"><span class="sl-num">04</span><h2>Ventas por punto de venta</h2></div>
     <div class="card">
       <div class="card-head">
         <div><h3>Unidades por punto de venta</h3><p>Clic en una fila para ver el detalle de venta y premios de ese punto — clic en una columna para ordenar</p></div>
@@ -280,17 +307,6 @@
         </table>
       </div>
       <div class="pagination" id="pdvPager"></div>
-    </div>
-
-    <div class="section-label"><span class="sl-num">04</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
-    <div class="card">
-      <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — cada punto marca el % vs. el día anterior</p></div></div>
-      <svg id="tendenciaChart" width="100%" height="240" style="overflow:visible"></svg>
-      <div class="legend" style="display:flex;flex-wrap:wrap;gap:16px;margin-top:12px">
-        <div class="item"><span class="sw" style="background:var(--series-1)"></span>Unidades vendidas</div>
-        <div class="item"><span class="sw" style="background:var(--brand)"></span>Premios entregados</div>
-      </div>
-      <div id="tendenciaCallouts"></div>
     </div>
 
     <div class="section-label"><span class="sl-num">05</span><h2>Voz del consumidor</h2></div>
@@ -333,7 +349,10 @@
     <div class="section-label"><span class="sl-num">06</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
     <div class="card">
       <div class="card-head">
-        <div><h3>Cumplimiento comercial por asesor</h3><p>Clic en una fila para ver su foto y el detalle de esa persona</p></div>
+        <div class="card-head-ico">
+          <span class="card-icon" style="background:var(--brand-soft);color:var(--brand)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg></span>
+          <div><h3>Cumplimiento comercial por asesor</h3><p>Clic en una fila para ver su foto y el detalle de esa persona</p></div>
+        </div>
         <button class="btn-export" id="btnExportarAsesores" type="button">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>CSV
         </button>
@@ -345,7 +364,7 @@
             <th data-k="ciudad">Ciudad <span class="sort-ic">▾</span></th>
             <th data-k="canal">Canal <span class="sort-ic">▾</span></th>
             <th class="num" data-k="visitas">Visitas <span class="sort-ic">▾</span></th>
-            <th class="num" data-k="unidadesVendidas">Unidades Vendidas <span class="sort-ic">▾</span></th>
+            <th data-k="unidadesVendidas">Unidades Vendidas <span class="sort-ic">▾</span></th>
             <th class="num" data-k="premiosEntregados">Premios Entregados <span class="sort-ic">▾</span></th>
           </tr></thead>
           <tbody></tbody>
@@ -378,10 +397,10 @@
     <div class="mb-fotos" id="modalFotos"></div>
     <div class="modal-kpis" id="modalKpis"></div>
     <div class="modal-body">
-      <div class="mu-title">Qué vendió</div>
-      <table class="data" id="modalVentasTable"><tbody></tbody></table>
-      <div class="mu-title">Premios que entregó</div>
-      <table class="data" id="modalPremiosTable"><tbody></tbody></table>
+      <div class="pdv-detail">
+        <div><div class="mu-title">Qué vendió</div><table class="data" id="modalVentasTable"><tbody></tbody></table></div>
+        <div><div class="mu-title">Premios que entregó</div><table class="data" id="modalPremiosTable"><tbody></tbody></table></div>
+      </div>
     </div>
   </div>
 </div>
@@ -396,7 +415,7 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qV
    por eso los segmentadores responden al instante. */
 let RAW = null;
 let DATA = null;
-let filtrosActuales = { ciudad: '', pdv: '', canal: '', fecha: '', asesor: '' };
+let filtrosActuales = { ciudad: '', pdv: '', canal: '', fechaDesde: '', fechaHasta: '', asesor: '' };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
 let pdvOrden = { campo: 'unidades', dir: -1 };
 let asesoresPagina = 1, pdvPagina = 1;
@@ -508,7 +527,7 @@ function visitaPasaFiltro(v, f, campoIgnorado) {
   return (campoIgnorado === 'ciudad' || !f.ciudad || v.ciudad === f.ciudad) &&
     (campoIgnorado === 'pdv' || !f.pdv || v.pdv === f.pdv) &&
     (campoIgnorado === 'canal' || !f.canal || v.canal === f.canal) &&
-    (campoIgnorado === 'fecha' || !f.fecha || v.fechaISO === f.fecha) &&
+    (campoIgnorado === 'fecha' || ((!f.fechaDesde || v.fechaISO >= f.fechaDesde) && (!f.fechaHasta || v.fechaISO <= f.fechaHasta))) &&
     (campoIgnorado === 'asesor' || !f.asesor || v.asesor === f.asesor);
 }
 
@@ -822,15 +841,19 @@ function renderAsesoresTable() {
   const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
   if (asesoresPagina > totalPaginas) asesoresPagina = totalPaginas;
   const pagina = paginar(items, asesoresPagina);
+  const maxUnidadesAsesor = Math.max(1, ...items.map(a => a.unidadesVendidas));
   const tbody = document.querySelector('#asesoresTable tbody'); tbody.innerHTML = '';
   if (items.length === 0) { tbody.innerHTML = '<tr><td colspan="6" class="empty-hint">Sin visitas en este filtro.</td></tr>'; }
   pagina.forEach(a => {
     const initials = a.asesor.split(' ').map(s => s[0]).filter(Boolean).slice(0, 2).join('').toUpperCase();
     const avatar = a.foto ? `<img src="${escHtml(normalizarFotoUrl(a.foto, 100))}" referrerpolicy="no-referrer" alt="" onerror="imgFallback(this)">` : initials;
+    const barPct = Math.max(2, (a.unidadesVendidas / maxUnidadesAsesor) * 100);
     const tr = document.createElement('tr'); tr.className = 'clickable';
     tr.innerHTML = `<td><div class="advisor"><span class="av">${avatar}</span>${escHtml(a.asesor)}</div></td>
       <td>${escHtml(a.ciudad)}</td><td><span class="pill-canal ${a.canal}">${a.canal}</span></td>
-      <td class="num">${fmt(a.visitas)}</td><td class="num">${fmt(a.unidadesVendidas)}</td><td class="num">${fmt(a.premiosEntregados)}</td>`;
+      <td class="num">${fmt(a.visitas)}</td>
+      <td><div class="cell-bar"><span class="cell-bar-track"><span class="cell-bar-fill" style="width:${barPct}%"></span></span><span class="cell-bar-val num">${fmt(a.unidadesVendidas)}</span></div></td>
+      <td class="num">${fmt(a.premiosEntregados)}</td>`;
     tr.addEventListener('click', () => abrirModalAsesor(a.asesor));
     tbody.appendChild(tr);
   });
@@ -977,10 +1000,18 @@ function renderFiltrosDisponibles() {
   llenarSelect('filtroAsesor', opcionesDe('asesor', v => v.asesor), f.asesor, 'Todos los asesores');
 
   const fechasDisponibles = opcionesDe('fecha', v => v.fechaISO);
-  const fechaInput = document.getElementById('filtroFecha');
-  if (fechasDisponibles.length) { fechaInput.min = fechasDisponibles[0]; fechaInput.max = fechasDisponibles[fechasDisponibles.length - 1]; }
-  else { fechaInput.removeAttribute('min'); fechaInput.removeAttribute('max'); }
-  fechaInput.value = f.fecha || '';
+  const desdeInput = document.getElementById('filtroFechaDesde');
+  const hastaInput = document.getElementById('filtroFechaHasta');
+  const minGlobal = fechasDisponibles[0], maxGlobal = fechasDisponibles[fechasDisponibles.length - 1];
+  if (fechasDisponibles.length) {
+    desdeInput.min = minGlobal; desdeInput.max = f.fechaHasta || maxGlobal;
+    hastaInput.min = f.fechaDesde || minGlobal; hastaInput.max = maxGlobal;
+  } else {
+    desdeInput.removeAttribute('min'); desdeInput.removeAttribute('max');
+    hastaInput.removeAttribute('min'); hastaInput.removeAttribute('max');
+  }
+  desdeInput.value = f.fechaDesde || '';
+  hastaInput.value = f.fechaHasta || '';
 }
 function llenarSelect(id, opciones, actual, placeholder) {
   const sel = document.getElementById(id);
@@ -995,19 +1026,21 @@ function descargarCSV(nombre, filas, columnas) {
 
 /* ===== INIT / EVENTOS ===== */
 /* Cambiar un filtro YA NO llama al backend — recalcula todo con los datos que ya están en el navegador. */
-['filtroCiudad', 'filtroPDV', 'filtroCanal', 'filtroFecha', 'filtroAsesor'].forEach(id => {
+['filtroCiudad', 'filtroPDV', 'filtroCanal', 'filtroFechaDesde', 'filtroFechaHasta', 'filtroAsesor'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {
     filtrosActuales.ciudad = document.getElementById('filtroCiudad').value;
     filtrosActuales.pdv = document.getElementById('filtroPDV').value;
     filtrosActuales.canal = document.getElementById('filtroCanal').value;
-    filtrosActuales.fecha = document.getElementById('filtroFecha').value;
+    filtrosActuales.fechaDesde = document.getElementById('filtroFechaDesde').value;
+    filtrosActuales.fechaHasta = document.getElementById('filtroFechaHasta').value;
     filtrosActuales.asesor = document.getElementById('filtroAsesor').value;
     recalcular();
   });
 });
 document.getElementById('btnLimpiar').addEventListener('click', () => {
-  filtrosActuales = { ciudad: '', pdv: '', canal: '', fecha: '', asesor: '' };
-  document.getElementById('filtroFecha').value = '';
+  filtrosActuales = { ciudad: '', pdv: '', canal: '', fechaDesde: '', fechaHasta: '', asesor: '' };
+  document.getElementById('filtroFechaDesde').value = '';
+  document.getElementById('filtroFechaHasta').value = '';
   recalcular();
 });
 document.getElementById('btnRefrescar').addEventListener('click', cargarBI);
