@@ -72,16 +72,19 @@
   .sb-field select{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 28px 9px 11px;border-radius:var(--radius-sm);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c5250' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
   .sb-field select:focus{outline:none;border-color:var(--brand);}
   .sb-field select:disabled{opacity:.45;cursor:not-allowed;}
-  .sb-field input[type=date]{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:11px;font-weight:700;padding:8px 6px;border-radius:var(--radius-sm);cursor:pointer;}
-  .sb-field input[type=date]:focus{outline:none;border-color:var(--brand);}
-  .sb-daterange{display:flex;align-items:center;gap:6px;}
-  .sb-daterange > input{flex:1;min-width:0;}
-  .sb-daterange .sb-date-sep{color:var(--muted);font-size:10px;flex:0 0 auto;}
   .btn-limpiar{width:100%;border:1px solid var(--border-strong);background:var(--surface);color:var(--brand);font-family:inherit;font-size:11.5px;font-weight:800;padding:9px;border-radius:var(--radius-sm);cursor:pointer;margin-top:4px;}
   .btn-limpiar:hover{background:var(--brand-soft);}
   .sb-resumen{margin-top:22px;padding-top:18px;border-top:1px solid var(--border);}
   .sb-resumen .sr-v{font-size:26px;font-weight:800;color:var(--brand);line-height:1;}
   .sb-resumen .sr-l{font-size:10.5px;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-top:5px;}
+
+  .henkel-anexo{display:flex;align-items:center;gap:11px;margin-left:16px;padding-left:16px;border-left:1px solid var(--border);}
+  .ha-oval{display:inline-flex;align-items:center;justify-content:center;border:2px solid var(--brand);color:var(--brand);border-radius:999px;padding:3px 14px;font-weight:800;font-size:12.5px;font-style:italic;letter-spacing:.01em;font-family:Georgia,'Times New Roman',serif;}
+  .ha-instore{display:flex;align-items:center;gap:4px;}
+  .ha-instore svg{width:18px;height:18px;stroke:var(--brand);fill:none;stroke-width:2;flex:0 0 auto;}
+  .ha-instore-txt{display:flex;flex-direction:column;line-height:1.05;}
+  .ha-instore-txt b{font-size:11.5px;font-weight:800;color:var(--brand);letter-spacing:.02em;}
+  .ha-instore-txt span{font-size:8px;font-weight:800;color:var(--ink-2);letter-spacing:.06em;text-transform:uppercase;}
 
   /* MAIN */
   main.content{flex:1;min-width:0;padding:24px 26px 60px;}
@@ -94,7 +97,15 @@
   .kpi .kpi-value{display:block;font-size:23px;font-weight:800;color:var(--brand);line-height:1;}
   .kpi .kpi-sub{display:block;font-size:10.5px;color:var(--ink-2);font-weight:600;margin-top:6px;}
 
-  .section-label{display:flex;align-items:center;gap:9px;margin:28px 0 12px;}
+  .resumen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-bottom:26px;}
+  .resumen-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;box-shadow:var(--shadow-card);display:flex;gap:14px;align-items:flex-start;}
+  .resumen-item .ri-num{font-size:11px;font-weight:800;color:var(--brand);background:var(--brand-soft);border-radius:9px;width:26px;height:26px;flex:0 0 auto;display:flex;align-items:center;justify-content:center;}
+  .resumen-item h4{font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.03em;color:var(--ink);margin-bottom:6px;}
+  .resumen-item p{font-size:12.5px;color:var(--ink-2);line-height:1.55;margin:0;}
+  .resumen-item p b{color:var(--ink);font-weight:800;}
+
+  .section-label{display:flex;align-items:center;gap:9px;margin:28px 0 12px;justify-content:space-between;}
+  .section-label .sl-left{display:flex;align-items:center;gap:9px;}
   .section-label .sl-num{font-size:10px;font-weight:800;color:var(--muted);border:1px solid var(--border-strong);border-radius:999px;padding:3px 9px;}
   .section-label h2{font-size:14px;font-weight:800;}
 
@@ -185,6 +196,9 @@
   .btn-export{display:inline-flex;align-items:center;gap:5px;border:1px solid var(--border-strong);background:var(--surface);color:var(--ink-2);font-family:inherit;font-size:11px;font-weight:700;padding:6px 11px;border-radius:999px;cursor:pointer;}
   .btn-export:hover{border-color:var(--brand);color:var(--brand);}
   .btn-export svg{width:12px;height:12px;}
+  .btn-incremental{display:inline-flex;align-items:center;gap:6px;border:none;background:linear-gradient(140deg,#ff5c5c,var(--brand) 60%,var(--brand-600));color:#fff;font-family:inherit;font-size:11.5px;font-weight:800;padding:8px 14px;border-radius:999px;cursor:pointer;box-shadow:0 8px 18px -6px rgba(225,0,15,.5);}
+  .btn-incremental:hover{filter:brightness(1.06);}
+  .btn-incremental svg{width:13px;height:13px;}
 
   footer.note{margin-top:26px;padding-top:16px;border-top:1px solid var(--border);font-size:10.5px;color:var(--muted);font-weight:600;}
   footer.note .copyright{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;}
@@ -218,13 +232,28 @@
   .mu-title{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin:16px 0 8px;}
   .mu-title:first-child{margin-top:0;}
 
+  /* MODAL INCREMENTALIDAD */
+  .modal-incremental .modal-box{max-width:1020px;}
+  .inc-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;padding:18px 22px 0;}
+  .inc-kpi{background:var(--surface-2);border:1px solid var(--border);border-radius:var(--radius-md);padding:13px 14px;}
+  .inc-kpi .ik-l{display:block;font-size:9.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:7px;}
+  .inc-kpi .ik-v{display:block;font-size:19px;font-weight:800;color:var(--ink);line-height:1;}
+  .inc-kpi .ik-v.pos{color:var(--status-good);}
+  .inc-kpi .ik-v.neg{color:var(--status-critical);}
+  .inc-legend{display:flex;flex-wrap:wrap;gap:16px;padding:4px 22px 0;margin-top:14px;}
+  .inc-legend .item{font-size:11px;}
+  .inc-note{margin:14px 22px 0;font-size:11px;color:var(--muted);background:var(--surface-2);border-radius:var(--radius-sm);padding:10px 13px;line-height:1.5;}
+
   @media (max-width:1100px){
     #shell.show{flex-direction:column;}
     aside.sidebar{width:100%;flex:none;position:relative;top:0;height:auto;border-right:none;border-bottom:1px solid var(--border);}
-    .kpi-grid{grid-template-columns:repeat(3,1fr);}
+    .kpi-grid{grid-template-columns:repeat(2,1fr);}
+    .resumen-grid{grid-template-columns:1fr;}
     .grid.cols-2{grid-template-columns:1fr;}
     .pdv-detail{grid-template-columns:1fr;}
     .vp-split{grid-template-columns:1fr;}
+    .henkel-anexo{display:none;}
+    .inc-kpis{grid-template-columns:repeat(2,1fr);}
   }
   @media (max-width:640px){ .kpi-grid{grid-template-columns:repeat(2,1fr);} main.content{padding:18px 16px 40px;} .modal-kpis{grid-template-columns:1fr;} }
 </style>
@@ -236,6 +265,13 @@
     <div class="brandmark">
       <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2s7 8.5 7 13a7 7 0 0 1-14 0c0-4.5 7-13 7-13Z"/></svg></div>
       <div class="titles"><b>Henkel GLISS</b><span>Ventas y Premios · Datos Normalizados</span></div>
+    </div>
+    <div class="henkel-anexo" aria-hidden="true">
+      <span class="ha-oval">Henkel</span>
+      <span class="ha-instore">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20a1 1 0 001 1h12a1 1 0 001-1V9.5"/><path d="M9 21v-6h6v6"/></svg>
+        <span class="ha-instore-txt"><b>IN</b><span>Store</span></span>
+      </span>
     </div>
     <div class="top-right">
       <div class="sync-note"><span class="sync-dot" id="syncDot"></span><span id="syncTexto">Cargando…</span></div>
@@ -262,10 +298,12 @@
 <div id="shell">
   <aside class="sidebar">
     <div class="sb-title"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>Segmentadores</div>
-    <div class="sb-field"><label>Ciudad</label><select id="filtroCiudad"><option value="">Todas las ciudades</option></select></div>
-    <div class="sb-field"><label>Punto de Venta</label><select id="filtroPDV"><option value="">Todos los puntos de venta</option></select></div>
     <div class="sb-field"><label>Canal</label><select id="filtroCanal"><option value="">Todos los canales</option></select></div>
-    <div class="sb-field"><label>Fecha</label><div class="sb-daterange"><input type="date" id="filtroFechaDesde" aria-label="Desde"><span class="sb-date-sep">–</span><input type="date" id="filtroFechaHasta" aria-label="Hasta"></div></div>
+    <div class="sb-field"><label>Ciudad</label><select id="filtroCiudad"><option value="">Todas las ciudades</option></select></div>
+    <div class="sb-field"><label>Cadena</label><select id="filtroCadena"><option value="">Todas las cadenas</option></select></div>
+    <div class="sb-field"><label>Mes</label><select id="filtroMes"><option value="">Todos los meses</option></select></div>
+    <div class="sb-field"><label>Semana</label><select id="filtroSemana"><option value="">Todos los fines de semana</option></select></div>
+    <div class="sb-field"><label>Punto de Venta</label><select id="filtroPDV"><option value="">Todos los puntos de venta</option></select></div>
     <div class="sb-field"><label>Asesor</label><select id="filtroAsesor"><option value="">Todos los asesores</option></select></div>
     <button class="btn-limpiar" id="btnLimpiar" type="button">Limpiar filtros</button>
     <div class="sb-resumen"><div class="sr-v num" id="sbVisitas">—</div><div class="sr-l">Visitas en el filtro actual</div></div>
@@ -276,8 +314,15 @@
     <div class="page-title">De las cifras grandes al detalle</div>
 
     <div class="kpi-grid" id="kpiGrid"></div>
+    <div class="resumen-grid" id="resumenEjecutivo"></div>
 
-    <div class="section-label"><span class="sl-num">01</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
+    <div class="section-label">
+      <div class="sl-left"><span class="sl-num">01</span><h2>Tendencia diaria — ventas y premios entregados</h2></div>
+      <button class="btn-incremental" id="btnAbrirIncremental" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg>
+        Ver incrementalidad vs. cuota
+      </button>
+    </div>
     <div class="card">
       <div class="card-head"><div><h3>Unidades vendidas vs. premios entregados por día</h3><p>Dentro del filtro actual — cada punto trae su cifra y el % vs. el día anterior</p></div></div>
       <svg id="tendenciaChart" width="100%" height="300" style="overflow:visible"></svg>
@@ -309,7 +354,7 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div>
+    <div class="section-label"><div class="sl-left"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div></div>
     <div class="card">
       <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor, y de qué se compuso ese material en el filtro actual</p></div></div>
       <div class="vp-split">
@@ -324,7 +369,7 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">03</span><h2>Ventas y premios por canal</h2></div>
+    <div class="section-label"><div class="sl-left"><span class="sl-num">03</span><h2>Ventas y premios por canal</h2></div></div>
     <div class="grid cols-2">
       <div class="card">
         <div class="card-head"><div><h3>Unidades vendidas</h3><p>Tradicional vs. Moderno</p></div></div>
@@ -336,7 +381,7 @@
       </div>
     </div>
 
-    <div class="section-label"><span class="sl-num">04</span><h2>Ventas por punto de venta</h2></div>
+    <div class="section-label"><div class="sl-left"><span class="sl-num">04</span><h2>Ventas por punto de venta</h2></div></div>
     <div class="card">
       <div class="card-head">
         <div><h3>Unidades y premios por punto de venta</h3><p>Cada fila trae ya sumadas las unidades y los premios del punto — clic en la fila para abrir el discriminado por producto, clic en una columna para ordenar</p></div>
@@ -362,7 +407,7 @@
       <div class="pagination" id="pdvPager"></div>
     </div>
 
-    <div class="section-label"><span class="sl-num">05</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div>
+    <div class="section-label"><div class="sl-left"><span class="sl-num">05</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div></div>
     <div class="card">
       <div class="card-head">
         <div class="card-head-ico">
@@ -388,7 +433,7 @@
       <div class="pagination" id="asesoresPager"></div>
     </div>
 
-    <div class="section-label"><span class="sl-num">06</span><h2>Voz del consumidor</h2></div>
+    <div class="section-label"><div class="sl-left"><span class="sl-num">06</span><h2>Voz del consumidor</h2></div></div>
     <div class="card">
       <div class="card-head"><div><h3>Resumen de encuestas</h3><p id="vozSub">— consumidores encuestados en el filtro actual</p></div></div>
       <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:0" id="vozMiniKpis"></div>
@@ -463,6 +508,25 @@
   </div>
 </div>
 
+<div class="modal-overlay modal-incremental" id="modalIncremental">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div><h3>Incrementalidad vs. cuota</h3><p id="incrementalSub">Venta con impulso vs. la cuota comprometida, dentro del filtro actual</p></div>
+      <button class="modal-close" id="incrementalCerrar" type="button" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" style="width:15px;height:15px"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+      </button>
+    </div>
+    <div class="inc-kpis" id="incrementalKpis"></div>
+    <div style="padding:16px 22px 0"><svg id="incrementalChart" width="100%" height="300" style="overflow:visible"></svg></div>
+    <div class="inc-legend">
+      <div class="item"><span class="sw" style="background:var(--muted)"></span>Baseline (Sell Out Ene–Ago prorrateado)</div>
+      <div class="item"><span class="sw" style="background:var(--status-good)"></span>Incremental del impulso</div>
+      <div class="item"><span class="sw" style="background:var(--series-4)"></span>Cuota del período (línea)</div>
+    </div>
+    <div class="inc-note" id="incrementalNota"></div>
+  </div>
+</div>
+
 <script>
 /* ==== CONFIGURA ESTO: URL del Web App de NormalizadoBI.gs (Implementar > Nueva implementación) ==== */
 const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qVR7Oocn5kF_zDh6Cm5erhbszzcAat7ShLkqOaxLBQDubT/exec';
@@ -471,14 +535,18 @@ const GAS_URL = 'https://script.google.com/macros/s/AKfycbzJcfhdT3V4xaNYVYf6c3qV
    DATA = el resultado ya filtrado y calculado en el navegador — cambiar de
    filtro solo llama recalcular(), nunca vuelve a pedirle nada a Apps Script,
    por eso los segmentadores responden al instante. */
-/* Meta de cobertura de la ruta: visitas que habia que hacer en el periodo.
-   Si el backend la manda (campo metaVisitas) manda el backend; si no, se usa
-   este numero. Cambiarlo aqui NO exige redeploy del Apps Script. */
+/* Meta de cobertura de respaldo: solo se usa si el backend TODAVÍA no manda
+   "cuotaGliss" (antes de redesplegar NormalizadoBI.gs con la lectura de
+   Seguimiento Cuota Gliss). En cuanto llega cuotaGliss, la cobertura se
+   calcula real (programadas vs. realizadas), no con este número fijo. */
 const META_VISITAS_FALLBACK = 90;
+/* Días entre el 1 ene y el 31 ago 2026 (ambos incluidos, 2026 no es bisiesto) —
+   con esto se prorratea "Sell Out Total Ene-Agosto" a un promedio diario. */
+const DIAS_ENE_AGO = 243;
 
 let RAW = null;
 let DATA = null;
-let filtrosActuales = { ciudad: '', pdv: '', canal: '', fechaDesde: '', fechaHasta: '', asesor: '' };
+let filtrosActuales = { canal: '', ciudad: '', cadena: '', mes: '', semana: '', pdv: '', asesor: '' };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
 let pdvOrden = { campo: 'unidades', dir: -1 };
 let asesoresPagina = 1, pdvPagina = 1;
@@ -495,6 +563,59 @@ function fechaCorta(ts) { if (!ts) return ''; const d = new Date(ts); return DIA
 function fechaHora(ts) { if (!ts) return ''; const d = new Date(ts); return fechaCorta(ts) + ' · ' + pad2(d.getHours()) + ':' + pad2(d.getMinutes()); }
 function fechaISO(ts) { if (!ts) return ''; const d = new Date(ts); return d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate()); }
 function fechaCortaISO(iso) { if (!iso) return ''; const [y, m, d] = iso.split('-').map(Number); const dt = new Date(y, m - 1, d); return DIAS[dt.getDay()] + ' ' + pad2(dt.getDate()) + '/' + pad2(dt.getMonth() + 1); }
+/* Comparación tolerante a mayúsculas/tildes — para cruzar textos entre Data Normalizada y
+   Seguimiento Cuota Gliss, que no siempre coinciden letra por letra. */
+function normTxt(s) { return String(s || '').trim().toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+
+/* Cadena = se deriva del nombre del punto de venta (no viene como columna en Data
+   Normalizada). Se usa la MISMA función para los PDV de Seguimiento Cuota Gliss, así los
+   dos orígenes de datos siempre coinciden en cómo agrupan por cadena. */
+function cadenaDe(pdv) {
+  const p = (pdv || '').toUpperCase();
+  if (p.includes('DROGUER')) return 'Droguerías';
+  if (p.includes('EURO')) return 'Euro';
+  if (p.includes('EXITO') || p.includes('ÉXITO')) return 'Éxito';
+  if (p.includes('FARMATODO')) return 'Farmatodo';
+  if (p.includes('JUMBO')) return 'Jumbo';
+  if (p.includes('MERCALDAS')) return 'Mercaldas';
+  if (p.includes('MERCACENTRO')) return 'Mercacentro';
+  if (p.includes('CAÑAVERAL') || p.includes('CANAVERAL')) return 'Cañaveral';
+  if (p.includes('SURTIPLAZA')) return 'Surtiplaza';
+  if (p.includes('BONANZA')) return 'La Bonanza';
+  if (p.includes('CARIBE')) return 'Caribe';
+  if (p.includes('SURTIFAMILIAR')) return 'Surtifamiliar';
+  return 'Otros';
+}
+
+const MESES = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+const MESES_CORTO = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+function mesClaveDe(iso) { return iso ? iso.slice(0, 7) : ''; }
+function mesEtiquetaDe(iso) { if (!iso) return ''; const [y, m] = iso.split('-').map(Number); return MESES[m - 1] + ' ' + y; }
+function diasDelMes(iso) { if (!iso) return 30; const [y, m] = iso.split('-').map(Number); return new Date(y, m, 0).getDate(); }
+function cuotaMesDe(c, iso) {
+  const mes = iso ? Number(iso.slice(5, 7)) : 0;
+  if (mes === 9) return c.cuotaSep || 0;
+  if (mes === 10) return c.cuotaOct || 0;
+  if (mes === 11) return c.cuotaNov || 0;
+  if (mes === 12) return c.cuotaDic || 0;
+  return 0;
+}
+
+/* Semana = el fin de semana (vie-sáb-dom) al que pertenece la visita, calculado directo de
+   la fecha (esta campaña opera por fines de semana, no hace falta cronograma externo para
+   esto). Un día entre semana no pertenece a ningún fin de semana y no entra en este filtro. */
+function finDeSemanaDe(iso) {
+  if (!iso) return null;
+  const [y, m, d] = iso.split('-').map(Number);
+  const dow = new Date(y, m - 1, d).getDay();
+  let offset;
+  if (dow === 5) offset = 0; else if (dow === 6) offset = 1; else if (dow === 0) offset = 2; else return null;
+  const vie = new Date(y, m - 1, d - offset);
+  const dom = new Date(vie.getFullYear(), vie.getMonth(), vie.getDate() + 2);
+  const clave = vie.getFullYear() + '-' + pad2(vie.getMonth() + 1) + '-' + pad2(vie.getDate());
+  const etiqueta = pad2(vie.getDate()) + '–' + pad2(dom.getDate()) + ' ' + MESES_CORTO[vie.getMonth()];
+  return { clave, etiqueta };
+}
 
 /* Placeholder cuando una foto de Drive no carga (permiso, archivo movido/borrado, hipo de red) —
    evita el ícono de "imagen rota" del navegador, que fue la queja original. */
@@ -562,7 +683,15 @@ async function cargarBI() {
     document.getElementById('estadoCarga').classList.remove('show');
     if (!data || !data.success) { mostrarError((data && data.error) || 'Respuesta inválida del backend.'); return; }
     RAW = data;
-    RAW.visitas.forEach(v => { v.fecha = fechaCorta(v.ts); v.fechaISO = fechaISO(v.ts); });
+    RAW.visitas.forEach(v => {
+      v.fecha = fechaCorta(v.ts); v.fechaISO = fechaISO(v.ts);
+      v.cadena = cadenaDe(v.pdv);
+      v.mes = mesClaveDe(v.fechaISO); v.mesEtiqueta = mesEtiquetaDe(v.fechaISO);
+      const fds = finDeSemanaDe(v.fechaISO);
+      v.semana = fds ? fds.clave : ''; v.semanaEtiqueta = fds ? fds.etiqueta : '';
+    });
+    if (!Array.isArray(RAW.cuotaGliss)) RAW.cuotaGliss = [];
+    RAW.cuotaGliss.forEach(c => { c.cadena = cadenaDe(c.pdv); });
     document.getElementById('shell').classList.add('show');
     recalcular();
     document.getElementById('syncDot').classList.remove('bad');
@@ -587,11 +716,26 @@ function mostrarError(msg) {
 }
 
 function visitaPasaFiltro(v, f, campoIgnorado) {
-  return (campoIgnorado === 'ciudad' || !f.ciudad || v.ciudad === f.ciudad) &&
+  return (campoIgnorado === 'canal' || !f.canal || v.canal === f.canal) &&
+    (campoIgnorado === 'ciudad' || !f.ciudad || v.ciudad === f.ciudad) &&
+    (campoIgnorado === 'cadena' || !f.cadena || v.cadena === f.cadena) &&
+    (campoIgnorado === 'mes' || !f.mes || v.mes === f.mes) &&
+    (campoIgnorado === 'semana' || !f.semana || v.semana === f.semana) &&
     (campoIgnorado === 'pdv' || !f.pdv || v.pdv === f.pdv) &&
-    (campoIgnorado === 'canal' || !f.canal || v.canal === f.canal) &&
-    (campoIgnorado === 'fecha' || ((!f.fechaDesde || v.fechaISO >= f.fechaDesde) && (!f.fechaHasta || v.fechaISO <= f.fechaHasta))) &&
     (campoIgnorado === 'asesor' || !f.asesor || v.asesor === f.asesor);
+}
+/* Mismo filtro pero para las filas de Seguimiento Cuota Gliss (no tienen asesor: "Impulsadora"
+   en esa hoja es una etiqueta de cupo, no la persona real que ejecuta la visita). */
+function pdvCuotaPasaFiltro(c, f) {
+  return (!f.canal || c.canal === f.canal) &&
+    (!f.ciudad || normTxt(c.ciudad) === normTxt(f.ciudad)) &&
+    (!f.cadena || c.cadena === f.cadena) &&
+    (!f.pdv || normTxt(c.pdv) === normTxt(f.pdv));
+}
+function fechaProgramadaPasaFiltro(iso, f) {
+  if (f.mes && mesClaveDe(iso) !== f.mes) return false;
+  if (f.semana) { const fds = finDeSemanaDe(iso); if (!fds || fds.clave !== f.semana) return false; }
+  return true;
 }
 
 /* ===== CÁLCULO EN EL NAVEGADOR — instantáneo, no vuelve a tocar la red ===== */
@@ -612,10 +756,28 @@ function recalcular() {
   const visitasConSi = visitas.filter(v => v.venta === 'Si').length;
   const visitasConDato = visitas.filter(v => v.venta === 'Si' || v.venta === 'No').length;
   const tasaCierre = visitasConDato ? Math.round(visitasConSi / visitasConDato * 1000) / 10 : 0;
-  /* Cobertura = visitas cumplidas sobre las programadas. La meta es fija (la ruta del
-     periodo), asi que al segmentar por ciudad/canal el % baja proporcionalmente: es el
-     mismo denominador, no se recorta con el filtro. */
-  const metaVisitas = (RAW && RAW.metaVisitas) || META_VISITAS_FALLBACK;
+  const pdvsActivos = new Set(visitas.map(v => v.pdv).filter(Boolean)).size;
+  const ciudadesActivas = new Set(visitas.map(v => v.ciudad).filter(Boolean)).size;
+
+  /* Cobertura REAL: cuenta las fechas programadas (Seguimiento Cuota Gliss) de los PDV que
+     caen dentro del filtro actual, y que ya debían haber pasado si no hay un mes/semana
+     específico seleccionado (si seleccionaste un período puntual, se respeta ese período
+     completo así sea futuro). Si el backend todavía no manda cuotaGliss (falta redesplegar
+     NormalizadoBI.gs), se usa la meta fija de respaldo para no dejar el tablero sin este dato. */
+  const hayCuotaGliss = Array.isArray(RAW.cuotaGliss) && RAW.cuotaGliss.length > 0;
+  const cuotaFiltrada = hayCuotaGliss ? RAW.cuotaGliss.filter(c => pdvCuotaPasaFiltro(c, f)) : [];
+  let programadas = 0;
+  const hoyISO = fechaISO(new Date());
+  const limitarAHoy = !f.mes && !f.semana;
+  cuotaFiltrada.forEach(c => {
+    (c.fechasProgramadas || []).forEach(iso => {
+      if (!fechaProgramadaPasaFiltro(iso, f)) return;
+      if (limitarAHoy && iso > hoyISO) return;
+      programadas++;
+    });
+  });
+  const coberturaEsReal = hayCuotaGliss;
+  const metaVisitas = coberturaEsReal ? programadas : META_VISITAS_FALLBACK;
   const coberturaPct = metaVisitas ? Math.round(totalVisitas / metaVisitas * 1000) / 10 : 0;
 
   const canales = ['Tradicional', 'Moderno'];
@@ -641,6 +803,11 @@ function recalcular() {
   ventas.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].unidadesVendidas += x.cantidad; });
   premiosEnt.forEach(x => { if (asesorMapa[x.asesor]) asesorMapa[x.asesor].premiosEntregados += x.cantidad; });
   const porAsesor = Object.values(asesorMapa).sort((a, b) => b.unidadesVendidas - a.unidadesVendidas);
+
+  const porProductoMapa = {};
+  ventas.forEach(x => { if (x.producto) porProductoMapa[x.producto] = (porProductoMapa[x.producto] || 0) + x.cantidad; });
+  const topProductoEntry = Object.entries(porProductoMapa).sort((a, b) => b[1] - a[1])[0];
+  const topProducto = topProductoEntry ? { producto: topProductoEntry[0], cantidad: topProductoEntry[1] } : null;
 
   /* Un punto puede tener premios entregados sin venta registrada, por eso el mapa se
      alimenta de las dos fuentes. El canal sale de la visita (Usuario Especial), nunca del
@@ -689,6 +856,39 @@ function recalcular() {
     cambioPremiosPct = anterior.premios ? Math.round((ultimo.premios - anterior.premios) / anterior.premios * 1000) / 10 : null;
   }
 
+  /* Incrementalidad vs. cuota (sección aparte, detrás del botón). Por cada día se mira qué
+     PDV vendieron ese día y se les suma su venta base histórica (Sell Out Ene-Ago / 243
+     días) y su cuota diaria (cuota del mes correspondiente / días de ese mes). El baseline
+     es venta TOTAL del punto (todo el portafolio via POS de la cadena), no específica de la
+     impulsadora, así que puede salir más alta que lo capturado en campo — por eso "vs. cuota"
+     es el indicador principal y el baseline queda solo como referencia (ver nota en el modal). */
+  const pdvCuotaPorNombre = {};
+  cuotaFiltrada.forEach(c => { pdvCuotaPorNombre[normTxt(c.pdv)] = c; });
+  const pdvPorFecha = {};
+  ventas.forEach(x => {
+    const iso = fechaISOPorId[x.id]; if (!iso || !x.pdv) return;
+    if (!pdvPorFecha[iso]) pdvPorFecha[iso] = new Set();
+    pdvPorFecha[iso].add(normTxt(x.pdv));
+  });
+  tendenciaDiaria.forEach(d => {
+    const pdvsDia = pdvPorFecha[d.fechaISO] || new Set();
+    let baseline = 0, meta = 0;
+    pdvsDia.forEach(pn => {
+      const c = pdvCuotaPorNombre[pn]; if (!c) return;
+      baseline += (c.sellOutEneAgo || 0) / DIAS_ENE_AGO;
+      meta += cuotaMesDe(c, d.fechaISO) / diasDelMes(d.fechaISO);
+    });
+    d.baseline = Math.round(baseline * 10) / 10;
+    d.meta = Math.round(meta * 10) / 10;
+    d.incremental = Math.round((d.unidades - d.baseline) * 10) / 10;
+    d.vsMetaPct = meta ? Math.round(d.unidades / meta * 1000) / 10 : null;
+  });
+  const totBaseline = tendenciaDiaria.reduce((s, d) => s + d.baseline, 0);
+  const totMeta = tendenciaDiaria.reduce((s, d) => s + d.meta, 0);
+  const totIncremental = Math.round((totalUnidadesVendidas - totBaseline) * 10) / 10;
+  const upliftPct = totBaseline ? Math.round(totIncremental / totBaseline * 1000) / 10 : null;
+  const vsMetaPctTotal = totMeta ? Math.round(totalUnidadesVendidas / totMeta * 1000) / 10 : null;
+
   function contarSimple(campo) {
     const mapa = {};
     voz.forEach(x => { if (x[campo]) mapa[x[campo]] = (mapa[x[campo]] || 0) + 1; });
@@ -706,12 +906,18 @@ function recalcular() {
   const opinionPromedio = opiniones.length ? Math.round(opiniones.reduce((s, n) => s + n, 0) / opiniones.length * 100) / 100 : 0;
 
   DATA = {
-    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre, metaVisitas, coberturaPct },
+    kpis: { totalVisitas, totalUnidadesVendidas, totalPremiosEntregados, premiosPorUnidadVendida, tasaCierre, metaVisitas, coberturaPct, coberturaEsReal, pdvsActivos, ciudadesActivas },
+    topProducto,
     ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
     tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
     ventasPorCanal, premiosPorCanal, premiosPorTipo,
     porAsesor, porPDV,
     ventasCrudas: ventas, premiosCrudos: premiosEnt,
+    incremental: {
+      hayDatosCuota: hayCuotaGliss,
+      sinImpulso: Math.round(totBaseline), conImpulso: totalUnidadesVendidas, incremental: totIncremental, upliftPct,
+      meta: Math.round(totMeta), vsMetaPct: vsMetaPctTotal
+    },
     vozConsumidor: {
       total: totalEncuestas, conoceMarcaPct, opinionPromedio,
       atributosDeseados: contarSplit('atributos').slice(0, 6),
@@ -728,7 +934,7 @@ function renderAll() {
   document.getElementById('sbVisitas').textContent = fmt(k.totalVisitas);
 
   const defs = [
-    { label: 'Cobertura de visitas', value: k.coberturaPct + '%', sub: fmt(k.totalVisitas) + ' de ' + fmt(k.metaVisitas) + ' programadas' },
+    { label: 'Cobertura de visitas', value: k.coberturaPct + '%', sub: fmt(k.totalVisitas) + ' de ' + fmt(k.metaVisitas) + (k.coberturaEsReal ? ' programadas' : ' (meta provisional)') },
     { label: 'Unidades vendidas', value: fmt(k.totalUnidadesVendidas), sub: k.totalVisitas + ' visitas' },
     { label: 'Premios redimidos', value: fmt(k.totalPremiosEntregados), sub: 'entregados al consumidor' },
     { label: 'Premios por unidad vendida', value: k.premiosPorUnidadVendida, sub: 'premio por cada unidad' },
@@ -746,6 +952,7 @@ function renderAll() {
     kpiCont.appendChild(div);
   });
 
+  renderResumenEjecutivo();
   renderVentasPremios();
   renderPiePremios();
   renderTendenciaChart();
@@ -783,6 +990,33 @@ function renderAll() {
 
   renderPDVTable();
   renderFiltrosDisponibles();
+}
+
+/* Los 4 puntos de entrada, justo después de las tarjetas — mismo estilo del flash report. */
+function renderResumenEjecutivo() {
+  const k = DATA.kpis;
+  const cont = document.getElementById('resumenEjecutivo'); cont.innerHTML = '';
+
+  let incrementalTxt = '';
+  if (DATA.cambioUnidadesPct !== null && DATA.cambioUnidadesPct !== undefined) {
+    const subiendo = DATA.cambioUnidadesPct >= 0;
+    incrementalTxt = ` Las unidades del último día <b>${subiendo ? 'subieron' : 'bajaron'} ${Math.abs(DATA.cambioUnidadesPct)}%</b> frente al día anterior.`;
+  }
+  const coberturaTxt = k.coberturaEsReal
+    ? `<b>${fmt(k.totalVisitas)} visitas realizadas</b> de <b>${fmt(k.metaVisitas)} programadas</b> (${k.coberturaPct}% de cobertura) en ${fmt(k.pdvsActivos)} puntos de venta de ${fmt(k.ciudadesActivas)} ciudades.`
+    : `<b>${fmt(k.totalVisitas)} visitas realizadas</b> en ${fmt(k.pdvsActivos)} puntos de venta de ${fmt(k.ciudadesActivas)} ciudades, dentro del filtro actual.`;
+
+  const items = [
+    { titulo: 'Cobertura de visitas', texto: coberturaTxt },
+    { titulo: 'Cierre de venta', texto: `<b>${k.tasaCierre}% de tasa de cierre</b> sobre las visitas del filtro actual.${incrementalTxt}` },
+    { titulo: 'Producto más vendido', texto: DATA.topProducto ? `<b>${escHtml(DATA.topProducto.producto)}</b>, con ${fmt(DATA.topProducto.cantidad)} unidades — el más vendido en el filtro actual.` : 'Sin ventas registradas en el filtro actual.' },
+    { titulo: 'Premios entregados vs. unidades', texto: `<b>${fmt(k.totalPremiosEntregados)} premios entregados</b> frente a <b>${fmt(k.totalUnidadesVendidas)} unidades vendidas</b> al corte actual.` },
+  ];
+  items.forEach((it, i) => {
+    const div = document.createElement('div'); div.className = 'resumen-item';
+    div.innerHTML = `<span class="ri-num num">${i + 1}</span><div><h4>${it.titulo}</h4><p>${it.texto}</p></div>`;
+    cont.appendChild(div);
+  });
 }
 
 function renderVentasPremios() {
@@ -1004,6 +1238,66 @@ function renderStackBar(containerId, legendId, items) {
   });
 }
 
+/* ===== INCREMENTALIDAD VS. CUOTA (modal aparte, detrás del botón) ===== */
+function abrirModalIncremental() { renderIncremental(); document.getElementById('modalIncremental').classList.add('show'); }
+function cerrarModalIncremental() { document.getElementById('modalIncremental').classList.remove('show'); }
+document.getElementById('btnAbrirIncremental').addEventListener('click', abrirModalIncremental);
+document.getElementById('incrementalCerrar').addEventListener('click', cerrarModalIncremental);
+document.getElementById('modalIncremental').addEventListener('click', e => { if (e.target.id === 'modalIncremental') cerrarModalIncremental(); });
+
+function renderIncremental() {
+  const inc = DATA.incremental;
+  const kpisCont = document.getElementById('incrementalKpis');
+  if (!inc.hayDatosCuota) {
+    kpisCont.innerHTML = '<div class="empty-hint" style="grid-column:1/-1;padding:14px 0">Esta vista necesita que el backend ya tenga desplegada la lectura de "Seguimiento Cuota Gliss". Redespliega NormalizadoBI.gs para activarla — mientras tanto no hay datos de cuota disponibles.</div>';
+    document.getElementById('incrementalChart').innerHTML = '';
+    document.getElementById('incrementalNota').textContent = '';
+    return;
+  }
+  const kpis = [
+    { l: 'Sin impulso (referencia)', v: fmt(inc.sinImpulso) },
+    { l: 'Con impulso (real)', v: fmt(inc.conImpulso) },
+    { l: 'Incremental', v: (inc.incremental >= 0 ? '+' : '') + fmt(inc.incremental), cls: inc.incremental >= 0 ? 'pos' : 'neg' },
+    { l: 'Uplift', v: inc.upliftPct === null ? '—' : ((inc.upliftPct >= 0 ? '+' : '') + inc.upliftPct + '%'), cls: (inc.upliftPct || 0) >= 0 ? 'pos' : 'neg' },
+    { l: 'Vs. cuota', v: inc.vsMetaPct === null ? '—' : (inc.vsMetaPct + '%'), cls: (inc.vsMetaPct || 0) >= 100 ? 'pos' : 'neg' },
+  ];
+  kpisCont.innerHTML = kpis.map(k => `<div class="inc-kpi"><span class="ik-l">${k.l}</span><span class="ik-v ${k.cls || ''} num">${k.v}</span></div>`).join('');
+  renderIncrementalChart();
+  document.getElementById('incrementalNota').innerHTML = 'El <b>"sin impulso"</b> sale de la venta histórica total del punto (Ene–Ago 2026, todo el portafolio vía POS de la cadena) prorrateada por día — no es exclusivo de lo que vende la impulsadora en su visita, así que puede salir más alto que la venta capturada en campo; tómalo como referencia, no como el número principal. El indicador más confiable es <b>vs. cuota</b>, porque compara lo mismo (unidades GLISS vendidas) contra lo mismo (la cuota comprometida para ese punto).';
+}
+function renderIncrementalChart() {
+  const svg = document.getElementById('incrementalChart');
+  const items = DATA.tendenciaDiaria || [];
+  const w = svg.clientWidth || 900, h = 300;
+  svg.setAttribute('viewBox', '0 0 ' + w + ' ' + h);
+  svg.innerHTML = '';
+  if (!items.length) return;
+  const padL = 10, padR = 10, padT = 24, padB = 40;
+  const maxVal = Math.max(1, ...items.map(d => Math.max(d.baseline || 0, d.unidades || 0, d.meta || 0)));
+  const grupoW = (w - padL - padR) / items.length;
+  const barW = Math.min(30, grupoW * 0.2);
+  const innerH = h - padT - padB;
+  function y(v) { return padT + innerH - (v / maxVal) * innerH; }
+  svg.appendChild(svgEl('line', { x1: padL, y1: h - padB, x2: w - padR, y2: h - padB, stroke: 'var(--border-strong)', 'stroke-width': 1 }));
+  items.forEach((d, i) => {
+    const cx = padL + grupoW * i + grupoW / 2;
+    const series = [
+      { v: d.baseline || 0, color: 'var(--muted)', x: cx - barW * 1.3, etq: 'Sin impulso' },
+      { v: d.unidades || 0, color: (d.incremental || 0) >= 0 ? 'var(--status-good)' : 'var(--status-critical)', x: cx, etq: 'Con impulso' },
+      { v: d.meta || 0, color: 'var(--series-4)', x: cx + barW * 1.3, etq: 'Cuota' }
+    ];
+    series.forEach(s => {
+      const bh = (s.v / maxVal) * innerH;
+      const rect = svgEl('rect', { x: s.x - barW / 2, y: y(s.v), width: barW, height: Math.max(bh, 1), rx: 3, fill: s.color });
+      conTooltip(rect, () => `<b>${escHtml(fechaCortaISO(d.fechaISO))}</b><br>${s.etq}: <b>${fmt(Math.round(s.v))}</b>`);
+      svg.appendChild(rect);
+    });
+    const lbl = svgEl('text', { x: cx, y: h - padB + 18, 'text-anchor': 'middle', 'font-size': 10.5, 'font-weight': 700, fill: 'var(--muted)' });
+    lbl.textContent = fechaCortaISO(d.fechaISO);
+    svg.appendChild(lbl);
+  });
+}
+
 /* ===== PAGINACIÓN ===== */
 function paginar(items, pagina) {
   const inicio = (pagina - 1) * FILAS_POR_PAGINA;
@@ -1200,6 +1494,7 @@ document.getElementById('modalAsesor').addEventListener('click', e => { if (e.ta
 document.addEventListener('keydown', e => {
   if (e.key !== 'Escape') return;
   if (document.getElementById('lightbox').classList.contains('show')) cerrarLightbox();
+  else if (document.getElementById('modalIncremental').classList.contains('show')) cerrarModalIncremental();
   else cerrarModalAsesor();
 });
 
@@ -1211,28 +1506,26 @@ function renderFiltrosDisponibles() {
     RAW.visitas.filter(v => visitaPasaFiltro(v, f, campo)).forEach(v => { if (valorFn(v)) set.add(valorFn(v)); });
     return Array.from(set).sort((a, b) => a.localeCompare(b, 'es'));
   }
-  llenarSelect('filtroCiudad', opcionesDe('ciudad', v => v.ciudad), f.ciudad, 'Todas las ciudades');
-  llenarSelect('filtroPDV', opcionesDe('pdv', v => v.pdv), f.pdv, 'Todos los puntos de venta');
-  llenarSelect('filtroCanal', opcionesDe('canal', v => v.canal), f.canal, 'Todos los canales');
-  llenarSelect('filtroAsesor', opcionesDe('asesor', v => v.asesor), f.asesor, 'Todos los asesores');
-
-  const fechasDisponibles = opcionesDe('fecha', v => v.fechaISO);
-  const desdeInput = document.getElementById('filtroFechaDesde');
-  const hastaInput = document.getElementById('filtroFechaHasta');
-  const minGlobal = fechasDisponibles[0], maxGlobal = fechasDisponibles[fechasDisponibles.length - 1];
-  if (fechasDisponibles.length) {
-    desdeInput.min = minGlobal; desdeInput.max = f.fechaHasta || maxGlobal;
-    hastaInput.min = f.fechaDesde || minGlobal; hastaInput.max = maxGlobal;
-  } else {
-    desdeInput.removeAttribute('min'); desdeInput.removeAttribute('max');
-    hastaInput.removeAttribute('min'); hastaInput.removeAttribute('max');
+  function opcionesDeConEtiqueta(campo, valorFn, etiquetaFn) {
+    const mapa = {};
+    RAW.visitas.filter(v => visitaPasaFiltro(v, f, campo)).forEach(v => { const val = valorFn(v); if (val && !mapa[val]) mapa[val] = etiquetaFn(v); });
+    return Object.keys(mapa).sort().map(k => ({ valor: k, etiqueta: mapa[k] }));
   }
-  desdeInput.value = f.fechaDesde || '';
-  hastaInput.value = f.fechaHasta || '';
+  llenarSelect('filtroCanal', opcionesDe('canal', v => v.canal), f.canal, 'Todos los canales');
+  llenarSelect('filtroCiudad', opcionesDe('ciudad', v => v.ciudad), f.ciudad, 'Todas las ciudades');
+  llenarSelect('filtroCadena', opcionesDe('cadena', v => v.cadena), f.cadena, 'Todas las cadenas');
+  llenarSelectPares('filtroMes', opcionesDeConEtiqueta('mes', v => v.mes, v => v.mesEtiqueta), f.mes, 'Todos los meses');
+  llenarSelectPares('filtroSemana', opcionesDeConEtiqueta('semana', v => v.semana, v => v.semanaEtiqueta), f.semana, 'Todos los fines de semana');
+  llenarSelect('filtroPDV', opcionesDe('pdv', v => v.pdv), f.pdv, 'Todos los puntos de venta');
+  llenarSelect('filtroAsesor', opcionesDe('asesor', v => v.asesor), f.asesor, 'Todos los asesores');
 }
 function llenarSelect(id, opciones, actual, placeholder) {
   const sel = document.getElementById(id);
   sel.innerHTML = `<option value="">${placeholder}</option>` + (opciones || []).map(o => `<option value="${escHtml(o)}"${o === actual ? ' selected' : ''}>${escHtml(o)}</option>`).join('');
+}
+function llenarSelectPares(id, pares, actual, placeholder) {
+  const sel = document.getElementById(id);
+  sel.innerHTML = `<option value="">${placeholder}</option>` + (pares || []).map(p => `<option value="${escHtml(p.valor)}"${p.valor === actual ? ' selected' : ''}>${escHtml(p.etiqueta)}</option>`).join('');
 }
 /* ===== EXPORTAR A EXCEL (.xlsx nativo, sin librerias externas ni CDN) =====
    Se arma el paquete OOXML a mano y se empaqueta en un ZIP sin compresion. Es un
@@ -1335,21 +1628,20 @@ function descargarExcel(nombreArchivo, nombreHoja, columnas, filas) {
 
 /* ===== INIT / EVENTOS ===== */
 /* Cambiar un filtro YA NO llama al backend — recalcula todo con los datos que ya están en el navegador. */
-['filtroCiudad', 'filtroPDV', 'filtroCanal', 'filtroFechaDesde', 'filtroFechaHasta', 'filtroAsesor'].forEach(id => {
+['filtroCanal', 'filtroCiudad', 'filtroCadena', 'filtroMes', 'filtroSemana', 'filtroPDV', 'filtroAsesor'].forEach(id => {
   document.getElementById(id).addEventListener('change', () => {
-    filtrosActuales.ciudad = document.getElementById('filtroCiudad').value;
-    filtrosActuales.pdv = document.getElementById('filtroPDV').value;
     filtrosActuales.canal = document.getElementById('filtroCanal').value;
-    filtrosActuales.fechaDesde = document.getElementById('filtroFechaDesde').value;
-    filtrosActuales.fechaHasta = document.getElementById('filtroFechaHasta').value;
+    filtrosActuales.ciudad = document.getElementById('filtroCiudad').value;
+    filtrosActuales.cadena = document.getElementById('filtroCadena').value;
+    filtrosActuales.mes = document.getElementById('filtroMes').value;
+    filtrosActuales.semana = document.getElementById('filtroSemana').value;
+    filtrosActuales.pdv = document.getElementById('filtroPDV').value;
     filtrosActuales.asesor = document.getElementById('filtroAsesor').value;
     recalcular();
   });
 });
 document.getElementById('btnLimpiar').addEventListener('click', () => {
-  filtrosActuales = { ciudad: '', pdv: '', canal: '', fechaDesde: '', fechaHasta: '', asesor: '' };
-  document.getElementById('filtroFechaDesde').value = '';
-  document.getElementById('filtroFechaHasta').value = '';
+  filtrosActuales = { canal: '', ciudad: '', cadena: '', mes: '', semana: '', pdv: '', asesor: '' };
   recalcular();
 });
 document.getElementById('btnRefrescar').addEventListener('click', cargarBI);
@@ -1393,7 +1685,7 @@ document.getElementById('btnExportarDias').addEventListener('click', () => {
     { key: 'premios', label: 'Premios Entregados', ancho: 20 }, { key: 'varPremios', label: 'Var. Premios %', ancho: 17 }, { key: 'relacion', label: 'Premios por Unidad', ancho: 19 }
   ], filas);
 });
-window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(() => { renderVentasPremios(); renderTendenciaChart(); }, 150); } });
+window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(() => { renderVentasPremios(); renderTendenciaChart(); if (document.getElementById('modalIncremental').classList.contains('show')) renderIncrementalChart(); }, 150); } });
 
 cargarBI();
 </script>
