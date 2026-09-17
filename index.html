@@ -186,7 +186,6 @@
   .pill-canal{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;}
   .pill-canal.Moderno{background:var(--status-good-soft);color:var(--status-good);}
   .pill-canal.Tradicional{background:#fef3de;color:#8a5a0d;}
-  .pill-alerta{font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--status-critical-soft);color:var(--status-critical);white-space:nowrap;}
   .evo-up{color:var(--status-good);}
   .evo-down{color:var(--status-critical);}
   .evo-flat{color:var(--ink-2);}
@@ -214,8 +213,6 @@
   .mfd-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
   .mfd-text b{font-family:'Barlow Condensed',var(--font-display);font-size:13.5px;font-weight:700;color:#F4EDE7;letter-spacing:.02em;text-transform:uppercase;}
   .mfd-text span{font-family:'Barlow Condensed',var(--font-display);font-size:11px;font-weight:500;color:#C9A961;}
-  .mfd-credit .mfd-side{margin-left:auto;flex:0 0 auto;text-align:right;}
-  .mfd-credit .mfd-side span{display:block;font-family:'Barlow Condensed',var(--font-display);font-size:10.5px;font-weight:600;color:rgba(244,237,231,.55);}
 
   #tooltip{position:fixed;z-index:999;pointer-events:none;background:var(--ink);color:#fff;padding:8px 11px;border-radius:9px;font-size:11.5px;font-weight:600;line-height:1.4;box-shadow:0 12px 28px -8px rgba(0,0,0,.35);display:none;max-width:230px;}
 
@@ -366,23 +363,6 @@
       </div>
     </div>
 
-    <div class="card" style="margin-top:14px">
-      <div class="card-head">
-        <div><h3>Visitas sin cobertura</h3><p>Puntos programados en Seguimiento Cuota Gliss que no tienen una visita realizada en su fecha exacta, dentro del filtro actual</p></div>
-        <div style="display:flex;align-items:center;gap:8px">
-          <span class="card-tag" id="faltantesTag">—</span>
-          <button class="btn-export" id="btnExportarFaltantes" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
-        </div>
-      </div>
-      <div class="table-scroll">
-        <table class="data" id="faltantesTable">
-          <thead><tr><th>Punto de venta</th><th>Cadena</th><th>Ciudad</th><th>Día</th><th>Estado</th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-      <div class="pagination" id="faltantesPager"></div>
-    </div>
-
     <div class="section-label"><div class="sl-left"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div></div>
     <div class="card">
       <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor, y de qué se compuso ese material en el filtro actual</p></div></div>
@@ -395,20 +375,6 @@
             <div class="legend" id="premiosTipoLegend"></div>
           </div>
         </div>
-      </div>
-    </div>
-
-    <div class="card" style="margin-top:14px">
-      <div class="card-head">
-        <div><h3>Evolución de ventas por producto</h3><p>Unidades vendidas de cada producto, día por día — el color marca si subió o bajó frente al día anterior</p></div>
-        <button class="btn-export" id="btnExportarEvolucion" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
-      </div>
-      <div class="table-scroll">
-        <table class="data" id="evolucionTable">
-          <thead id="evolucionThead"><tr><th>Producto</th></tr></thead>
-          <tbody></tbody>
-          <tfoot></tfoot>
-        </table>
       </div>
     </div>
 
@@ -448,6 +414,21 @@
         </table>
       </div>
       <div class="pagination" id="pdvPager"></div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="card-head">
+        <div><h3>Evolución de ventas por producto</h3><p>Unidades vendidas de cada producto, día por día — el color marca si subió o bajó frente al día anterior</p></div>
+        <button class="btn-export" id="btnExportarEvolucion" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
+      </div>
+      <div class="table-scroll">
+        <table class="data" id="evolucionTable">
+          <thead id="evolucionThead"><tr><th>Producto</th></tr></thead>
+          <tbody></tbody>
+          <tfoot></tfoot>
+        </table>
+      </div>
+      <div class="pagination" id="evolucionPager"></div>
     </div>
 
     <div class="section-label"><div class="sl-left"><span class="sl-num">05</span><h2>Detalle por asesor — qué vendió y cuánto entregó</h2></div></div>
@@ -518,7 +499,6 @@
       <div class="mfd-credit">
         <span class="mfd-mark">MFD</span>
         <div class="mfd-text"><b>Marketing y Eventos MFD</b><span>Hacemos Marcas de Corazón · Ejecución y desarrollo de este tablero</span></div>
-        <div class="mfd-side"><span>linkedin.com/company/mfd-marketing-y-eventos</span><span>WhatsApp 300 735 3188</span></div>
       </div>
       <div class="copyright">Derechos de autor reservados. Prohibido el uso y la distribución de este tablero sin autorización.</div>
     </footer>
@@ -594,7 +574,7 @@ let DATA = null;
 let filtrosActuales = { canal: '', ciudad: '', cadena: '', mes: '', semana: '', pdv: '', asesor: '' };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
 let pdvOrden = { campo: 'unidades', dir: -1 };
-let asesoresPagina = 1, pdvPagina = 1, faltantesPagina = 1;
+let asesoresPagina = 1, pdvPagina = 1, evolucionPagina = 1;
 const FILAS_POR_PAGINA = 10;
 let cargando = false;
 
@@ -825,23 +805,6 @@ function recalcular() {
   const metaVisitas = coberturaEsReal ? programadas : META_VISITAS_FALLBACK;
   const coberturaPct = metaVisitas ? Math.round(totalVisitas / metaVisitas * 1000) / 10 : 0;
 
-  /* Visitas sin cobertura: mismo cruce de arriba (programado vs. hoy/período), pero en vez
-     de solo contar, se listan los puntos+fecha programados que NO tienen una visita real
-     ese día exacto. No sabemos la causa (eso solo lo sabe el supervisor en campo), así que
-     se muestra el hecho ("Sin cobertura"), no una historia inventada. */
-  const visitasPorPdvFecha = new Set();
-  visitas.forEach(v => { if (v.pdv && v.fechaISO) visitasPorPdvFecha.add(normTxt(v.pdv) + '|' + v.fechaISO); });
-  const faltantes = [];
-  cuotaFiltrada.forEach(c => {
-    (c.fechasProgramadas || []).forEach(iso => {
-      if (!fechaProgramadaPasaFiltro(iso, f)) return;
-      if (limitarAHoy && iso > hoyISO) return;
-      if (visitasPorPdvFecha.has(normTxt(c.pdv) + '|' + iso)) return;
-      faltantes.push({ pdv: c.pdv, cadena: c.cadena, ciudad: c.ciudad, fechaISO: iso, dia: fechaCortaISO(iso) });
-    });
-  });
-  faltantes.sort((a, b) => a.fechaISO.localeCompare(b.fechaISO) || a.pdv.localeCompare(b.pdv, 'es'));
-
   const canales = ['Tradicional', 'Moderno'];
   const ventasPorCanal = canales.map(c => ({ canal: c, unidades: ventas.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
   const premiosPorCanal = canales.map(c => ({ canal: c, entregados: premiosEnt.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
@@ -988,7 +951,7 @@ function recalcular() {
     tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
     diasEvolucion, evolucionProductos,
     ventasPorCanal, premiosPorCanal, premiosPorTipo,
-    porAsesor, porPDV, faltantes,
+    porAsesor, porPDV,
     ventasCrudas: ventas, premiosCrudos: premiosEnt,
     incremental: {
       hayDatosCuota: hayCuotaGliss,
@@ -1002,7 +965,7 @@ function recalcular() {
       usoMarca: contarSimple('usoMarca'), percepcion: contarSimple('percepcion'), tipoCabello: contarSimple('cabello')
     }
   };
-  asesoresPagina = 1; pdvPagina = 1; faltantesPagina = 1;
+  asesoresPagina = 1; pdvPagina = 1; evolucionPagina = 1;
   renderAll();
 }
 
@@ -1035,7 +998,6 @@ function renderAll() {
   renderTendenciaChart();
   renderTendenciaCallouts();
   renderDiasTable();
-  renderFaltantesTable();
   renderEvolucionTable();
   renderHBars('ventasCanalChart', DATA.ventasPorCanal, 'canal', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderHBars('premiosCanalChart', DATA.premiosPorCanal.map(p => ({ canal: p.canal, entregados: p.entregados })), 'canal', 'entregados', { color: 'var(--series-2)', tooltipLabel: 'Entregados' });
@@ -1293,29 +1255,10 @@ function renderDiasTable() {
       <td class="num">${tu ? Math.round(tp / tu * 100) / 100 : 0}</td>
     </tr>`;
 }
-/* Visitas sin cobertura: mismo patrón de paginación que asesores/PDV. */
-function renderFaltantesTable() {
-  const items = DATA.faltantes || [];
-  document.getElementById('faltantesTag').textContent = items.length + ' sin cobertura';
-  const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
-  if (faltantesPagina > totalPaginas) faltantesPagina = totalPaginas;
-  const pagina = paginar(items, faltantesPagina);
-  const tbody = document.querySelector('#faltantesTable tbody'); tbody.innerHTML = '';
-  if (!DATA.incremental.hayDatosCuota) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty-hint">Necesita que el backend tenga desplegada la lectura de "Seguimiento Cuota Gliss".</td></tr>';
-  } else if (items.length === 0) {
-    tbody.innerHTML = '<tr><td colspan="5" class="empty-hint">Sin faltantes — todo lo programado en este filtro ya se visitó.</td></tr>';
-  } else {
-    tbody.innerHTML = pagina.map(x => `<tr>
-        <td>${escHtml(x.pdv)}</td><td>${escHtml(x.cadena)}</td><td>${escHtml(x.ciudad)}</td>
-        <td>${escHtml(x.dia)}</td><td><span class="pill-alerta">Sin cobertura</span></td>
-      </tr>`).join('');
-  }
-  renderPaginador('faltantesPager', items.length, faltantesPagina, (p) => { faltantesPagina = p; renderFaltantesTable(); });
-}
 /* Evolución por producto: tabla pivote producto × día, con color por celda según suba o
    baje frente al día anterior (mismo producto). Encabezado se arma solo porque los días
-   cambian con el filtro. */
+   cambian con el filtro. Se pagina por producto (filas); el total del pie siempre suma
+   TODO el conjunto filtrado, no solo la página visible — mismo criterio que asesores/PDV. */
 function evoClase(cur, prev) {
   if (prev === undefined || prev === null) return 'evo-flat';
   if (cur > prev) return 'evo-up';
@@ -1335,9 +1278,13 @@ function renderEvolucionTable() {
 
   if (!items.length || !dias.length) {
     tbody.innerHTML = `<tr><td colspan="${dias.length + 2}" class="empty-hint">Sin ventas por producto en este filtro.</td></tr>`;
+    renderPaginador('evolucionPager', 0, evolucionPagina, (p) => { evolucionPagina = p; renderEvolucionTable(); });
     return;
   }
-  tbody.innerHTML = items.map(it => {
+  const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
+  if (evolucionPagina > totalPaginas) evolucionPagina = totalPaginas;
+  const pagina = paginar(items, evolucionPagina);
+  tbody.innerHTML = pagina.map(it => {
     const celdas = it.porDia.map((v, i) => {
       const prev = i > 0 ? it.porDia[i - 1] : null;
       return `<td class="num ${evoClase(v, prev)}">${fmt(v)}</td>`;
@@ -1350,6 +1297,7 @@ function renderEvolucionTable() {
   tfoot.innerHTML = '<tr><td class="tf-label">Total · ' + items.length + ' productos</td>' +
     totalesDia.map(t => `<td class="num">${fmt(t)}</td>`).join('') +
     `<td class="num">${fmt(granTotal)}</td></tr>`;
+  renderPaginador('evolucionPager', items.length, evolucionPagina, (p) => { evolucionPagina = p; renderEvolucionTable(); });
 }
 function renderDonut(svgId, pct, color, trackColor, thickness, tooltipHtml) {
   const svg = document.getElementById(svgId);
@@ -1820,13 +1768,6 @@ document.getElementById('btnExportarDias').addEventListener('click', () => {
   descargarExcel('henkel_detalle_diario.xlsx', 'Detalle diario', [
     { key: 'dia', label: 'Día', ancho: 14 }, { key: 'unidades', label: 'Unidades Vendidas', ancho: 20 }, { key: 'varUnidades', label: 'Var. Unidades %', ancho: 17 },
     { key: 'premios', label: 'Premios Entregados', ancho: 20 }, { key: 'varPremios', label: 'Var. Premios %', ancho: 17 }, { key: 'relacion', label: 'Premios por Unidad', ancho: 19 }
-  ], filas);
-});
-document.getElementById('btnExportarFaltantes').addEventListener('click', () => {
-  const filas = (DATA.faltantes || []).map(x => ({ pdv: x.pdv, cadena: x.cadena, ciudad: x.ciudad, dia: x.dia, estado: 'Sin cobertura' }));
-  descargarExcel('henkel_visitas_sin_cobertura.xlsx', 'Sin cobertura', [
-    { key: 'pdv', label: 'Punto de Venta', ancho: 32 }, { key: 'cadena', label: 'Cadena', ancho: 18 }, { key: 'ciudad', label: 'Ciudad', ancho: 18 },
-    { key: 'dia', label: 'Día', ancho: 12 }, { key: 'estado', label: 'Estado', ancho: 16 }
   ], filas);
 });
 document.getElementById('btnExportarEvolucion').addEventListener('click', () => {
