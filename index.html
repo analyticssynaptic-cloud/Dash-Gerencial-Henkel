@@ -7,7 +7,7 @@
 <title>Henkel GLISS · Ventas y Premios</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&family=Bebas+Neue&family=Barlow+Condensed:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
   :root{
     color-scheme: light;
@@ -64,12 +64,12 @@
   #shell.show{display:flex;align-items:flex-start;}
 
   /* SIDEBAR IZQUIERDA — SEGMENTADORES */
-  aside.sidebar{width:250px;flex:0 0 250px;position:sticky;top:63px;height:calc(100vh - 63px);overflow-y:auto;padding:22px 18px;border-right:1px solid var(--border);}
+  aside.sidebar{width:250px;flex:0 0 250px;position:sticky;top:63px;max-height:calc(100vh - 63px);overflow-y:visible;padding:22px 18px;border-right:1px solid var(--border);}
   .sb-title{font-size:10.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.08em;margin-bottom:14px;display:flex;align-items:center;gap:7px;}
   .sb-title svg{width:13px;height:13px;}
-  .sb-field{margin-bottom:16px;}
-  .sb-field label{display:block;font-size:11px;font-weight:700;color:var(--ink-2);margin-bottom:6px;}
-  .sb-field select{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12.5px;font-weight:700;padding:9px 28px 9px 11px;border-radius:var(--radius-sm);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c5250' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
+  .sb-field{margin-bottom:12px;}
+  .sb-field label{display:block;font-size:10.5px;font-weight:700;color:var(--ink-2);margin-bottom:4px;}
+  .sb-field select{width:100%;border:1.5px solid var(--border-strong);background:var(--surface-2);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;padding:7px 26px 7px 10px;border-radius:var(--radius-sm);cursor:pointer;appearance:none;-webkit-appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%235c5250' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 8px center;}
   .sb-field select:focus{outline:none;border-color:var(--brand);}
   .sb-field select:disabled{opacity:.45;cursor:not-allowed;}
   .btn-limpiar{width:100%;border:1px solid var(--border-strong);background:var(--surface);color:var(--brand);font-family:inherit;font-size:11.5px;font-weight:800;padding:9px;border-radius:var(--radius-sm);cursor:pointer;margin-top:4px;}
@@ -186,6 +186,10 @@
   .pill-canal{font-size:10px;font-weight:800;padding:2px 8px;border-radius:999px;}
   .pill-canal.Moderno{background:var(--status-good-soft);color:var(--status-good);}
   .pill-canal.Tradicional{background:#fef3de;color:#8a5a0d;}
+  .pill-alerta{font-size:10px;font-weight:800;padding:3px 9px;border-radius:999px;background:var(--status-critical-soft);color:var(--status-critical);white-space:nowrap;}
+  .evo-up{color:var(--status-good);}
+  .evo-down{color:var(--status-critical);}
+  .evo-flat{color:var(--ink-2);}
 
   .pagination{display:flex;align-items:center;justify-content:center;gap:14px;margin-top:16px;}
   .pg-btn{border:1px solid var(--border-strong);background:var(--surface);color:var(--ink);font-family:inherit;font-size:11.5px;font-weight:700;padding:7px 14px;border-radius:999px;cursor:pointer;}
@@ -200,10 +204,18 @@
   .btn-incremental:hover{filter:brightness(1.06);}
   .btn-incremental svg{width:13px;height:13px;}
 
-  footer.note{margin-top:26px;padding-top:16px;border-top:1px solid var(--border);font-size:10.5px;color:var(--muted);font-weight:600;}
-  footer.note .copyright{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;}
-  footer.note .cr-txt{font-size:11px;font-weight:700;color:var(--ink-2);}
-  footer.note .cr-org{font-size:10.5px;font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.07em;}
+  footer.note{margin-top:30px;}
+  footer.note .copyright{padding-top:14px;border-top:1px solid var(--border);font-size:10.5px;color:var(--muted);font-weight:600;text-align:center;}
+
+  /* Crédito MFD — identidad propia de la agencia (Pulso Cardinal), separada del branding
+     de Henkel que lleva el resto del tablero: fondo oscuro + tipografía Bebas/Barlow. */
+  .mfd-credit{display:flex;align-items:center;gap:13px;background:#18100E;border-radius:var(--radius-lg);padding:14px 18px;}
+  .mfd-mark{font-family:'Bebas Neue',var(--font-display);font-size:22px;letter-spacing:.05em;line-height:1;color:#F4EDE7;background:linear-gradient(140deg,#D91E25,#C0141A 55%,#6B0F1A);border-radius:8px;padding:6px 12px 5px;flex:0 0 auto;}
+  .mfd-text{display:flex;flex-direction:column;gap:2px;min-width:0;}
+  .mfd-text b{font-family:'Barlow Condensed',var(--font-display);font-size:13.5px;font-weight:700;color:#F4EDE7;letter-spacing:.02em;text-transform:uppercase;}
+  .mfd-text span{font-family:'Barlow Condensed',var(--font-display);font-size:11px;font-weight:500;color:#C9A961;}
+  .mfd-credit .mfd-side{margin-left:auto;flex:0 0 auto;text-align:right;}
+  .mfd-credit .mfd-side span{display:block;font-family:'Barlow Condensed',var(--font-display);font-size:10.5px;font-weight:600;color:rgba(244,237,231,.55);}
 
   #tooltip{position:fixed;z-index:999;pointer-events:none;background:var(--ink);color:#fff;padding:8px 11px;border-radius:9px;font-size:11.5px;font-weight:600;line-height:1.4;box-shadow:0 12px 28px -8px rgba(0,0,0,.35);display:none;max-width:230px;}
 
@@ -264,7 +276,7 @@
   <div class="top-inner">
     <div class="brandmark">
       <div class="logo"><svg viewBox="0 0 24 24"><path d="M12 2s7 8.5 7 13a7 7 0 0 1-14 0c0-4.5 7-13 7-13Z"/></svg></div>
-      <div class="titles"><b>Henkel GLISS</b><span>Ventas y Premios · Datos Normalizados</span></div>
+      <div class="titles"><b>Henkel GLISS</b><span>Ventas y Premios</span></div>
     </div>
     <div class="henkel-anexo" aria-hidden="true">
       <span class="ha-oval">Henkel</span>
@@ -354,6 +366,23 @@
       </div>
     </div>
 
+    <div class="card" style="margin-top:14px">
+      <div class="card-head">
+        <div><h3>Visitas sin cobertura</h3><p>Puntos programados en Seguimiento Cuota Gliss que no tienen una visita realizada en su fecha exacta, dentro del filtro actual</p></div>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="card-tag" id="faltantesTag">—</span>
+          <button class="btn-export" id="btnExportarFaltantes" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
+        </div>
+      </div>
+      <div class="table-scroll">
+        <table class="data" id="faltantesTable">
+          <thead><tr><th>Punto de venta</th><th>Cadena</th><th>Ciudad</th><th>Día</th><th>Estado</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <div class="pagination" id="faltantesPager"></div>
+    </div>
+
     <div class="section-label"><div class="sl-left"><span class="sl-num">02</span><h2>Ventas vs. premios redimidos</h2></div></div>
     <div class="card">
       <div class="card-head"><div><h3>El material de impulso va al ritmo de la venta</h3><p>Unidades vendidas vs. premios entregados al consumidor, y de qué se compuso ese material en el filtro actual</p></div></div>
@@ -366,6 +395,20 @@
             <div class="legend" id="premiosTipoLegend"></div>
           </div>
         </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-top:14px">
+      <div class="card-head">
+        <div><h3>Evolución de ventas por producto</h3><p>Unidades vendidas de cada producto, día por día — el color marca si subió o bajó frente al día anterior</p></div>
+        <button class="btn-export" id="btnExportarEvolucion" type="button"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>Excel</button>
+      </div>
+      <div class="table-scroll">
+        <table class="data" id="evolucionTable">
+          <thead id="evolucionThead"><tr><th>Producto</th></tr></thead>
+          <tbody></tbody>
+          <tfoot></tfoot>
+        </table>
       </div>
     </div>
 
@@ -472,10 +515,12 @@
 
 
     <footer class="note">
-      <div class="copyright">
-        <span class="cr-txt">Derechos de Autor. Prohibido su Uso y Distribución</span>
-        <span class="cr-org">Marketing y Eventos MFD</span>
+      <div class="mfd-credit">
+        <span class="mfd-mark">MFD</span>
+        <div class="mfd-text"><b>Marketing y Eventos MFD</b><span>Hacemos Marcas de Corazón · Ejecución y desarrollo de este tablero</span></div>
+        <div class="mfd-side"><span>linkedin.com/company/mfd-marketing-y-eventos</span><span>WhatsApp 300 735 3188</span></div>
       </div>
+      <div class="copyright">Derechos de autor reservados. Prohibido el uso y la distribución de este tablero sin autorización.</div>
     </footer>
   </main>
 </div>
@@ -549,7 +594,7 @@ let DATA = null;
 let filtrosActuales = { canal: '', ciudad: '', cadena: '', mes: '', semana: '', pdv: '', asesor: '' };
 let asesoresOrden = { campo: 'unidadesVendidas', dir: -1 };
 let pdvOrden = { campo: 'unidades', dir: -1 };
-let asesoresPagina = 1, pdvPagina = 1;
+let asesoresPagina = 1, pdvPagina = 1, faltantesPagina = 1;
 const FILAS_POR_PAGINA = 10;
 let cargando = false;
 
@@ -780,6 +825,23 @@ function recalcular() {
   const metaVisitas = coberturaEsReal ? programadas : META_VISITAS_FALLBACK;
   const coberturaPct = metaVisitas ? Math.round(totalVisitas / metaVisitas * 1000) / 10 : 0;
 
+  /* Visitas sin cobertura: mismo cruce de arriba (programado vs. hoy/período), pero en vez
+     de solo contar, se listan los puntos+fecha programados que NO tienen una visita real
+     ese día exacto. No sabemos la causa (eso solo lo sabe el supervisor en campo), así que
+     se muestra el hecho ("Sin cobertura"), no una historia inventada. */
+  const visitasPorPdvFecha = new Set();
+  visitas.forEach(v => { if (v.pdv && v.fechaISO) visitasPorPdvFecha.add(normTxt(v.pdv) + '|' + v.fechaISO); });
+  const faltantes = [];
+  cuotaFiltrada.forEach(c => {
+    (c.fechasProgramadas || []).forEach(iso => {
+      if (!fechaProgramadaPasaFiltro(iso, f)) return;
+      if (limitarAHoy && iso > hoyISO) return;
+      if (visitasPorPdvFecha.has(normTxt(c.pdv) + '|' + iso)) return;
+      faltantes.push({ pdv: c.pdv, cadena: c.cadena, ciudad: c.ciudad, fechaISO: iso, dia: fechaCortaISO(iso) });
+    });
+  });
+  faltantes.sort((a, b) => a.fechaISO.localeCompare(b.fechaISO) || a.pdv.localeCompare(b.pdv, 'es'));
+
   const canales = ['Tradicional', 'Moderno'];
   const ventasPorCanal = canales.map(c => ({ canal: c, unidades: ventas.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
   const premiosPorCanal = canales.map(c => ({ canal: c, entregados: premiosEnt.filter(x => canalPorId[x.id] === c).reduce((s, x) => s + x.cantidad, 0) }));
@@ -856,6 +918,20 @@ function recalcular() {
     cambioPremiosPct = anterior.premios ? Math.round((ultimo.premios - anterior.premios) / anterior.premios * 1000) / 10 : null;
   }
 
+  /* Evolución de ventas por producto: cuánto se vendió de cada producto, día por día — para
+     ver de un vistazo qué cambia entre una visita y la siguiente, no solo el total. */
+  const diasEvolucion = tendenciaDiaria.map(d => d.fechaISO);
+  const productoDiaMapa = {};
+  ventas.forEach(x => {
+    const iso = fechaISOPorId[x.id]; if (!iso || !x.producto) return;
+    if (!productoDiaMapa[x.producto]) productoDiaMapa[x.producto] = {};
+    productoDiaMapa[x.producto][iso] = (productoDiaMapa[x.producto][iso] || 0) + x.cantidad;
+  });
+  const evolucionProductos = Object.keys(productoDiaMapa).map(p => {
+    const porDia = diasEvolucion.map(iso => productoDiaMapa[p][iso] || 0);
+    return { producto: p, porDia, total: porDia.reduce((s, n) => s + n, 0) };
+  }).sort((a, b) => b.total - a.total);
+
   /* Incrementalidad vs. cuota (sección aparte, detrás del botón). Por cada día se mira qué
      PDV vendieron ese día y se les suma su venta base histórica (Sell Out Ene-Ago / 243
      días) y su cuota diaria (cuota del mes correspondiente / días de ese mes). El baseline
@@ -910,8 +986,9 @@ function recalcular() {
     topProducto,
     ventasVsPremios: [{ k: 'Unidades vendidas', v: totalUnidadesVendidas }, { k: 'Premios entregados', v: totalPremiosEntregados }],
     tendenciaDiaria, cambioUnidadesPct, cambioPremiosPct,
+    diasEvolucion, evolucionProductos,
     ventasPorCanal, premiosPorCanal, premiosPorTipo,
-    porAsesor, porPDV,
+    porAsesor, porPDV, faltantes,
     ventasCrudas: ventas, premiosCrudos: premiosEnt,
     incremental: {
       hayDatosCuota: hayCuotaGliss,
@@ -925,7 +1002,7 @@ function recalcular() {
       usoMarca: contarSimple('usoMarca'), percepcion: contarSimple('percepcion'), tipoCabello: contarSimple('cabello')
     }
   };
-  asesoresPagina = 1; pdvPagina = 1;
+  asesoresPagina = 1; pdvPagina = 1; faltantesPagina = 1;
   renderAll();
 }
 
@@ -958,6 +1035,8 @@ function renderAll() {
   renderTendenciaChart();
   renderTendenciaCallouts();
   renderDiasTable();
+  renderFaltantesTable();
+  renderEvolucionTable();
   renderHBars('ventasCanalChart', DATA.ventasPorCanal, 'canal', 'unidades', { color: 'var(--series-1)', tooltipLabel: 'Unidades' });
   renderHBars('premiosCanalChart', DATA.premiosPorCanal.map(p => ({ canal: p.canal, entregados: p.entregados })), 'canal', 'entregados', { color: 'var(--series-2)', tooltipLabel: 'Entregados' });
 
@@ -1213,6 +1292,64 @@ function renderDiasTable() {
       <td class="num">${fmt(tp)}</td><td class="num"></td>
       <td class="num">${tu ? Math.round(tp / tu * 100) / 100 : 0}</td>
     </tr>`;
+}
+/* Visitas sin cobertura: mismo patrón de paginación que asesores/PDV. */
+function renderFaltantesTable() {
+  const items = DATA.faltantes || [];
+  document.getElementById('faltantesTag').textContent = items.length + ' sin cobertura';
+  const totalPaginas = Math.max(1, Math.ceil(items.length / FILAS_POR_PAGINA));
+  if (faltantesPagina > totalPaginas) faltantesPagina = totalPaginas;
+  const pagina = paginar(items, faltantesPagina);
+  const tbody = document.querySelector('#faltantesTable tbody'); tbody.innerHTML = '';
+  if (!DATA.incremental.hayDatosCuota) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-hint">Necesita que el backend tenga desplegada la lectura de "Seguimiento Cuota Gliss".</td></tr>';
+  } else if (items.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" class="empty-hint">Sin faltantes — todo lo programado en este filtro ya se visitó.</td></tr>';
+  } else {
+    tbody.innerHTML = pagina.map(x => `<tr>
+        <td>${escHtml(x.pdv)}</td><td>${escHtml(x.cadena)}</td><td>${escHtml(x.ciudad)}</td>
+        <td>${escHtml(x.dia)}</td><td><span class="pill-alerta">Sin cobertura</span></td>
+      </tr>`).join('');
+  }
+  renderPaginador('faltantesPager', items.length, faltantesPagina, (p) => { faltantesPagina = p; renderFaltantesTable(); });
+}
+/* Evolución por producto: tabla pivote producto × día, con color por celda según suba o
+   baje frente al día anterior (mismo producto). Encabezado se arma solo porque los días
+   cambian con el filtro. */
+function evoClase(cur, prev) {
+  if (prev === undefined || prev === null) return 'evo-flat';
+  if (cur > prev) return 'evo-up';
+  if (cur < prev) return 'evo-down';
+  return 'evo-flat';
+}
+function renderEvolucionTable() {
+  const dias = DATA.diasEvolucion || [];
+  const items = DATA.evolucionProductos || [];
+  const thead = document.getElementById('evolucionThead');
+  const tbody = document.querySelector('#evolucionTable tbody');
+  const tfoot = document.querySelector('#evolucionTable tfoot');
+  thead.innerHTML = ''; tbody.innerHTML = ''; tfoot.innerHTML = '';
+
+  const encabezado = '<tr><th>Producto</th>' + dias.map(iso => `<th class="num">${escHtml(fechaCortaISO(iso))}</th>`).join('') + '<th class="num">Total</th></tr>';
+  thead.innerHTML = encabezado;
+
+  if (!items.length || !dias.length) {
+    tbody.innerHTML = `<tr><td colspan="${dias.length + 2}" class="empty-hint">Sin ventas por producto en este filtro.</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = items.map(it => {
+    const celdas = it.porDia.map((v, i) => {
+      const prev = i > 0 ? it.porDia[i - 1] : null;
+      return `<td class="num ${evoClase(v, prev)}">${fmt(v)}</td>`;
+    }).join('');
+    return `<tr><td>${escHtml(it.producto)}</td>${celdas}<td class="num">${fmt(it.total)}</td></tr>`;
+  }).join('');
+
+  const totalesDia = dias.map((_, i) => items.reduce((s, it) => s + it.porDia[i], 0));
+  const granTotal = items.reduce((s, it) => s + it.total, 0);
+  tfoot.innerHTML = '<tr><td class="tf-label">Total · ' + items.length + ' productos</td>' +
+    totalesDia.map(t => `<td class="num">${fmt(t)}</td>`).join('') +
+    `<td class="num">${fmt(granTotal)}</td></tr>`;
 }
 function renderDonut(svgId, pct, color, trackColor, thickness, tooltipHtml) {
   const svg = document.getElementById(svgId);
@@ -1684,6 +1821,30 @@ document.getElementById('btnExportarDias').addEventListener('click', () => {
     { key: 'dia', label: 'Día', ancho: 14 }, { key: 'unidades', label: 'Unidades Vendidas', ancho: 20 }, { key: 'varUnidades', label: 'Var. Unidades %', ancho: 17 },
     { key: 'premios', label: 'Premios Entregados', ancho: 20 }, { key: 'varPremios', label: 'Var. Premios %', ancho: 17 }, { key: 'relacion', label: 'Premios por Unidad', ancho: 19 }
   ], filas);
+});
+document.getElementById('btnExportarFaltantes').addEventListener('click', () => {
+  const filas = (DATA.faltantes || []).map(x => ({ pdv: x.pdv, cadena: x.cadena, ciudad: x.ciudad, dia: x.dia, estado: 'Sin cobertura' }));
+  descargarExcel('henkel_visitas_sin_cobertura.xlsx', 'Sin cobertura', [
+    { key: 'pdv', label: 'Punto de Venta', ancho: 32 }, { key: 'cadena', label: 'Cadena', ancho: 18 }, { key: 'ciudad', label: 'Ciudad', ancho: 18 },
+    { key: 'dia', label: 'Día', ancho: 12 }, { key: 'estado', label: 'Estado', ancho: 16 }
+  ], filas);
+});
+document.getElementById('btnExportarEvolucion').addEventListener('click', () => {
+  const dias = DATA.diasEvolucion || [];
+  const columnas = [{ key: 'producto', label: 'Producto', ancho: 36 }]
+    .concat(dias.map((iso, i) => ({ key: 'd' + i, label: fechaCortaISO(iso), ancho: 12 })))
+    .concat([{ key: 'total', label: 'Total', ancho: 12 }]);
+  const filas = (DATA.evolucionProductos || []).map(it => {
+    const fila = { producto: it.producto, total: it.total };
+    it.porDia.forEach((v, i) => { fila['d' + i] = v; });
+    return fila;
+  });
+  if (filas.length) {
+    const totalFila = { __total: true, producto: 'TOTAL', total: filas.reduce((s, f) => s + f.total, 0) };
+    dias.forEach((_, i) => { totalFila['d' + i] = filas.reduce((s, f) => s + (f['d' + i] || 0), 0); });
+    filas.push(totalFila);
+  }
+  descargarExcel('henkel_evolucion_por_producto.xlsx', 'Evolución por producto', columnas, filas);
 });
 window.addEventListener('resize', () => { if (DATA) { clearTimeout(window._rz); window._rz = setTimeout(() => { renderVentasPremios(); renderTendenciaChart(); if (document.getElementById('modalIncremental').classList.contains('show')) renderIncrementalChart(); }, 150); } });
 
